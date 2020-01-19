@@ -19,7 +19,7 @@ if [ ! $? = 0 ] ; then
 fi
 
 #do dasm separately, because it's distributed separately
-for DASMEXT in "" .$OSTYPE.x86 $OSTYPE.x64 .$OSTYPE.$ARCH .$OSTYPE ; do
+for DASMEXT in "" .$OSTYPE.x86 .$OSTYPE.x64 .$OSTYPE.$ARCH .$OSTYPE ; do
   dasm$DASMEXT 2>/dev/null >&2 
   [ $? = 1 ] && break
 done
