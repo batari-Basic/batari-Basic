@@ -12,31 +12,31 @@ CC=x86_64-w64-mingw32-gcc
 LEX=lex
 LEXFLAGS=-t
 
-all:    2600basic.x64.exe preprocess.x64.exe postprocess.x64.exe bbfilter.x64.exe optimize.x64.exe
+all:    2600basic.Windows.x64.exe preprocess.Windows.x64.exe postprocess.Windows.x64.exe bbfilter.Windows.x64.exe optimize.Windows.x64.exe
 
-2600basic.x64.exe: 2600bas.c statements.c keywords.c statements.h keywords.h
-	${CC} ${CFLAGS} -o 2600basic.x64.exe 2600bas.c statements.c keywords.c
+2600basic.Windows.x64.exe: 2600bas.c statements.c keywords.c statements.h keywords.h
+	${CC} ${CFLAGS} -o 2600basic.Windows.x64.exe 2600bas.c statements.c keywords.c
 
-postprocess.x64.exe: postprocess.c
-	${CC} ${CFLAGS} -o postprocess.x64.exe postprocess.c
+postprocess.Windows.x64.exe: postprocess.c
+	${CC} ${CFLAGS} -o postprocess.Windows.x64.exe postprocess.c
 
-bbfilter.x64.exe: bbfilter.c
-	${CC} ${CFLAGS} -o bbfilter.x64.exe bbfilter.c
+bbfilter.Windows.x64.exe: bbfilter.c
+	${CC} ${CFLAGS} -o bbfilter.Windows.x64.exe bbfilter.c
 
-preprocess.x64.exe: preprocess.lex
+preprocess.Windows.x64.exe: preprocess.lex
 	${LEX} ${LEXFLAGS}<preprocess.lex>lex.yy.c
-	${CC} ${CFLAGS} -o preprocess.x64.exe lex.yy.c
+	${CC} ${CFLAGS} -o preprocess.Windows.x64.exe lex.yy.c
 	${RM} -f lex.yy.c
 
-optimize.x64.exe: optimize.lex
+optimize.Windows.x64.exe: optimize.lex
 	${LEX} ${LEXFLAGS} -i<optimize.lex>lex.yy.c
-	${CC} ${CFLAGS} -o optimize.x64.exe lex.yy.c
+	${CC} ${CFLAGS} -o optimize.Windows.x64.exe lex.yy.c
 	${RM} -f lex.yy.c
 
 install:        all
 
 clean:
-	${RM} -f a.out core 2600basic.x64.exe preprocess.x64.exe postprocess.x64.exe bbfilter.x64.exe optimize.x64.exe
+	${RM} -f a.out core 2600basic.Windows.x64.exe preprocess.Windows.x64.exe postprocess.Windows.x64.exe bbfilter.Windows.x64.exe optimize.Windows.x64.exe
 
 love:
 	@echo "not war"

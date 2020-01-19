@@ -45,3 +45,5 @@ bbfilter
 optimize
 postprocess
 preprocess
+packages
+packages/*
