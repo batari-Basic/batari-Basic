@@ -1,0 +1,20 @@
+batari Basic - ARMCOMPILE.txt 
+
+_What_Is_This_Doc?_
+
+  Just some quick notes on how to compile the custom ARM DPC+ functions.
+
+_How_to_Setup_the_ARM_Cross_Compiler_
+
+  1.  Grab your OS's version of the cross compiler from here...
+
+   https://launchpad.net/gcc-arm-embedded
+
+  2. Unpack the binaries somewhere handy. 
+  3. Update your PATH variable include the directory where 
+     arm-none-eabi-gcc is located.
+
+_How_to_Use_the_ARM_Cross_Compiler_
+
+  From command-line, "cd" to the bB include/custom directory. Make any 
+  changes you wish to the main.c source file, and then type "make"

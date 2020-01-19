@@ -1,0 +1,43 @@
+batari Basic - ISSUES.txt
+
+_What_Is_This_Doc?_
+
+  There are some niggling issues and/or unexpected behaviors that users
+  may run across. This file explains those issues, and any known 
+  work-arouds.
+
+_Known_Issues_
+
+  overview:   A wide score font causes glitching on the right-most digit. 
+  details:    There isn't sufficient kernel time for the update of all 6
+              score digits *and* the PF bars, so the standard score font
+              doesn't display the left-most digit.
+  workaround: avoid defining graphics in the left-most pixel column of the
+              score font.
+
+  overview:   Some kernels have a score that is off-center.
+  details:    There isn't sufficient kernel time for the update of all 6
+              score digits *and* the PF bars, so the standard score is
+              positioned to minimize the resulting glitch resulting from 
+              this.
+  workaround: use the DPC+ kernel, or ignore it.
+
+  overview:   DPC+ vsprite vertical stack glitch. 
+  details:    If the virtual sprites are stacked with very little
+              spacing, cumulative round-off can occur, and eventually coarse
+              positioning will happen during a virtual sprite display, 
+              resulting in a visual glitch.
+  workaround: avoid stacking vsprites vertically without much
+              spacing. Or put them all on even or all odd rows, depending 
+              if the height of the vsprites are even or odd.
+		
+  overview:   PAL pfres linecount bug.
+  details:    Using "set tv pal" with standard kernel and pfres
+              causes incorrect scanline counts for certian pfres values.
+              workaround: use a value that provides a correct linecount, or
+              use pal60 instead.
+
+  overview:   DPC+ double-line bug
+  details:    In higher resolutions in the DPC+ kernel, the top PF line is
+              duplicated.
+  workaround: None

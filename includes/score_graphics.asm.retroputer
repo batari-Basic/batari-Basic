@@ -1,0 +1,104 @@
+; Provided under the CC0 license. See the included LICENSE.txt for details.
+
+       .byte %01111110
+       .byte %01000110
+       .byte %01000110
+       .byte %01000110
+       .byte %01100010
+       .byte %01100010
+       .byte %01100010
+       .byte %01111110
+
+       .byte %00111000
+       .byte %00111000
+       .byte %00111000
+       .byte %00111000
+       .byte %00011000
+       .byte %00011000
+       .byte %00011000
+       .byte %00011000
+
+       .byte %01111110
+       .byte %01100000
+       .byte %01100000
+       .byte %01100000
+       .byte %00111110
+       .byte %00000010
+       .byte %01000010
+       .byte %01111110
+
+       .byte %01111110
+       .byte %01000110
+       .byte %00000110
+       .byte %00000110
+       .byte %00111110
+       .byte %00000010
+       .byte %01000010
+       .byte %01111110
+
+       .byte %00001100
+       .byte %00001100
+       .byte %00001100
+       .byte %01111110
+       .byte %01000100
+       .byte %01000100
+       .byte %01000100
+       .byte %00000100
+
+       .byte %01111110
+       .byte %01000110
+       .byte %00000110
+       .byte %00000110
+       .byte %01111100
+       .byte %01000000
+       .byte %01000000
+       .byte %01111110
+
+       .byte %01111110
+       .byte %01000110
+       .byte %01000110
+       .byte %01000110
+       .byte %01111100
+       .byte %01000000
+       .byte %01000010
+       .byte %01111110
+
+       .byte %00001100
+       .byte %00001100
+       .byte %00001100
+       .byte %00001100
+       .byte %00000100
+       .byte %00000010
+       .byte %01000010
+       .byte %01111110
+
+       .byte %01111110
+       .byte %01000110
+       .byte %01000110
+       .byte %01000110
+       .byte %01111110
+       .byte %01000010
+       .byte %01000010
+       .byte %01111110
+
+       .byte %00000110
+       .byte %00000110
+       .byte %00000110
+       .byte %00000010
+       .byte %01111110
+       .byte %01000010
+       .byte %01000010
+       .byte %01111110
+
+       ifnconst DPC_kernel_options
+
+       .byte %00000000
+       .byte %00000000
+       .byte %00000000
+       .byte %00000000
+       .byte %00000000
+       .byte %00000000
+       .byte %00000000
+       .byte %00000000
+
+      endif

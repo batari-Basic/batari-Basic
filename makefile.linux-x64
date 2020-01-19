@@ -1,0 +1,41 @@
+# The bB Linux compiling makefile. The only difference between this and the
+# generic makefile is this forces 64-bit binaries and adds a .Linux.x64 
+# extension to the binary filenames
+SHELL=/bin/sh
+CHMOD=chmod
+CP=cp
+RM=rm
+CFLAGS=-O0 -m64
+CC=cc
+LEX=lex
+LEXFLAGS=-t
+ARCH=Linux.x64
+
+all:  2600basic.${ARCH} preprocess.${ARCH} postprocess.${ARCH} bbfilter.${ARCH} optimize.${ARCH}
+
+2600basic.${ARCH}: 2600bas.c statements.c keywords.c statements.h keywords.h
+	${CC} ${CFLAGS} -o 2600basic.${ARCH} 2600bas.c statements.c keywords.c
+
+postprocess.${ARCH}: postprocess.c
+	${CC} ${CFLAGS} -o postprocess.${ARCH} postprocess.c
+
+bbfilter.${ARCH}: bbfilter.c
+	${CC} ${CFLAGS} -o bbfilter.${ARCH} bbfilter.c
+
+preprocess.${ARCH}: preprocess.lex
+	${LEX} ${LEXFLAGS}<preprocess.lex>lex.yy.c
+	${CC} ${CFLAGS} -o preprocess.${ARCH} lex.yy.c
+	${RM} -f lex.yy.c
+
+optimize.${ARCH}: optimize.lex
+	${LEX} ${LEXFLAGS} -i<optimize.lex>lex.yy.c
+	${CC} ${CFLAGS} -o optimize.${ARCH} lex.yy.c
+	${RM} -f lex.yy.c
+
+install:   all
+
+clean:
+	${RM} -f a.out core 2600basic.${ARCH} preprocess.${ARCH} postprocess.${ARCH} bbfilter.${ARCH} optimize.${ARCH}
+
+love:
+	@echo "not war"

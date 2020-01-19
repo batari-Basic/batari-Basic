@@ -1,0 +1,11 @@
+DPCplusheader.asm
+score_graphics.asm
+DPCstartup.asm
+DPCplus_kernel.asm
+bB.asm
+DPC_waveforms.asm
+bB2.asm
+DPC_ORG.asm
+banksw.asm
+DPCplusfooter.asm
+DPC_frequencies.h
