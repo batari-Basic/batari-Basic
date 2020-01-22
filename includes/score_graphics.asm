@@ -37,8 +37,10 @@ whimsey = 6
 tiny = 7
 hex = 8
 
- ifconst font == hex
- ORG . - 48
+ ifconst font
+   if font == hex
+     ORG . - 48
+   endif
  endif
 
 scoretable
