@@ -1,9 +1,6 @@
 ; Provided under the CC0 license. See the included LICENSE.txt for details.
 
 drawscreen
-     lda #1
-     sta CXCLR
-     sta COLUBK ; don't start with the lastline color
 
 fufu
      lda INTIM
@@ -23,6 +20,9 @@ fufu
      sta DF0HI
      lda #0
      sta DF0WRITE
+
+     sta CXCLR
+     sta COLUBK ; don't start with the lastline color
 
      ; pass the number of vsprites we want...
      ifnconst dpcspritemax
@@ -51,8 +51,8 @@ copy2fetcherloop
      dex
      bpl copy2fetcherloop
 
-     lda #255
-     sta CALLFUNCTION
+     ;ldx #255; already 255 after loop
+     stx CALLFUNCTION
 
      ; copy modified data back (just need first 6 bytes, which is sprite sort data)
      ldx #256-19
@@ -63,6 +63,7 @@ copyfromfetcherloop
      bmi copyfromfetcherloop
 
      jsr kernel_setup
+
      sta WSYNC
      ldy #$80
      sty HMP0
@@ -142,28 +143,22 @@ skipwrapfix
      sta DF3BOT
 
      ; missile0
-     lda temp2
-     clc
-     adc missile0y
-     sta DF0TOP
-     sec
-     adc missile0height
-     sta DF0BOT
-
+     ldy temp2          ; 3
+     clc                ; 2
 
 fuu
      lda INTIM
      bmi fuu
      sta WSYNC
-;     ldy #$80
-;     sty HMP0
-;     sty HMP1
-;     sty HMM0 
-;     sty HMM1
-;     sty HMBL
-; relocated code above prior to vblank, to allow for Cosmic Ark starfield
-; and/or skewed players
- sleep 17 
+
+ ;sleep 17 
+     tya                ; 2 
+     adc missile0y      ; 3
+     sta.w DF0TOP       ; 4
+     sec                ; 2
+     adc missile0height ; 3
+     sta DF0BOT         ; 3
+
 
      lda #KERNEL_LINES
      sta TIM64T
