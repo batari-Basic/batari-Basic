@@ -7,7 +7,7 @@
 #include "statements.h"
 #include "keywords.h"
 #include <math.h>
-#define BB_VERSION_INFO "batari Basic v1.3 RC1 (c)2020\n"
+#define BB_VERSION_INFO "batari Basic v1.3 (c)2020\n"
 
 int bank = 1;
 
