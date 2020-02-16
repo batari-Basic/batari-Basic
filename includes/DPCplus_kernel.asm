@@ -1,6 +1,7 @@
-; Provided under the CC0 license. See the included LICENSE.txt for details.
-
 drawscreen
+     lda #1
+     sta CXCLR
+     sta COLUBK ; REVENG - don't start with the lastline color
 
 fufu
      lda INTIM
@@ -21,10 +22,7 @@ fufu
      lda #0
      sta DF0WRITE
 
-     sta CXCLR
-     sta COLUBK ; don't start with the lastline color
-
-     ; pass the number of vsprites we want...
+     ; REVENG - pass the number of vsprites we want...
      ifnconst dpcspritemax
        ifconst readpaddle
           lda #8
@@ -51,8 +49,8 @@ copy2fetcherloop
      dex
      bpl copy2fetcherloop
 
-     ;ldx #255; already 255 after loop
-     stx CALLFUNCTION
+     lda #255
+     sta CALLFUNCTION
 
      ; copy modified data back (just need first 6 bytes, which is sprite sort data)
      ldx #256-19
@@ -63,7 +61,6 @@ copyfromfetcherloop
      bmi copyfromfetcherloop
 
      jsr kernel_setup
-
      sta WSYNC
      ldy #$80
      sty HMP0
@@ -98,7 +95,7 @@ setloopfrac
      sta NUSIZ1
      sta REFP1
 
-     ; allow P0 to wrap at the top
+     ;REVENG - allow P0 to wrap at the top
 startwrapfix
      lda #255
      sta temp2
@@ -126,7 +123,7 @@ skipwrapfix
      adc player0height
      sta DF2BOT
 
-     ; 1/2 of the COLUM0 fix. the rest is in main.c
+     ;REVENG - 1/2 of the COLUM0 fix. the rest is in main.c
      lda #<(P0COLOR)
      sta DF0LOW
      sta temp2
@@ -143,22 +140,28 @@ skipwrapfix
      sta DF3BOT
 
      ; missile0
-     ldy temp2          ; 3
-     clc                ; 2
+     lda temp2
+     clc
+     adc missile0y
+     sta DF0TOP
+     sec
+     adc missile0height
+     sta DF0BOT
+
 
 fuu
      lda INTIM
      bmi fuu
      sta WSYNC
-
- ;sleep 17 
-     tya                ; 2 
-     adc missile0y      ; 3
-     sta.w DF0TOP       ; 4
-     sec                ; 2
-     adc missile0height ; 3
-     sta DF0BOT         ; 3
-
+;     ldy #$80
+;     sty HMP0
+;     sty HMP1
+;     sty HMM0 
+;     sty HMM1
+;     sty HMBL
+; relocated code above prior to vblank, to allow for Cosmic Ark starfield
+; and/or skewed players
+ sleep 17 
 
      lda #KERNEL_LINES
      sta TIM64T
@@ -179,7 +182,7 @@ fuu
      sta VBLANK
      sta FASTFETCH
      ;sleep 7
-     lda #<DF2DATAW         ; added so GRP0 is at TOP
+     lda #<DF2DATAW         ; REVENG - added so GRP0 is at TOP
      STA GRP0 ; 36 (VDEL)   ; ""
      sleep 2                ; ""
 
@@ -249,7 +252,7 @@ norepo     ; 60
      lda #<DF3FRACDATA ;53
      sta PF1 ; 56
      ifnconst DPC_kernel_options
-         ;sleep 8 ; timing is off - results in a garbled screen
+         ;sleep 8 ; REVENG - timing is off - results in a garbled screen
          sleep 5 ; this is better
      else
          bit DPC_kernel_options
@@ -912,7 +915,7 @@ scoreloop
      lda #<DF3DATA ;9
      sta GRP0 ;12
 
-     ; rearranged to correct pf write timing and A register overwrite
+     ; REVENG - rearranged to correct pf write timing and A register overwrite
      ifconst pfscore
          lda pfscore1
          sta PF1
