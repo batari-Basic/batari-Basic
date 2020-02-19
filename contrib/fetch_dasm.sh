@@ -1,5 +1,5 @@
 #!/bin/sh
-RELEASE=2.20.12
+RELEASE=2.20.13
 BASEURL=https://github.com/dasm-assembler/dasm/releases/download/$RELEASE
 for OSARCH in linux@Linux osx@Darwin win@win ; do
 	for BITS in x64 x86 ; do
