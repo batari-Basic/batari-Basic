@@ -2054,8 +2054,13 @@ void next(char **statement)
 	{
 	    printf("	LDA %s\n", forvar[numfors]);
 	    printf("	CMP ");
-	    printimmed(forend[numfors]);
-	    printf("%s\n", forend[numfors]);
+            if (!strncmp(forend[numfors], "0\0", 2))
+                printf("#(0) ; avoid optimization for bcs\n"); // work-around the overzealous optimizer
+            else
+            {
+	        printimmed(forend[numfors]);
+	        printf("%s\n", forend[numfors]);
+            }
 	    bcs(forlabel[numfors]);
 	}
 	else
