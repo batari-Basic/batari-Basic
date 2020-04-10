@@ -50,7 +50,7 @@ void keywords(char **cstatement)
     // check if there are boolean && or || in an if-then.
     // change && to "then if"
     // change || to two if thens
-    // also change operands around to allow <= and >, since 
+    // also change operands around to allow <= and >, since
     // currently all we can do is < and >=
     // if we encounter an else, break into two lines, and the first line jumps ahead.
     door = 0;

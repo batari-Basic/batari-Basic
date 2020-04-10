@@ -1,0 +1,37 @@
+{
+	"folders":
+	[
+		{
+			"binary_file_patterns":
+			[
+				"*.gif",
+				"*.png",
+				"*.jpg",
+				"*.jpeg",
+				"*.svg"
+			],
+			"file_exclude_patterns":
+			[
+				".gitignore",
+				"*.sublime-project",
+				"*.sublime-workspace"
+			],
+			"folder_exclude_patterns":
+			[
+				".vscode"
+			],
+			"path": "/Users/thinkyhead/Projects/Retro/batari-Basic"
+		},
+		{
+			"path": "/Users/thinkyhead/Projects/Retro/bAtariBasic/bB/source"
+		}
+	],
+	"settings":
+	{
+		"default_line_ending": "windows",
+		"ensure_newline_at_eof_on_save": true,
+		"tab_size": 4,
+		"translate_tabs_to_spaces": false,
+		"trim_trailing_white_space_on_save": true
+	}
+}

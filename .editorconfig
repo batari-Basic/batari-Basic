@@ -1,0 +1,9 @@
+# editorconfig.org
+root = true
+
+[{*.c,*.cpp,*.h,makefile}]
+trim_trailing_whitespace = true
+insert_final_newline = true
+end_of_line = crlf
+indent_style = tab
+indent_size = 4
