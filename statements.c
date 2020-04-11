@@ -4145,120 +4145,32 @@ void hotspotcheck(char *linenumber) {
 	}
 }
 
-void bmi(char *linenumber) {
+void _branch(char *b1, char *b2, char *linenumber) {
 	removeCR(linenumber);
 	if (smartbranching) {
-		printf(" if ((* - .%s) < 127) && ((* - .%s) > -128)\n\tBMI .%s\n", linenumber, linenumber, linenumber);
+		printf(" if ((* - .%s) < 127) && ((* - .%s) > -128)\n", linenumber, linenumber);
 		// branches might be allowed as below - check carefully to make sure!
 		// printf(" if ((* - .%s) < 127) && ((* - .%s) > -129)\n\tBMI .%s\n",linenumber,linenumber,linenumber);
-		printf(" else\n\tBPL .%dskip%s\n\tJMP .%s\n", branchtargetnumber, linenumber, linenumber);
+		ap("%s .%s", b1, linenumber);
+		printf(" else\n");
+		ap("%s .%dskip%s", b2, branchtargetnumber, linenumber);
+		ap("JMP .%s", linenumber);
 		printf(".%dskip%s\n", branchtargetnumber++, linenumber);
 		printf(" endif\n");
 	}
 	else {
-		printf("\tBMI .%s\n", linenumber);
+		ap("%s .%s", b1, linenumber);
 		hotspotcheck(linenumber);
 	}
 }
-
-void bpl(char *linenumber) {
-	removeCR(linenumber);
-	if (smartbranching) {
-		printf(" if ((* - .%s) < 127) && ((* - .%s) > -128)\n\tBPL .%s\n", linenumber, linenumber, linenumber);
-		printf(" else\n\tBMI .%dskip%s\n\tJMP .%s\n", branchtargetnumber, linenumber, linenumber);
-		printf(".%dskip%s\n", branchtargetnumber++, linenumber);
-		printf(" endif\n");
-	}
-	else {
-		printf("\tBPL .%s\n", linenumber);
-		hotspotcheck(linenumber);
-	}
-}
-
-void bne(char *linenumber) {
-	removeCR(linenumber);
-	if (smartbranching) {
-		printf(" if ((* - .%s) < 127) && ((* - .%s) > -128)\n\tBNE .%s\n", linenumber, linenumber, linenumber);
-		printf(" else\n\tBEQ .%dskip%s\n\tJMP .%s\n", branchtargetnumber, linenumber, linenumber);
-		printf(".%dskip%s\n", branchtargetnumber++, linenumber);
-		printf(" endif\n");
-	}
-	else {
-		printf("\tBNE .%s\n", linenumber);
-		hotspotcheck(linenumber);
-	}
-}
-
-void beq(char *linenumber) {
-	removeCR(linenumber);
-	if (smartbranching) {
-		printf(" if ((* - .%s) < 127) && ((* - .%s) > -128)\n\tBEQ .%s\n", linenumber, linenumber, linenumber);
-		printf(" else\n\tBNE .%dskip%s\n\tJMP .%s\n", branchtargetnumber, linenumber, linenumber);
-		printf(".%dskip%s\n", branchtargetnumber++, linenumber);
-		printf(" endif\n");
-	}
-	else {
-		printf("\tBEQ .%s\n", linenumber);
-		hotspotcheck(linenumber);
-	}
-}
-
-void bcc(char *linenumber) {
-	removeCR(linenumber);
-	if (smartbranching) {
-		printf(" if ((* - .%s) < 127) && ((* - .%s) > -128)\n\tBCC .%s\n", linenumber, linenumber, linenumber);
-		printf(" else\n\tBCS .%dskip%s\n\tJMP .%s\n", branchtargetnumber, linenumber, linenumber);
-		printf(".%dskip%s\n", branchtargetnumber++, linenumber);
-		printf(" endif\n");
-	}
-	else {
-		printf("\tBCC .%s\n", linenumber);
-		hotspotcheck(linenumber);
-	}
-
-}
-
-void bcs(char *linenumber) {
-	removeCR(linenumber);
-	if (smartbranching) {
-		printf(" if ((* - .%s) < 127) && ((* - .%s) > -128)\n\tBCS .%s\n", linenumber, linenumber, linenumber);
-		printf(" else\n\tBCC .%dskip%s\n\tJMP .%s\n", branchtargetnumber, linenumber, linenumber);
-		printf(".%dskip%s\n", branchtargetnumber++, linenumber);
-		printf(" endif\n");
-	}
-	else {
-		printf("\tBCS .%s\n", linenumber);
-		hotspotcheck(linenumber);
-	}
-}
-
-void bvc(char *linenumber) {
-	removeCR(linenumber);
-	if (smartbranching) {
-		printf(" if ((* - .%s) < 127) && ((* - .%s) > -128)\n\tBVC .%s\n", linenumber, linenumber, linenumber);
-		printf(" else\n\tBVS .%dskip%s\n\tJMP .%s\n", branchtargetnumber, linenumber, linenumber);
-		printf(".%dskip%s\n", branchtargetnumber++, linenumber);
-		printf(" endif\n");
-	}
-	else {
-		printf("\tBVC .%s\n", linenumber);
-		hotspotcheck(linenumber);
-	}
-}
-
-void bvs(char *linenumber) {
-	removeCR(linenumber);
-	if (smartbranching) {
-		printf(" if ((* - .%s) < 127) && ((* - .%s) > -128)\n\tBVS .%s\n", linenumber, linenumber, linenumber);
-		printf(" else\n\tBVC .%dskip%s\n\tJMP .%s\n", branchtargetnumber, linenumber, linenumber);
-		printf(".%dskip%s\n", branchtargetnumber++, linenumber);
-		printf(" endif\n");
-	}
-	else {
-		printf("\tBVS .%s\n", linenumber);
-		hotspotcheck(linenumber);
-	}
-}
+void bmi(char *linenumber) { _branch("BMI", "BPL", linenumber); }
+void bpl(char *linenumber) { _branch("BPL", "BMI", linenumber); }
+void bne(char *linenumber) { _branch("BNE", "BEQ", linenumber); }
+void beq(char *linenumber) { _branch("BEQ", "BNE", linenumber); }
+void bcc(char *linenumber) { _branch("BCC", "BCS", linenumber); }
+void bcs(char *linenumber) { _branch("BCS", "BCC", linenumber); }
+void bvc(char *linenumber) { _branch("BVC", "BVS", linenumber); }
+void bvs(char *linenumber) { _branch("BVS", "BVC", linenumber); }
 
 void drawscreen() {
 	invalidate_Areg();
