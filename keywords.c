@@ -7,10 +7,9 @@
 #include <unistd.h>
 #include <string.h>
 
-int swaptest(char *value) { // check for then, && or ||
-	if (!strncmp(value, "then\0", 4) || !strncmp(value, "&&\0", 2) || !strncmp(value, "||\0", 2))
-		return 1;
-	return 0;
+// Check for then, && or ||
+BOOL swaptest(char *value) {
+	return MATCH(value, "then") || MATCH(value, "&&") || MATCH(value, "||");
 }
 
 void keywords(char **cstatement) {
@@ -51,53 +50,57 @@ void keywords(char **cstatement) {
 	// if we encounter an else, break into two lines, and the first line jumps ahead.
 	door = 0;
 	for (k = 0; k <= 190; ++k) { // reversed loop since last build, need to check for rems first!
-		if (!strncmp(cstatement[k + 1], "rem\0", 3))
+		if (MATCH(cstatement[k + 1], "rem"))
 			break;              // if statement has a rem, do not process it
-		if (!strncmp(cstatement[k + 1], "if\0", 2)) {
+		if (MATCH(cstatement[k + 1], "if")) {
 			for (i = k + 2; i < 200; ++i) {
-				if (!strncmp(cstatement[i], "if\0", 2))
-					break;
-				if (!strncmp(cstatement[i], "else\0", 4))
-					foundelse = i;
+				if (MATCH(cstatement[i], "if")) break;
+				if (MATCH(cstatement[i], "else")) foundelse = i;
 			}
-			if (!strncmp(cstatement[k + 3], ">\0", 2) && (!strncmp(cstatement[k + 1], "if\0", 2))
-				&& (swaptest(cstatement[k + 5]))) {
+			if (   MATCH(cstatement[k + 3], ">")
+				&& MATCH(cstatement[k + 1], "if")
+				&& swaptest(cstatement[k + 5])
+			) {
 				// swap operands and switch compare
 				strcpy(cstatement[k + 3], cstatement[k + 2]);   // stick 1st operand here temporarily
 				strcpy(cstatement[k + 2], cstatement[k + 4]);
 				strcpy(cstatement[k + 4], cstatement[k + 3]);   // get it back
 				strcpy(cstatement[k + 3], "<"); // replace compare
 			}
-			else if (!strncmp(cstatement[k + 3], "<=\0", 2) && (!strncmp(cstatement[k + 1], "if\0", 2))
-					 && (swaptest(cstatement[k + 5]))) {
+			else if (  MATCH(cstatement[k + 3], "<=")
+					&& MATCH(cstatement[k + 1], "if")
+					&& swaptest(cstatement[k + 5])
+			) {
 				// swap operands and switch compare
 				strcpy(cstatement[k + 3], cstatement[k + 2]);
 				strcpy(cstatement[k + 2], cstatement[k + 4]);
 				strcpy(cstatement[k + 4], cstatement[k + 3]);
 				strcpy(cstatement[k + 3], ">=");
 			}
-			if (!strncmp(cstatement[k + 3], "&&\0", 2)) {
+			if (MATCH(cstatement[k + 3], "&&")) {
 				shiftdata(cstatement, k + 3);
 				sprintf(cstatement[k + 3], "then%d", ors++);
 				strcpy(cstatement[k + 4], "if");
 			}
-			else if (!strncmp(cstatement[k + 5], "&&\0", 2)) {
+			else if (MATCH(cstatement[k + 5], "&&")) {
 				shiftdata(cstatement, k + 5);
 				sprintf(cstatement[k + 5], "then%d", ors++);
 				strcpy(cstatement[k + 6], "if");
 			}
-			else if (!strncmp(cstatement[k + 3], "||\0", 2)){
-				if (!strncmp(cstatement[k + 5], ">\0", 2) && (!strncmp(cstatement[k + 1], "if\0", 2))
-					&& (swaptest(cstatement[k + 7]))) {
-					// swap operands and switch compare
+			else if (MATCH(cstatement[k + 3], "||")) {
+				if (   MATCH(cstatement[k + 5], ">")
+					&& MATCH(cstatement[k + 1], "if")
+					&& swaptest(cstatement[k + 7])
+				) { // swap operands and switch compare
 					strcpy(cstatement[k + 5], cstatement[k + 4]);       // stick 1st operand here temporarily
 					strcpy(cstatement[k + 4], cstatement[k + 6]);
 					strcpy(cstatement[k + 6], cstatement[k + 5]);       // get it back
 					strcpy(cstatement[k + 5], "<");     // replace compare
 				}
-				else if (!strncmp(cstatement[k + 5], "<=\0", 2) && (!strncmp(cstatement[k + 1], "if\0", 2))
-						 && (swaptest(cstatement[k + 7]))) {
-					// swap operands and switch compare
+				else if (  MATCH(cstatement[k + 5], "<=")
+						&& MATCH(cstatement[k + 1], "if")
+						&& swaptest(cstatement[k + 7])
+				) { // swap operands and switch compare
 					strcpy(cstatement[k + 5], cstatement[k + 4]);
 					strcpy(cstatement[k + 4], cstatement[k + 6]);
 					strcpy(cstatement[k + 6], cstatement[k + 5]);
@@ -107,9 +110,9 @@ void keywords(char **cstatement) {
 				for (i = 2; i < 198 - k; ++i)
 					strcpy(orstatement[i], cstatement[k + i + 2]);
 
-				if (!strncmp(cstatement[k + 5], "then\0", 4))
+				if (MATCH(cstatement[k + 5], "then"))
 					compressdata(cstatement, k + 3, k + 2);
-				else if (!strncmp(cstatement[k + 7], "then\0", 4))
+				else if (MATCH(cstatement[k + 7], "then"))
 					compressdata(cstatement, k + 3, k + 4);
 
 				strcpy(cstatement[k + 3], "then");
@@ -119,18 +122,20 @@ void keywords(char **cstatement) {
 
 				// todo: need to skip over the next statement!
 			}
-			else if (!strncmp(cstatement[k + 5], "||\0", 2)) {
-				if (!strncmp(cstatement[k + 7], ">\0", 2) && (!strncmp(cstatement[k + 1], "if\0", 2))
-					&& (swaptest(cstatement[k + 9]))) {
-					// swap operands and switch compare
+			else if (MATCH(cstatement[k + 5], "||")) {
+				if (   MATCH(cstatement[k + 7], ">")
+					&& MATCH(cstatement[k + 1], "if")
+					&& swaptest(cstatement[k + 9])
+				) { // swap operands and switch compare
 					strcpy(cstatement[k + 7], cstatement[k + 6]);       // stick 1st operand here temporarily
 					strcpy(cstatement[k + 6], cstatement[k + 8]);
 					strcpy(cstatement[k + 8], cstatement[k + 7]);       // get it back
 					strcpy(cstatement[k + 7], "<");     // replace compare
 				}
-				else if (!strncmp(cstatement[k + 7], "<=\0", 2) && (!strncmp(cstatement[k + 1], "if\0", 2))
-						 && (swaptest(cstatement[k + 9]))) {
-					// swap operands and switch compare
+				else if (  MATCH(cstatement[k + 7], "<=")
+						&& MATCH(cstatement[k + 1], "if")
+						&& swaptest(cstatement[k + 9])
+				) { // swap operands and switch compare
 					strcpy(cstatement[k + 7], cstatement[k + 6]);
 					strcpy(cstatement[k + 6], cstatement[k + 8]);
 					strcpy(cstatement[k + 8], cstatement[k + 7]);
@@ -138,9 +143,9 @@ void keywords(char **cstatement) {
 				}
 				for (i = 2; i < 196 - k; ++i)
 					strcpy(orstatement[i], cstatement[k + i + 4]);
-				if (!strncmp(cstatement[k + 7], "then\0", 4))
+				if (MATCH(cstatement[k + 7], "then"))
 					compressdata(cstatement, k + 5, k + 2);
-				else if (!strncmp(cstatement[k + 9], "then\0", 4))
+				else if (MATCH(cstatement[k + 9], "then"))
 					compressdata(cstatement, k + 5, k + 4);
 				strcpy(cstatement[k + 5], "then");
 				sprintf(orstatement[0], "%dOR", ors++);
@@ -148,13 +153,12 @@ void keywords(char **cstatement) {
 				door = 1;
 			}
 		}
-		if (door)
-			break;
+		if (door) break;
 	}
 	if (foundelse) {
 		pass2elstatement = door ? orstatement : cstatement;
 		for (i = 1; i < 200; ++i) {
-			if (!strncmp(pass2elstatement[i], "else\0", 4)) {
+			if (MATCH(pass2elstatement[i], "else")) {
 				foundelse = i;
 				break;
 			}
@@ -174,11 +178,8 @@ void keywords(char **cstatement) {
 			strcpy(elstatement[1], "goto");
 		}
 		if (door) {
-			for (i = 1; i < 200; ++i)
-				if (!strncmp(cstatement[i], "else\0", 4))
-					break;
-			for (k = i; k < 200; ++k)
-				cstatement[k][0] = '\0';
+			for (i = 1; i < 200; ++i) if (MATCH(cstatement[i], "else")) break;
+			for (k = i; k < 200; ++k) cstatement[k][0] = '\0';
 		}
 
 	}
@@ -206,8 +207,7 @@ void keywords(char **cstatement) {
 			//strcpy(orstatement[i++],":");
 			strcpy(orstatement[i++], "goto");
 			sprintf(orstatement[i++], "condpart%d", getcondpart() + 1); // goto unnamed line number for then statemtent
-			for (; i < 200; ++i)
-				orstatement[i][0] = '\0';       // clear out rest of statement
+			for (; i < 200; ++i) orstatement[i][0] = '\0'; // clear out rest of statement
 		}
 
 		keywords(orstatement);  // recurse
@@ -224,184 +224,104 @@ void keywords(char **cstatement) {
 	}
 	//printf("\n");
 	for (i = 0; i < 200; ++i) {
-		if (statement[i][0] == '\0')
-			break;
-		else if (statement[i][0] == ':')
-			colons++;
+		if (statement[i][0] == '\0') break;
+		if (statement[i][0] == ':') colons++;
 	}
 
-	if (!strncmp(statement[0], "then\0", 4))
+	if (MATCH(statement[0], "then"))
 		sprintf(statement[0], "%dthen", numthens++);
 
 	invalidate_Areg();
 
 	while (1) {
 		i = 0;
-		if (statement[1][0] == '\0') return;
-		if (!strncmp(statement[1], "def\0", 4)) return;
-
-		if (!strncmp(statement[0], "end\0", 4))
-			endfunction();
-		else if (!strncmp(statement[1], "includesfile\0", 13))
-			create_includes(statement[2]);
-		else if (!strncmp(statement[1], "include\0", 7))
-			add_includes(statement[2]);
-		else if (!strncmp(statement[1], "inline\0", 7))
-			add_inline(statement[2]);
-		else if (!strncmp(statement[1], "function\0", 9))
-			function(statement);
-		else if (statement[1][0] == ' ') {
-			return;
-		}
-		else if (!strncmp(statement[1], "if\0", 3)) {
-			doif(statement);
-			break;
-		}
-		else if (!strncmp(statement[1], "goto\0", 5))
-			dogoto(statement);
-		else if (!strncmp(statement[1], "bank\0", 5))
-			newbank(atoi(statement[2]));
-		else if (!strncmp(statement[1], "sdata\0", 6))
-			sdata(statement);
-		else if (!strncmp(statement[1], "data\0", 5))
-			data(statement);
-		else if ((!strncmp(statement[1], "on\0", 3)) && (!strncmp(statement[3], "go\0", 2)))
-			ongoto(statement);  // on ... goto or on ... gosub
-		else if (!strncmp(statement[1], "const\0", 6))
-			doconst(statement);
-		else if (!strncmp(statement[1], "dim\0", 4))
-			dim(statement);
-		else if (!strncmp(statement[1], "for\0", 4))
-			dofor(statement);
-		else if (!strncmp(statement[1], "next\0", 5))
-			next(statement);
-		else if (!strncmp(statement[1], "next\n", 5))
-			next(statement);
-		else if (!strncmp(statement[1], "next\r", 5))
-			next(statement);
-		else if (!strncmp(statement[1], "gosub\0", 6))
-			gosub(statement);
-		else if (!strncmp(statement[1], "pfpixel\0", 8))
-			pfpixel(statement);
-		else if (!strncmp(statement[1], "pfhline\0", 8))
-			pfhline(statement);
-		else if (!strncmp(statement[1], "pfclear\0", 7))
-			pfclear(statement);
-		else if (!strncmp(statement[1], "pfvline\0", 8))
-			pfvline(statement);
-		else if (!strncmp(statement[1], "pfscroll\0", 9))
-			pfscroll(statement);
-		else if (!strncmp(statement[1], "drawscreen\0", 10))
-			drawscreen();
-		else if (!strncmp(statement[1], "asm\0", 4))
-			doasm();
-		else if (!strncmp(statement[1], "pop\0", 4))
-			dopop();
-		else if (!strncmp(statement[1], "rem\0", 4)) {
-			rem(statement);
-			return;
-		}
-		else if (!strncmp(statement[1], "asm\n", 4))
-			doasm();
-		else if (!strncmp(statement[1], "pop\n", 4))
-			dopop();
-		else if (!strncmp(statement[1], "rem\n", 4)) {
-			rem(statement);
-			return;
-		}
-		else if (!strncmp(statement[1], "asm\r", 4))
-			doasm();
-		else if (!strncmp(statement[1], "pop\r", 4))
-			dopop();
-		else if (!strncmp(statement[1], "rem\r", 4)) {
-			rem(statement);
-			return;
-		}
-		else if (!strncmp(statement[1], "set\0", 4))
-			set(statement);
-		else if (!strncmp(statement[1], "return\0", 7))
-			doreturn(statement);
-		else if (!strncmp(statement[1], "reboot\0", 7))
-			doreboot();
-		else if (!strncmp(statement[1], "vblank\0", 7))
-			vblank();
-		else if (!strncmp(statement[1], "return\n", 7))
-			doreturn(statement);
-		else if (!strncmp(statement[1], "reboot\n", 7))
-			doreboot();
-		else if (!strncmp(statement[1], "vblank\n", 7))
-			vblank();
-		else if (!strncmp(statement[1], "return\r", 7))
-			doreturn(statement);
-		else if (!strncmp(statement[1], "reboot\r", 7))
-			doreboot();
-		else if (!strncmp(statement[1], "vblank\r", 7))
-			vblank();
-		else if ((!strncasecmp(statement[1], "pfcolors:\0", 9)) || (!strncasecmp(statement[1], "pfheights:\0", 9)))
-			playfieldcolorandheight(statement);
-		else if (!strncasecmp(statement[1], "bkcolors:\0", 9))
-			bkcolors(statement);
-		else if (!strncmp(statement[1], "playfield:\0", 10))
-			playfield(statement);
-		else if (!strncmp(statement[1], "scorecolors:\0", 12))
-			scorecolors(statement);
-		else if (!strncmp(statement[1], "lives:\0", 6))
-			lives(statement);
-		else if (  !strncmp(statement[1], "player0:\0", 8)
-				|| !strncmp(statement[1], "player1:\0", 8)
-				|| !strncmp(statement[1], "player2:\0", 8)
-				|| !strncmp(statement[1], "player3:\0", 8)
-				|| !strncmp(statement[1], "player4:\0", 8)
-				|| !strncmp(statement[1], "player5:\0", 8)
-				|| !strncmp(statement[1], "player6:\0", 8)
-				|| !strncmp(statement[1], "player7:\0", 8)
-				|| !strncmp(statement[1], "player8:\0", 8)
-				|| !strncmp(statement[1], "player9:\0", 8)
-				|| !strncmp(statement[1], "player1-\0", 8)
-				|| !strncmp(statement[1], "player2-\0", 8)
-				|| !strncmp(statement[1], "player3-\0", 8)
-				|| !strncmp(statement[1], "player4-\0", 8)
-				|| !strncmp(statement[1], "player5-\0", 8)
-				|| !strncmp(statement[1], "player6-\0", 8)
-				|| !strncmp(statement[1], "player7-\0", 8)
-				|| !strncmp(statement[1], "player8-\0", 8)
-				|| !strncmp(statement[1], "player0color:\0", 13)
-				|| !strncmp(statement[1], "player1color:\0", 13)
-				|| !strncmp(statement[1], "player2color:\0", 13)
-				|| !strncmp(statement[1], "player3color:\0", 13)
-				|| !strncmp(statement[1], "player4color:\0", 13)
-				|| !strncmp(statement[1], "player5color:\0", 13)
-				|| !strncmp(statement[1], "player6color:\0", 13)
-				|| !strncmp(statement[1], "player7color:\0", 13)
-				|| !strncmp(statement[1], "player8color:\0", 13)
-				|| !strncmp(statement[1], "player9color:\0", 13)
-		)
-			player(statement);
-		else if (!strncmp(statement[2], "=\0", 1))
-			dolet(statement);
-		else if (!strncmp(statement[1], "let\0", 4))
-			dolet(statement);
-		else if (!strncmp(statement[1], "dec\0", 4))
-			dec(statement);
-		else if (!strncmp(statement[1], "macro\0", 6))
-			domacro(statement);
-		else if (!strncmp(statement[1], "push\0", 5))
-			do_push(statement);
-		else if (!strncmp(statement[1], "pull\0", 5))
-			do_pull(statement);
-		else if (!strncmp(statement[1], "stack\0", 6))
-			do_stack(statement);
-		else if (!strncmp(statement[1], "callmacro\0", 10))
-			callmacro(statement);
-		else if (!strncmp(statement[1], "extra\0", 5))
-			doextra(statement[1]);
+	    if (CMATCH(1, '\0')) 					return;
+		if (SMATCH(1, "def"))					return;
+		if (SMATCH(0, "end"))					endfunction();
+		else if (SMATCH(1, "includesfile"))		create_includes(statement[2]);
+		else if (SMATCH(1, "include"))			add_includes(statement[2]);
+		else if (SMATCH(1, "inline"))			add_inline(statement[2]);
+		else if (SMATCH(1, "function"))			function(statement);
+		else if (statement[1][0] == ' ')		return;
+		else if (SMATCH(1, "if")) {				doif(statement); break; }
+		else if (SMATCH(1, "goto"))				dogoto(statement);
+		else if (SMATCH(1, "bank"))				newbank(atoi(statement[2]));
+		else if (SMATCH(1, "sdata"))			sdata(statement);
+		else if (SMATCH(1, "data"))				data(statement);
+		else if (  SMATCH(1, "on")
+				&& SMATCH(3, "go"))				ongoto(statement);  // on ... goto or on ... gosub
+		else if (SMATCH(1, "const"))			doconst(statement);
+		else if (SMATCH(1, "dim"))				dim(statement);
+		else if (SMATCH(1, "for"))				dofor(statement);
+		else if (SMATCH(1, "next"))				next(statement);
+		else if (SMATCH(1, "next\n"))			next(statement);
+		else if (SMATCH(1, "next\r"))			next(statement);
+		else if (SMATCH(1, "gosub"))			gosub(statement);
+		else if (SMATCH(1, "pfpixel"))			pfpixel(statement);
+		else if (SMATCH(1, "pfhline"))			pfhline(statement);
+		else if (SMATCH(1, "pfclear"))			pfclear(statement);
+		else if (SMATCH(1, "pfvline"))			pfvline(statement);
+		else if (SMATCH(1, "pfscroll"))			pfscroll(statement);
+		else if (SMATCH(1, "drawscreen"))		drawscreen();
+		else if (SMATCH(1, "asm"))				doasm();
+		else if (SMATCH(1, "pop"))				dopop();
+		else if (SMATCH(1, "rem")) { 			rem(statement); return; }
+		else if (SMATCH(1, "asm\n"))			doasm();
+		else if (SMATCH(1, "pop\n"))			dopop();
+		else if (SMATCH(1, "rem\n")) {			rem(statement); return; }
+		else if (SMATCH(1, "asm\r"))			doasm();
+		else if (SMATCH(1, "pop\r"))			dopop();
+		else if (SMATCH(1, "rem\r")) {			rem(statement); return; }
+		else if (SMATCH(1, "set"))				set(statement);
+		else if (SMATCH(1, "return"))			doreturn(statement);
+		else if (SMATCH(1, "reboot"))			doreboot();
+		else if (SMATCH(1, "vblank"))			vblank();
+		else if (SMATCH(1, "return\n"))			doreturn(statement);
+		else if (SMATCH(1, "reboot\n"))			doreboot();
+		else if (SMATCH(1, "vblank\n"))			vblank();
+		else if (SMATCH(1, "return\r"))			doreturn(statement);
+		else if (SMATCH(1, "reboot\r"))			doreboot();
+		else if (SMATCH(1, "vblank\r"))			vblank();
+		else if (  IMATCH(1, "pfcolors:")
+				|| IMATCH(1, "pfheights:"))		playfieldcolorandheight(statement);
+		else if (IMATCH(1, "bkcolors:"))		bkcolors(statement);
+		else if (SMATCH(1, "playfield:"))		playfield(statement);
+		else if (SMATCH(1, "scorecolors:"))		scorecolors(statement);
+		else if (SMATCH(1, "lives:"))			lives(statement);
+		else if (  SMATCH(1, "player0:") || SMATCH(1, "player1:")
+				|| SMATCH(1, "player2:") || SMATCH(1, "player3:")
+				|| SMATCH(1, "player4:") || SMATCH(1, "player5:")
+				|| SMATCH(1, "player6:") || SMATCH(1, "player7:")
+				|| SMATCH(1, "player8:") || SMATCH(1, "player9:")
+				|| SMATCH(1, "player1-") || SMATCH(1, "player2-")
+				|| SMATCH(1, "player3-") || SMATCH(1, "player4-")
+				|| SMATCH(1, "player5-") || SMATCH(1, "player6-")
+				|| SMATCH(1, "player7-") || SMATCH(1, "player8-")
+				|| SMATCH(1, "player0color:") || SMATCH(1, "player1color:")
+				|| SMATCH(1, "player2color:") || SMATCH(1, "player3color:")
+				|| SMATCH(1, "player4color:") || SMATCH(1, "player5color:")
+				|| SMATCH(1, "player6color:") || SMATCH(1, "player7color:")
+				|| SMATCH(1, "player8color:") || SMATCH(1, "player9color:")
+		)										player(statement);
+		else if (SMATCH(2, "="))				dolet(statement);
+		else if (SMATCH(1, "let"))				dolet(statement);
+		else if (SMATCH(1, "dec"))				dec(statement);
+		else if (SMATCH(1, "macro"))			domacro(statement);
+		else if (SMATCH(1, "push"))				do_push(statement);
+		else if (SMATCH(1, "pull"))				do_pull(statement);
+		else if (SMATCH(1, "stack"))			do_stack(statement);
+		else if (SMATCH(1, "callmacro"))		callmacro(statement);
+		else if (SMATCH(1, "extra"))			doextra(statement[1]);
 		else {
 			//sadly, a kludge for complex statements followed by "then label"
 			int lastc = strlen(statement[0]) - 1;
-			if ((lastc > 3) && (((statement[0][lastc - 4] >= '0') && (statement[0][lastc - 4] <= '9')) &&
-								(statement[0][lastc - 3] == 't') &&
-								(statement[0][lastc - 2] == 'h') &&
-								(statement[0][lastc - 1] == 'e') && (statement[0][lastc - 0] == 'n'))
+			if (lastc > 3
+				&& (   ISNUM(statement[0][lastc - 4])
+					&& statement[0][lastc - 3] == 't'
+					&& statement[0][lastc - 2] == 'h'
+					&& statement[0][lastc - 1] == 'e'
+					&& statement[0][lastc - 0] == 'n'
+				)
 			)
 				return;
 			sprintf(errorcode, "Error: Unknown keyword: %s\n", statement[1]);
@@ -409,18 +329,13 @@ void keywords(char **cstatement) {
 			exit(1);
 		}
 		// see if there is a colon
-		if ((!colons) || (currentcolon == colons)) break;
+		if (!colons || currentcolon == colons) break;
 		currentcolon++;
 		i = k = 0;
-		while (i != currentcolon) {
-			if (cstatement[k++][0] == ':')
-				i++;
-		}
+		while (i != currentcolon) if (cstatement[k++][0] == ':') i++;
 
-		for (j = k; j < 200; ++j)
-			statement[j - k + 1] = cstatement[j];
-		for (; (j - k + 1) < 200; ++j)
-			statement[j - k + 1][0] = '\0';
+		for (j = k; j < 200; ++j) statement[j - k + 1] = cstatement[j];
+		for (; (j - k + 1) < 200; ++j) statement[j - k + 1][0] = '\0';
 	}
 	if (foundelse)
 		printf(".skipelse%d\n", numelses++);
