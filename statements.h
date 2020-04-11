@@ -9,7 +9,7 @@ typedef unsigned char BOOL;
 #define SMATCH(IND,STR) MATCH(statement[IND], STR)
 #define IMATCH(IND,STR) (!strncasecmp(statement[IND], STR, strlen(STR)))
 #define CMATCH(IND,CHR) (statement[IND][0] == CHR)
-#define WITHIN(N,A,B)   ((N)>=(A)&&(N)<=(A))
+#define WITHIN(N,A,B)   ((unsigned char)(N)>=(unsigned char)(A)&&(unsigned char)(N)<=(unsigned char)(A))
 #define ISNUM(C)        WITHIN(C,'0','9')
 #define COUNT(X)        (sizeof(X)/sizeof(*X))
 
@@ -58,6 +58,7 @@ BOOL islabelelse(char **);
 void compressdata(char **, int, int);
 void shiftdata(char **, int);
 int findpoint(char *);
+float immed_fixpoint(char *fixpointval);
 int getindex(char *, char *);
 int bbgetline();
 void doend();
@@ -100,8 +101,7 @@ void bcc(char *);
 void bcs(char *);
 void bvc(char *);
 void bvs(char *);
-int printimmed(char *);
-int isimmed(char *);
+BOOL isimmed(char *);
 int number(unsigned char);
 void header_open(FILE *);
 void header_write(FILE *, char *);
