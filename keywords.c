@@ -162,14 +162,14 @@ void keywords(char **cstatement) {
 
 		for (i = foundelse; i < 200; ++i)
 			strcpy(elstatement[i - foundelse], pass2elstatement[i]);
-		if (islabelelse(pass2elstatement)) {
+		if (!islabelelse(pass2elstatement)) {
 			strcpy(pass2elstatement[foundelse++], ":");
 			strcpy(pass2elstatement[foundelse++], "goto");
 			sprintf(pass2elstatement[foundelse++], "skipelse%d", numelses);
 		}
 		for (i = foundelse; i < 200; ++i)
 			pass2elstatement[i][0] = '\0';
-		if (!islabelelse(elstatement)) {
+		if (islabelelse(elstatement)) {
 			strcpy(elstatement[2], elstatement[1]);
 			strcpy(elstatement[1], "goto");
 		}
@@ -192,8 +192,7 @@ void keywords(char **cstatement) {
 		// this hacks off the conditional statement from the copy of the statement we just created
 		// and replaces it with a goto.  This can be improved (i.e., there is no need to copy...)
 
-		if (islabel(orstatement)) { // make sure islabel function works right!
-
+		if (!islabel(orstatement)) { // make sure islabel function works right!
 
 			// find end of statement
 			i = 3;

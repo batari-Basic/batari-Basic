@@ -7,7 +7,7 @@
 #include "statements.h"
 #include "keywords.h"
 
-int includesfile_already_done = 0;
+BOOL includesfile_already_done = false;
 int decimal = 0;
 
 void currdir_foundmsg(char *foundfile) {
@@ -1053,9 +1053,8 @@ void create_includes(char *includesfile) {
 	int i;
 	int writeline;
 	removeCR(includesfile);
-	if (includesfile_already_done)
-		return;
-	includesfile_already_done = 1;
+	if (includesfile_already_done) return;
+	includesfile_already_done = true;
 	fullpath[0] = '\0';
 	if (includespath[0]) {
 		strcpy(fullpath, includespath);
@@ -1352,138 +1351,83 @@ int bbgetline() { return line; }
 void invalidate_Areg() { strcpy(Areg, "invalid"); }
 
 // Determine if the item after a "then" is a label or a statement
-int islabel(char **statement) {
-	// return of 0=label, 1=statement
+BOOL islabel(char **statement) {
+	// return true=label, false=statement
 	int i;
 	// find the "then" or a "goto"
-	for (i = 0; i < 198;)
-		if (!strncmp(statement[i++], "then\0", 4))
-			break;
+	for (i = 0; i < 198;) if (!strncmp(statement[i++], "then\0", 4)) break;
 	return findlabel(statement, i);
 }
 
 // Determine if the item after an "else" is a label or a statement
-int islabelelse(char **statement) {
-	// return of 0=label, 1=statement
+BOOL islabelelse(char **statement) {
+	// return of true=label, false=statement
 	int i;
 	// find the "else"
-	for (i = 0; i < 198;)
-		if (!strncmp(statement[i++], "else\0", 4))
-			break;
+	for (i = 0; i < 198;) if (!strncmp(statement[i++], "else\0", 4)) break;
 	return findlabel(statement, i);
 }
 
-int findlabel(char **statement, int i) {
+BOOL findlabel(char **statement, int i) {
 	char statementcache[100];
-	// 0 if label, 1 if not
-	if ((statement[i][0] > (unsigned char) 0x2F) && (statement[i][0] < (unsigned char) 0x3B))
-		return 0;
-	if ((statement[i + 1][0] == ':') && (strncmp(statement[i + 2], "rem\0", 3)))
-		return 1;
-	if ((statement[i + 1][0] == ':') && (!strncmp(statement[i + 2], "rem\0", 3)))
-		return 0;
-
-	if (!strncmp(statement[i + 1], "else\0", 4))
-		return 0;
-	//if (!strncmp(statement[i+1],"bank\0",4)) return 0;
+	// true if label, false if not
+	if (statement[i][0] >= '0' && statement[i][0] <= ':') return true;
+	if (statement[i + 1][0] == ':') return MATCH(statement[i + 2], "rem");
+	if (MATCH(statement[i + 1], "else", 4)) return true;
+	//if (MATCH(statement[i+1], "bank")) return 0;
 	// uncomment to allow then label bankx (needs work)
-	if (statement[i + 1][0] != '\0') return 1;
+	if (statement[i + 1][0] != '\0') return false;
 	// only possibilities left are: drawscreen, player0:, player1:, asm, next, return, maybe others added later?
 
 	strcpy(statementcache, statement[i]);
 	removeCR(statementcache);
-	if (!strncmp(statementcache, "drawscreen\0", 10))
-		return 1;
-	if (!strncmp(statementcache, "lives:\0", 6))
-		return 1;
-	if (!strncmp(statementcache, "player0color:\0", 13))
-		return 1;
-	if (!strncmp(statementcache, "player1color:\0", 13))
-		return 1;
-	if (!strncmp(statementcache, "player2color:\0", 13))
-		return 1;
-	if (!strncmp(statementcache, "player3color:\0", 13))
-		return 1;
-	if (!strncmp(statementcache, "player4color:\0", 13))
-		return 1;
-	if (!strncmp(statementcache, "player5color:\0", 13))
-		return 1;
-	if (!strncmp(statementcache, "player6color:\0", 13))
-		return 1;
-	if (!strncmp(statementcache, "player7color:\0", 13))
-		return 1;
-	if (!strncmp(statementcache, "player8color:\0", 13))
-		return 1;
-	if (!strncmp(statementcache, "player9color:\0", 13))
-		return 1;
-	if (!strncmp(statementcache, "player0:\0", 8))
-		return 1;
-	if (!strncmp(statementcache, "player1:\0", 8))
-		return 1;
-	if (!strncmp(statementcache, "player2:\0", 8))
-		return 1;
-	if (!strncmp(statementcache, "player3:\0", 8))
-		return 1;
-	if (!strncmp(statementcache, "player4:\0", 8))
-		return 1;
-	if (!strncmp(statementcache, "player5:\0", 8))
-		return 1;
-	if (!strncmp(statementcache, "player6:\0", 8))
-		return 1;
-	if (!strncmp(statementcache, "player7:\0", 8))
-		return 1;
-	if (!strncmp(statementcache, "player8:\0", 8))
-		return 1;
-	if (!strncmp(statementcache, "player9:\0", 8))
-		return 1;
-	if (!strncmp(statementcache, "player1-\0", 8))
-		return 1;
-	if (!strncmp(statementcache, "player2-\0", 8))
-		return 1;
-	if (!strncmp(statementcache, "player3-\0", 8))
-		return 1;
-	if (!strncmp(statementcache, "player4-\0", 8))
-		return 1;
-	if (!strncmp(statementcache, "player5-\0", 8))
-		return 1;
-	if (!strncmp(statementcache, "player6-\0", 8))
-		return 1;
-	if (!strncmp(statementcache, "player7-\0", 8))
-		return 1;
-	if (!strncmp(statementcache, "player8-\0", 8))
-		return 1;
-	if (!strncmp(statementcache, "playfield:\0", 10))
-		return 1;
-	if (!strncmp(statementcache, "pfcolors:\0", 9))
-		return 1;
-	if (!strncmp(statementcache, "scorecolors:\0", 12))
-		return 1;
-	if (!strncmp(statementcache, "pfheights:\0", 10))
-		return 1;
-	if (!strncmp(statementcache, "asm\0", 4))
-		return 1;
-	if (!strncmp(statementcache, "pop\0", 4))
-		return 1;
-	if (!strncmp(statementcache, "stack\0", 6))
-		return 1;
-	if (!strncmp(statementcache, "push\0", 5))
-		return 1;
-	if (!strncmp(statementcache, "pull\0", 5))
-		return 1;
-	if (!strncmp(statementcache, "rem\0", 4))
-		return 1;
-	if (!strncmp(statementcache, "next\0", 5))
-		return 1;
-	if (!strncmp(statementcache, "reboot\0", 7))
-		return 1;
-	if (!strncmp(statementcache, "return\0", 7))
-		return 1;
-	if (!strncmp(statementcache, "callmacro\0", 9))
-		return 1;
-	if (statement[i + 1][0] == '=')
-		return 1;               // it's a variable assignment
+	if (!strncmp(statementcache, "drawscreen\0", 10))    return false;
+	if (!strncmp(statementcache, "lives:\0", 6))         return false;
+	if (!strncmp(statementcache, "player0color:\0", 13)) return false;
+	if (!strncmp(statementcache, "player1color:\0", 13)) return false;
+	if (!strncmp(statementcache, "player2color:\0", 13)) return false;
+	if (!strncmp(statementcache, "player3color:\0", 13)) return false;
+	if (!strncmp(statementcache, "player4color:\0", 13)) return false;
+	if (!strncmp(statementcache, "player5color:\0", 13)) return false;
+	if (!strncmp(statementcache, "player6color:\0", 13)) return false;
+	if (!strncmp(statementcache, "player7color:\0", 13)) return false;
+	if (!strncmp(statementcache, "player8color:\0", 13)) return false;
+	if (!strncmp(statementcache, "player9color:\0", 13)) return false;
+	if (!strncmp(statementcache, "player0:\0", 8))       return false;
+	if (!strncmp(statementcache, "player1:\0", 8))       return false;
+	if (!strncmp(statementcache, "player2:\0", 8))       return false;
+	if (!strncmp(statementcache, "player3:\0", 8))       return false;
+	if (!strncmp(statementcache, "player4:\0", 8))       return false;
+	if (!strncmp(statementcache, "player5:\0", 8))       return false;
+	if (!strncmp(statementcache, "player6:\0", 8))       return false;
+	if (!strncmp(statementcache, "player7:\0", 8))       return false;
+	if (!strncmp(statementcache, "player8:\0", 8))       return false;
+	if (!strncmp(statementcache, "player9:\0", 8))       return false;
+	if (!strncmp(statementcache, "player1-\0", 8))       return false;
+	if (!strncmp(statementcache, "player2-\0", 8))       return false;
+	if (!strncmp(statementcache, "player3-\0", 8))       return false;
+	if (!strncmp(statementcache, "player4-\0", 8))       return false;
+	if (!strncmp(statementcache, "player5-\0", 8))       return false;
+	if (!strncmp(statementcache, "player6-\0", 8))       return false;
+	if (!strncmp(statementcache, "player7-\0", 8))       return false;
+	if (!strncmp(statementcache, "player8-\0", 8))       return false;
+	if (!strncmp(statementcache, "playfield:\0", 10))    return false;
+	if (!strncmp(statementcache, "pfcolors:\0", 9))      return false;
+	if (!strncmp(statementcache, "scorecolors:\0", 12))  return false;
+	if (!strncmp(statementcache, "pfheights:\0", 10))    return false;
+	if (!strncmp(statementcache, "asm\0", 4))            return false;
+	if (!strncmp(statementcache, "pop\0", 4))            return false;
+	if (!strncmp(statementcache, "stack\0", 6))          return false;
+	if (!strncmp(statementcache, "push\0", 5))           return false;
+	if (!strncmp(statementcache, "pull\0", 5))           return false;
+	if (!strncmp(statementcache, "rem\0", 4))            return false;
+	if (!strncmp(statementcache, "next\0", 5))           return false;
+	if (!strncmp(statementcache, "reboot\0", 7))         return false;
+	if (!strncmp(statementcache, "return\0", 7))         return false;
+	if (!strncmp(statementcache, "callmacro\0", 9))      return false;
+	if (statement[i + 1][0] == '=')                      return false; // It's a variable assignment
 
-	return 0;                   // I really hope we've got a label !!!!
+	return true; // I really hope we've got a label !!!!
 }
 
 void sread(char **statement) {
@@ -2622,7 +2566,7 @@ void doif(char **statement) {
 
 	if ((!strncmp(statement[2], "joy\0", 3)) || (!strncmp(statement[2], "switch\0", 6))) {
 		i = switchjoy(statement[2]);
-		if (!islabel(statement)) {
+		if (islabel(statement)) {
 			if (!i) {
 				if (not)
 					bne(statement[4]);
@@ -2681,7 +2625,7 @@ void doif(char **statement) {
 
 	if (!strncmp(statement[2], "pfread\0", 6)) {
 		pfread(statement);
-		if (!islabel(statement)) {
+		if (islabel(statement)) {
 			if (not)
 				bne(statement[9]);
 			else
@@ -2743,7 +2687,7 @@ void doif(char **statement) {
 			exit(1);
 		}
 
-		if (!islabel(statement)) {
+		if (islabel(statement)) {
 			if (!not) {
 				if (bit == 7)
 					bmi(statement[4]);
@@ -2811,7 +2755,7 @@ void doif(char **statement) {
 				printf("%c", statement[2][i]);
 			}
 			printf("\n");
-			if (!islabel(statement)) {
+			if (islabel(statement)) {
 				if (!not) {
 					if (bit == 7)
 						bmi(statement[4]);
@@ -2869,7 +2813,7 @@ void doif(char **statement) {
 			else
 				printf("\tAND #%d\n", 1 << bit);  //(int)pow(2,bit));
 
-			if (!islabel(statement)) {
+			if (islabel(statement)) {
 				if (not) {
 					if (!bit)
 						bcc(statement[4]);
@@ -2945,7 +2889,7 @@ void doif(char **statement) {
 
 		dolet(cstatement);
 
-		if (!islabel(statement)) {	// then linenumber
+		if (islabel(statement)) {	// then linenumber
 			if (not)
 				beq(statement[i + 1]);
 			else
@@ -3231,7 +3175,7 @@ void doif(char **statement) {
 		printindex(statement[4], index & 2);
 	}
 
-	if (!islabel(statement)) {			// then linenumber
+	if (islabel(statement)) {			// then linenumber
 		if (statement[3][0] == '=')
 			beq(statement[6]);
 		if (!strncmp(statement[3], "<>\0", 2))
