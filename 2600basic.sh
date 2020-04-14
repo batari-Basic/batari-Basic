@@ -3,7 +3,7 @@
 # do some quick sanity checking...
 
 if [ ! "$bB" ] ; then
-  echo "### WARNING: the bB envionronment variable isn't set."
+  echo "### WARNING: the bB environment variable isn't set."
 fi
 
 OSTYPE=$(uname -s)
@@ -20,10 +20,10 @@ fi
 
 #do dasm separately, because it's distributed separately
 for DASMEXT in "" .$OSTYPE.x86 .$OSTYPE.x64 .$OSTYPE.$ARCH .$OSTYPE ; do
-  dasm$DASMEXT 2>/dev/null >&2 
+  dasm$DASMEXT 2>/dev/null >&2
   [ $? = 1 ] && break
 done
-dasm$DASMEXT 2>/dev/null >&2 
+dasm$DASMEXT 2>/dev/null >&2
 if [ ! $? = 1 ] ; then
   echo "### ERROR: couldn't find dasm binary for $OSTYPE($ARCH). Exiting."
   exit 1
@@ -34,7 +34,7 @@ if [ "$1" = "-v" ] ; then
   2600basic$EXT -v
   exit
 fi
-  
+
 DV=$(dasm$DASMEXT 2>/dev/null | grep ^DASM | head -n1)
 echo "Found dasm version: $DV"
 
@@ -60,4 +60,3 @@ if [ "$?" -ne "0" ]
 fi
 echo "Build complete."
 exit
-

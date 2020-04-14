@@ -17,6 +17,10 @@
 *.gch
 *.pch
 
+# IDE Files / Folders
+*.sublime-workspace
+.vscode
+
 # Libraries
 *.lib
 *.a
