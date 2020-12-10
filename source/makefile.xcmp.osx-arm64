@@ -3,12 +3,12 @@
 # See COMPILE.txt for details on how to setup the supporting environment
 #
 
-export PATH := /usr/i686-apple-darwin10/bin:$(PATH)
+#export PATH := /usr/arm64-apple-darwin10/bin:$(PATH)
 
-ARCH=.Darwin.x86
+ARCH=.Darwin.arm64
 DEST=./build/
-CC=i686-apple-darwin10-gcc
-CFLAGS=-arch i386 -O0
+CC=arm64-apple-darwin10-gcc
+CFLAGS=-arch arm64 -m64 -O2
 LEX=lex
 LEXFLAGS=-t
 MKDIR=mkdir -p
