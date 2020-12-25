@@ -121,7 +121,7 @@ int yydebug=1;
 
 ".asm" printf("%s",yytext);
 "extra"[0-9]+: printf("%s",yytext);
-"step"[ ]+"-" printf("step -",yytext);
+"step"[ ]+"-" printf("step -");
 "#"            printf("%s", yytext);  
 "$"            printf("%s", yytext);  
 "%"            printf("%s", yytext);  
@@ -159,4 +159,4 @@ int yydebug=1;
 .               {fprintf(stderr,"(%d) Parse error: unrecognized character \"%s\"\n",linenumber,yytext);  exit(1);}
 %%
   int yywrap(void) {      return 1;  } 
-main(){yylex();}
+int main(){yylex();}
