@@ -3277,7 +3277,7 @@ void dolet(char **cstatement) {
 			ap("LDA %s", getbitvar + (getbitvar[0] == '!'));
 			ap("AND #%d", (1 << ((int) statement[4][strlen(getbitvar) + 1] - '0')));
 			ap("PHP");
-			printf("LDA ");
+			printf("\tLDA ");
 			for (i = 0; i < 200; ++i) {
 				if (statement[2][i] == '{') break;
 				printf("%c", statement[2][i]);
