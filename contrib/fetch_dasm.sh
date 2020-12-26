@@ -1,8 +1,8 @@
 #!/bin/sh
-RELEASE=2.20.13
+RELEASE=2.20.14.1
 BASEURL=https://github.com/dasm-assembler/dasm/releases/download/$RELEASE
 for OSARCH in linux@Linux osx@Darwin win@win ; do
-	for BITS in x64 x86 ; do
+	for BITS in x64 ; do
 		OS=$(echo $OSARCH | cut -d@ -f1)
 		ARCH=$(echo $OSARCH| cut -d@ -f2)
 		if [ $OS = win ] ; then
@@ -22,6 +22,13 @@ for OSARCH in linux@Linux osx@Darwin win@win ; do
 		fi
 	done
 done
+
+# dasm is only publishing 64-bit binaries, so we need to buid the 32-bit ones...
+cd src
+./make_dasm_Linux_x86.sh
+./make_dasm_OSX_x86.sh
+./make_dasm_Windows_x86.sh
+cd ..
 
 cat << EOF > ../dasm.LICENSE.txt
 Dasm $RELEASE is distributed here under the terms of the GNU GPL v2 License.
