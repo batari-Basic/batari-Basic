@@ -2675,7 +2675,7 @@ void doif(char **statement) {
 		else {						// then statement
 			// first, take negative of condition and branch around statement
 			j = i;
-			printf("%s .skip%s\n", not ? "BNE" : "BEQ", statement[0]);
+			ap("%s .skip%s\n", not ? "BNE" : "BEQ", statement[0]);
 
 			// separate statement
 			for (i = j; i < 200; ++i) {
