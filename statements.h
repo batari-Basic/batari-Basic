@@ -9,7 +9,7 @@ typedef unsigned char BOOL;
 #define SMATCH(IND,STR) MATCH(statement[IND], STR)
 #define IMATCH(IND,STR) (!strncasecmp(statement[IND], STR, strlen(STR)))
 #define CMATCH(IND,CHR) (statement[IND][0] == CHR)
-#define WITHIN(N,A,B)   ((unsigned char)(N)>=(unsigned char)(A)&&(unsigned char)(N)<=(unsigned char)(A))
+#define WITHIN(N,A,B)   ((unsigned char)(N)>=(unsigned char)(A)&&(unsigned char)(N)<=(unsigned char)(B))
 #define ISNUM(C)        WITHIN(C,'0','9')
 #define COUNT(X)        (sizeof(X)/sizeof(*X))
 
