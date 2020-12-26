@@ -25,8 +25,8 @@ int main(int argc, char *argv[]) {
 	char *includes_file = "default.inc";
 	char *filename = "2600basic_variable_redefs.h";
 	char *path = 0;
-	char def[50][100];
-	char defr[50][100];
+	char def[500][100];
+	char defr[500][100];
 	char finalcode[500];
 	char *codeadd;
 	char mycode[500];
@@ -124,7 +124,7 @@ int main(int argc, char *argv[]) {
 				finalcode[0] = '\0';
 				defcount = 0;
 				while (1) {
-					if (defcount++ > 50) {
+					if (defcount++ > 500) {
 						fprintf(stderr, "(%d) Infinitely repeating definition or too many instances of a definition\n", bbgetline());
 						exit(1);
 					}
