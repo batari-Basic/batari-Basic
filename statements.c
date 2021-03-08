@@ -142,10 +142,21 @@ void do_pull(char **statement)
 void do_stack(char **statement)
 {
     removeCR(statement[2]);
-    printf("	lda #<(STACKbegin+%s)\n", statement[2]);
-    printf("	STA DF7LOW\n");
-    printf("	lda #(>(STACKbegin+%s)) & $0F\n", statement[2]);
-    printf("	STA DF7HI\n");
+    if (isimmed(statement[2])) {
+    	printf("	lda #<(STACKbegin+%s)\n", statement[2]);
+    	printf("	STA DF7LOW\n");
+    	printf("	lda #(>(STACKbegin+%s)) & $0F\n", statement[2]);
+    	printf("	STA DF7HI\n");
+    } else {
+        printf("LDA #<STACKbegin");
+        printf("clc");
+        printf("adc %s", statement[2]);
+        printf("STA DF7LOW");
+        printf("LDA #>STACKbegin");
+        printf("adc #0");
+        printf("AND #$0F");
+        printf("STA DF7HI");
+    }
 }
 
 void bkcolors(char **statement)
