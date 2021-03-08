@@ -301,7 +301,14 @@ exit
      ldx #255
      stx FASTFETCH
      sta WSYNC
-     lda #2
+     ifconst qtcontroller
+        lda qtcontroller
+        lsr    ; bit 0 in carry
+        lda #4
+        ror    ; carry into top of A
+     else
+        lda #2
+     endif ; qtcontroller
      STA VBLANK
      lda #OVERSCAN_LINES
      sta TIM64T

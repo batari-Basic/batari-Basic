@@ -785,11 +785,21 @@ beginscore
          ; sta temp5
          sty scorepointers+5
      endif ;noscore
-     LDA #%11000010
-     sta WSYNC
-     STA VBLANK
-     RETURN
-
+    ifconst readpaddle
+        lda #%11000010
+    else
+        ifconst qtcontroller
+            lda qtcontroller
+            lsr    ; bit 0 in carry
+            lda #4
+            ror    ; carry into top of A
+        else
+            lda #2
+        endif ; qtcontroller
+    endif ; readpaddle
+ sta WSYNC
+ sta VBLANK
+ RETURN
      ifconst shakescreen
 doshakescreen
          bit shakescreen
