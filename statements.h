@@ -1,18 +1,5 @@
 // Provided under the GPL v2 license. See the included LICENSE.txt for details.
 
-typedef unsigned char BOOL;
-#define false 0
-#define true  1
-
-#define _BV(N)          (1 << (N))
-#define MATCH(VAR,STR)  (!strncmp(VAR, STR, strlen(STR)))
-#define SMATCH(IND,STR) MATCH(statement[IND], STR)
-#define IMATCH(IND,STR) (!strncasecmp(statement[IND], STR, strlen(STR)))
-#define CMATCH(IND,CHR) (statement[IND][0] == CHR)
-#define WITHIN(N,A,B)   ((unsigned char)(N)>=(unsigned char)(A)&&(unsigned char)(N)<=(unsigned char)(B))
-#define ISNUM(C)        WITHIN(C,'0','9')
-#define COUNT(X)        (sizeof(X)/sizeof(*X))
-
 #define _readpaddle 1
 #define _player1colors 2
 #define _playercolors 4
@@ -53,23 +40,32 @@ void endfunction();
 void invalidate_Areg();
 int getcondpart();
 int linenum();
-BOOL islabel(char **);
-BOOL islabelelse(char **);
+int islabel(char **);
+int islabelelse(char **);
 void compressdata(char **, int, int);
 void shiftdata(char **, int);
 int findpoint(char *);
-float immed_fixpoint(char *fixpointval);
 int getindex(char *, char *);
 int bbgetline();
 void doend();
 int bbank();
 int bbs();
 void barf_sprite_data();
+void printindex(char *, int);
 void loadindex(char *);
 void jsr(char *);
-BOOL findlabel(char **, int i);
+int islabel(char **);
+int islabelelse(char **);
+int findlabel(char **, int i);
+void add_includes(char *);
+void create_includes(char *);
 void incline();
 void init_includes();
+void invalidate_Areg();
+void shiftdata(char **, int);
+void compressdata(char **, int, int);
+void function(char **);
+void endfunction();
 void callfunction(char **);
 void ongoto(char **);
 void doreturn(char **);
@@ -80,10 +76,12 @@ void mul(char **, int);
 void divd(char **, int);
 void next(char **);
 void gosub(char **);
+void doif(char **);
 void dolet(char **);
 void dec(char **);
 void rem(char **);
 void set(char **);
+void dogoto(char **);
 void pfpixel(char **);
 void pfhline(char **);
 void pfvline(char **);
@@ -101,7 +99,8 @@ void bcc(char *);
 void bcs(char *);
 void bvc(char *);
 void bvs(char *);
-BOOL isimmed(char *);
+int printimmed(char *);
+int isimmed(char *);
 int number(unsigned char);
 void header_open(FILE *);
 void header_write(FILE *, char *);

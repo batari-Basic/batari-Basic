@@ -1,9 +1,8 @@
-Dasm 2.20.14.1 is distributed here under the terms of the GNU GPL v2 License.
+Dasm is distributed here under the terms of the GNU GPL v2 License.
 
 Please see the included LICENSE.txt file for the full GPL v2 license text.
 
 The source code for this version of dasm is available via github at this
 location:
 
-   https://github.com/dasm-assembler/dasm/archive/2.20.14.1.tar.gz
-
+   https://github.com/dasm-assembler/dasm

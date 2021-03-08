@@ -2,7 +2,7 @@
 
 /*
      bbfilter
-     reads from stdin, filters out a bunch of bB symbol names, and writes
+     reads from stdin, filters out a bunch of bB symbol names, and writes 
      to stdout.
 */
 
