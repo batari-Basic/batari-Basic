@@ -1,0 +1,45 @@
+# The bB Win32 cross-compiling makefile. 
+#
+# See COMPILE.txt for details on how to setup the supporting environment
+#
+
+SHELL=/bin/sh
+CHMOD=chmod
+CP=cp
+RM=rm
+MKDIR=mkdir -p
+CFLAGS=-O2 -m32
+CC=i686-w64-mingw32-gcc
+LEX=lex
+LEXFLAGS=-t
+
+all:  2600basic.Windows.x86.exe preprocess.Windows.x86.exe postprocess.Windows.x86.exe bbfilter.Windows.x86.exe optimize.Windows.x86.exe
+
+2600basic.Windows.x86.exe: 2600bas.c statements.c keywords.c statements.h keywords.h
+	@${MKDIR} build
+	${CC} ${CFLAGS} -o build/2600basic.Windows.x86.exe 2600bas.c statements.c keywords.c
+
+postprocess.Windows.x86.exe: postprocess.c
+	@${MKDIR} build
+	${CC} ${CFLAGS} -o build/postprocess.Windows.x86.exe postprocess.c
+
+bbfilter.Windows.x86.exe: bbfilter.c
+	@${MKDIR} build
+	${CC} ${CFLAGS} -o build/bbfilter.Windows.x86.exe bbfilter.c
+
+preprocess.Windows.x86.exe: preprocess.lex
+	@${MKDIR} build
+	${LEX} ${LEXFLAGS}<preprocess.lex>lex.yy.c
+	${CC} ${CFLAGS} -o build/preprocess.Windows.x86.exe lex.yy.c
+	${RM} -f lex.yy.c
+
+optimize.Windows.x86.exe: optimize.lex
+	@${MKDIR} build
+	${LEX} ${LEXFLAGS} -i<optimize.lex>lex.yy.c
+	${CC} ${CFLAGS} -o build/optimize.Windows.x86.exe lex.yy.c
+	${RM} -f lex.yy.c
+
+install: all
+
+clean:
+	${RM} -f a.out core build/2600basic.Windows.x86.exe build/preprocess.Windows.x86.exe build/postprocess.Windows.x86.exe build/bbfilter.Windows.x86.exe build/optimize.Windows.x86.exe

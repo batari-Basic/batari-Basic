@@ -40,10 +40,12 @@
 .*.swp
 
 ########## batari Basic specific ignores ##########
-2600basic
-bbfilter
-optimize
-postprocess
-preprocess
+source/build
 packages
 packages/*
+samples/*.asm
+samples/*.bin
+samples/*.lst
+samples/*.sym
+samples/*.bB
+samples/2600basic_variable_redefs.h
