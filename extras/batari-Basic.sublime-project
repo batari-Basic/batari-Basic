@@ -20,10 +20,7 @@
 			[
 				".vscode"
 			],
-			"path": "/Users/thinkyhead/Projects/Retro/batari-Basic"
-		},
-		{
-			"path": "/Users/thinkyhead/Projects/Retro/bAtariBasic/bB/source"
+			"path": ".."
 		}
 	],
 	"settings":
