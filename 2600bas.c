@@ -140,24 +140,21 @@ int main(int argc, char *argv[])
 	    for (i = 0; i < defi; ++i)
 	    {
 		codeadd = NULL;
-		finalcode[0] = '\0';
 		defcount = 0;
 		while (1)
 		{
 		    if (defcount++ > 500)
 		    {
-			fprintf(stderr, "(%d) Infinitely repeating definition or too many instances of a definition\n",
+				fprintf(stderr, "(%d) Infinitely repeating definition or too many instances of a definition\n",
 				bbgetline());
-			exit(1);
+				exit(1);
 		    }
 		    codeadd = strstr(mycode, def[i]);
-		    if (codeadd == NULL)
-			break;
-		    for (j = 0; j < 500; ++j)
-			finalcode[j] = '\0';
-		    strncpy(finalcode, mycode, strlen(mycode) - strlen(codeadd));
-		    strcat(finalcode, defr[i]);
-		    strcat(finalcode, codeadd + strlen(def[i]));
+		    if (codeadd == NULL) break;
+		    finalcode[0] = '\0';
+		    strncat(finalcode, mycode, sizeof(finalcode)-1);
+		    strncat(finalcode, defr[i], sizeof(finalcode)-1);
+		    strncat(finalcode, codeadd + strlen(def[i]), sizeof(finalcode)-1);
 		    strcpy(mycode, finalcode);
 		}
 	    }
