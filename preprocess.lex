@@ -1,7 +1,6 @@
 %{
 #include <stdlib.h>  
 int linenumber=1;
-int yydebug=1;
 //void yyerror(char *);  
 %}    
 %x mcomment
@@ -44,10 +43,12 @@ int yydebug=1;
 <endmcomment>. ;
 <endmcomment>\n {linenumber++;BEGIN(INITIAL);}
 
+"_asm"            printf("%s", yytext);
 "asm" {printf("%s",yytext);BEGIN(asm);}
 <asm>"\nend" {linenumber++;printf("\nend");BEGIN(INITIAL);}
 <asm>"\n" {linenumber++;printf("\n");}
 
+"_sdata"            printf("%s", yytext);
 "sdata" {printf("%s",yytext);BEGIN(sdata);}
 <sdata>"=" printf(" %s ", yytext);  
 <sdata>[ \t]+ putchar(' ');
@@ -55,11 +56,13 @@ int yydebug=1;
 <sdata>"\nend" {linenumber++;printf("\nend");BEGIN(INITIAL);}
 <sdata>"\n" {linenumber++;printf("\n");}
 
+"_data"            printf("%s", yytext);
 "data" {printf("%s",yytext);BEGIN(data);}
 <data>^"\nend" printf("%s",yytext);
 <data>"\nend" {linenumber++;printf("\nend");BEGIN(INITIAL);}
 <data>"\n" {linenumber++;printf("\n");}
 
+"_include"            printf("%s", yytext);
 "include" {printf("%s",yytext);BEGIN(includes);}
 <includes>^\n* printf("%s",yytext);
 <includes>\n {linenumber++;printf("\n");BEGIN(INITIAL);}
@@ -90,6 +93,7 @@ int yydebug=1;
 <pffirstline>[ \t]+ printf(" ");
 <pffirstline>"\n" {linenumber++;printf("\n");BEGIN(playfield);}
 
+"_playfield"            printf("%s", yytext);
 <playfield>[ \t]+ ;
 <playfield>^"\nend" printf(" %s",yytext);
 <playfield>"\nend" {linenumber++;printf("\nend");BEGIN(INITIAL);}
@@ -113,6 +117,7 @@ int yydebug=1;
 <pfheights>"\nend" {linenumber++;printf("\nend");BEGIN(INITIAL);}
 <pfheights>"\n" {linenumber++;printf("\n");}
 
+"_collision"            printf("%s", yytext);
 "collision(" {printf("%s",yytext);BEGIN(collision);}
 <collision>" "+
 <collision>":\t\n"+ {fprintf(stderr,"%d: Missing )\n",linenumber);exit(1);}
