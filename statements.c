@@ -148,14 +148,14 @@ void do_stack(char **statement)
     	printf("	lda #(>(STACKbegin+%s)) & $0F\n", statement[2]);
     	printf("	STA DF7HI\n");
     } else {
-        printf("LDA #<STACKbegin");
-        printf("clc");
-        printf("adc %s", statement[2]);
-        printf("STA DF7LOW");
-        printf("LDA #>STACKbegin");
-        printf("adc #0");
-        printf("AND #$0F");
-        printf("STA DF7HI");
+        printf("LDA #<STACKbegin\n");
+        printf("clc\n");
+        printf("adc %s\n", statement[2]);
+        printf("STA DF7LOW\n");
+        printf("LDA #>STACKbegin\n");
+        printf("adc #0\n");
+        printf("AND #$0F\n");
+        printf("STA DF7HI\n");
     }
 }
 
