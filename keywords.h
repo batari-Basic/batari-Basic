@@ -3,6 +3,7 @@
 #ifndef KEYWORDS_H
 #define KEYWORDS_H
 
+#define MAXCONSTANTS 80000
 
 char includespath[500];
 int ongosub;
@@ -36,7 +37,7 @@ char fixpoint88[2][50][50];
 //int numgosubs;
 void keywords(char **);
 char redefined_variables[500][100];
-char constants[500][100];
+char constants[MAXCONSTANTS][100];
 int pfcolorindexsave;
 int pfcolornumber;
 int kernel_options;
