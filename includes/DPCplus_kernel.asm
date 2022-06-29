@@ -90,11 +90,6 @@ setloopfrac
      lda DF5FRACDATA ; priming read
      lda DF7FRACDATA ; priming read
 
-
-     LDA DF6FRACDATA ; priming read (so first bg color value won't be read twice)
-
-     LDA DF4FRACDATA ; priming read (so first pf color value won't be read twice)
-
      ldx SpriteGfxIndex
      lda _NUSIZ1,x ; top NUSIZ/REFP
      sta NUSIZ1
