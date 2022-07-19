@@ -68,6 +68,7 @@ char *filterterm[] = {
     "^bmp_48x",
     "^FASTFETCH ",
     "^lives_centered ",
+    "^qtcontroller ",
     "^score_kernel_fade ",
     "^0.title_vblank ",
     "^pal ",
