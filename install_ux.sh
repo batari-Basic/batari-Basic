@@ -8,6 +8,8 @@ fi
 
 if [ "$(uname -s)" = Linux ] ; then
 	PROFILE=~/.bashrc
+elif [ "$(uname -s)" = Darwin ] ; then
+	PROFILE=~/.zprofile
 else
 	PROFILE=~/.profile
 fi
