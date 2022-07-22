@@ -35,7 +35,7 @@ exit
 
 :FAILED
 echo   Setting the bB variable failed. This batch file requires SETX, which comes
-echo   with WinXP SP2, Windows Vista, and later versions of Windows. 
+echo   with WinXP SP2, Windows Vista, and later versions of Windows.
 echo.
 echo   You should obtain a copy of SETX and re-run this script, or set the bB
 echo   variable manually.

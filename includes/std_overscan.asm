@@ -6,7 +6,7 @@ drawscreen
          lda INTIM ; display # cycles left in the score
 
          ifconst mincycles
-             lda mincycles 
+             lda mincycles
              cmp INTIM
              lda mincycles
              bcc nochange
@@ -28,7 +28,7 @@ cycles_left
          sta score+2
          lda scorebcd1,x
          sta score+1
-         jmp done_debugscore 
+         jmp done_debugscore
 scorebcd
          .byte $00, $64, $28, $92, $56, $20, $84, $48, $12, $76, $40
          .byte $04, $68, $32, $96, $60, $24, $88, $52, $16, $80, $44
@@ -54,7 +54,7 @@ done_debugscore
 overscan
      ifconst interlaced
          PHP
-         PLA 
+         PLA
          EOR #4 ; flip interrupt bit
          PHA
          PLP
@@ -91,7 +91,7 @@ doneoverscan
      sta TIM64T
 
      ifconst interlaced
-         jmp postsync 
+         jmp postsync
 
 oddframevsync
          sta WSYNC
@@ -182,7 +182,7 @@ DivideLoop
      sta HMP0,X ;+14 74
 
      sta WSYNC
-     
+
      sta HMOVE ;+3 3
 
 
@@ -225,7 +225,7 @@ vblk2
      LDA INTIM
      bmi vblk2
      jmp kernel
-     
+
 
      .byte $80,$70,$60,$50,$40,$30,$20,$10,$00
      .byte $F0,$E0,$D0,$C0,$B0,$A0,$90
@@ -237,7 +237,7 @@ scorepointerset
      asl
      asl
      adc #<scoretable
-     tay 
+     tay
      txa
      ; and #$F0
      ; lsr

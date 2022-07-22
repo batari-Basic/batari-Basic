@@ -55,7 +55,7 @@ minikernel ; display up to 6 lives on screen
  lda statustable,y
  sta temp4
  jmp startlifedisplay
- 
+
 zero_7
  lda #0
  sta temp4

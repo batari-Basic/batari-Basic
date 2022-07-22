@@ -1,14 +1,14 @@
 %{
-#include <stdlib.h>  
+#include <stdlib.h>
 #include <string.h>
 char mystring[100];
 char mystring2[100];
 char *mychar;
 
-//void yyerror(char *);  
-%}    
+//void yyerror(char *);
+%}
 %x rlda
-%%    
+%%
 [ \t]+ putchar(' ');
 [ \t\r]+$
 
@@ -26,15 +26,15 @@ char *mychar;
 <rlda>"lda"+[ \t]+[A-Za-z0-9]+"+" {printf(" %s",yytext);BEGIN(INITIAL);}
 <rlda>"lda"+[ \t]+[A-Za-z0-9]+ {
  mychar=strtok(yytext," ");
- strcpy(mystring2,mychar+strlen(mychar)+1); 
- 
+ strcpy(mystring2,mychar+strlen(mychar)+1);
+
  if (strcmp(mystring,mystring2)) {printf(" lda %s",mystring2);BEGIN(INITIAL);}
  else {printf(" ; lda %s",mystring2);BEGIN(INITIAL);}
  }
 <rlda>"ldx"+[ \t]+[A-Za-z0-9]+ {// experimental conversion of sta val/ldx val to sta/tax
  mychar=strtok(yytext," ");
- strcpy(mystring2,mychar+strlen(mychar)+1); 
- 
+ strcpy(mystring2,mychar+strlen(mychar)+1);
+
  if (strcmp(mystring,mystring2)) {printf(" ldx %s",mystring2);BEGIN(INITIAL);}
  else {printf(" tax\n");BEGIN(INITIAL);}
  }
@@ -46,5 +46,5 @@ char *mychar;
 [\n] {printf("\n");}
 .      {       printf("%s", yytext);}
 %%
-  int yywrap(void) {      return 1;  } 
+  int yywrap(void) {      return 1;  }
 int main(){yylex();}

@@ -32,7 +32,7 @@ DPC_BASE_WRITE_ADDRESS = DPC_BASE_ADDRESS+$28
 ; DPC+ provides a 32 bit LFSR (Linear feedback shift register)
 ; which is used as a random number generator.  Each individual byte of the
 ; random number will return values from 0-255.  The random numbers will follow
-; an exact sequence, so it's best to clock them at least once per frame even if 
+; an exact sequence, so it's best to clock them at least once per frame even if
 ; you don't need the value (this allows the amount of time it takes the user to
 ; start the game to select a random starting point in the sequence)
 ;----------------------------------------
@@ -68,7 +68,7 @@ AMPLITUDE     DS 1    ; $05
 ;	lda #<(ColorDataPosition - HowFarDownScreen)
 ;	sta DF1LOW
 ;	lda #>(ColorDataPosition - HowFarDownScreen)
-;	sta DF1HI 
+;	sta DF1HI
 ;	....
 ; then in the kernel read the Data Fetcher and update the color, takes 7 cycles
 ;	LDA DF1DATA
@@ -99,7 +99,7 @@ DF7DATA       DS 1    ; $0F
 ;	sta DF0LOW
 ;	lda #>(SpriteDataPosition - HowFarDownScreen)
 ;	sta DF0HI
-;	
+;
 ; set the window for Data Fetcher 0
 ;	lda #<(SpriteDataPosition - 1)
 ;	sta DF0TOP
@@ -125,7 +125,7 @@ DF7DATAW      DS 1    ; $17
 ; Another 8 Data Fetchers exist which work differently than the first 8.
 ; These allow you to fractionally increment the Data Fetcher so a single
 ; value can be read a set number of times before advancing to the next value.
-; This is commonly used to draw asymmetrical playfields without needing to 
+; This is commonly used to draw asymmetrical playfields without needing to
 ; use 1200 bytes of data (200 scanlines * 6 playfield updates).
 ; Before using, you must point the Fractional Data Fetcher at the data to read
 ; via DFxFRACLOW and DFxFRACHI.  You must also set the increment value via
@@ -144,7 +144,7 @@ DF7DATAW      DS 1    ; $17
 ;       STA DF1FRACINC
 ;	... repeat for 2-5
 ;
-; Special Condition - IF you want to increment the pointer after every read 
+; Special Condition - IF you want to increment the pointer after every read
 ; (just like the normal Data Fetcher), then use the following to set the
 ; increment AND prime the Fractional Data Fetcher
 ;	LDA #255
@@ -216,7 +216,7 @@ DF3FLAG       DS 1    ; $23
 
   SEG.U DPC_REGISTERS_WRITE
   ORG DPC_BASE_WRITE_ADDRESS
-  
+
 ;****************************************
 ; SECTION 2 - DPC+ Write Registers
 ;****************************************
@@ -251,9 +251,9 @@ DF1FRACHI     DS 1    ; $31
 DF2FRACHI     DS 1    ; $32
 DF3FRACHI     DS 1    ; $33
 DF4FRACHI     DS 1    ; $34
-DF5FRACHI     DS 1    ; $35 
-DF6FRACHI     DS 1    ; $36 
-DF7FRACHI     DS 1    ; $37 
+DF5FRACHI     DS 1    ; $35
+DF6FRACHI     DS 1    ; $36
+DF7FRACHI     DS 1    ; $37
 
 ;----------------------------------------
 ; Fractional Data Fetcher, Increment
@@ -323,7 +323,7 @@ DF7LOW        DS 1    ; $57
 ; reads use LDA Absolute addressing (LDA DF0DATA) which takes 4 cycles to
 ; process.  Fast Fetch Mode intercepts LDA Immediate addressing (LDA #<DF0DATA)
 ; which takes only 2 cycles!  Only immediate values < $28 are intercepted
-; 
+;
 ; set Fast Fetch Mode
 ;	LDA #0
 ;	STA FASTFETCH
@@ -352,7 +352,7 @@ FASTFETCH     DS 1    ; $58
 ; written ARM routines (or C code compiled for the ARM processor.)
 ;
 ; PARAMETER is not used by function 255, it may be used by future functions.
-; 
+;
 ; call custom ARM routine
 ;	LDA #$FF
 ;	STA CALLFUNCTION
@@ -387,21 +387,21 @@ CALLFUNCTION  DS 1    ; $5A
 ;	.byte 0,0,0,0,0,0,0,0
 ;	.byte 0,0,0,0,0,0,0,0
 ;	.byte 0,0,0,0,0,0,0,0
-;	.byte 0,0,0,0,0,0,0,0 
-; 
+;	.byte 0,0,0,0,0,0,0,0
+;
 ;	align 32
 ;SINE_WAVE = (* & $1fff)/32
 ;	.byte 3,3,3,4,4,5,5,5
 ;	.byte 5,5,5,5,4,4,3,3
 ;	.byte 3,2,2,1,1,0,0,0
-;	.byte 0,0,0,0,1,1,2,2 
+;	.byte 0,0,0,0,1,1,2,2
 ;
 ; usage, set voice 0 to Sine Wave, set voice 1 & 2 off
 ;	LDA #SINE_WAVE
 ;	STA WAVEFORM0
 ;	LDA #SOUND_OFF
 ;	STA WAVEFORM1
-;	STA WAVEFORM2	
+;	STA WAVEFORM2
 ;----------------------------------------
 WAVEFORM0     DS 1    ; $5D
 WAVEFORM1     DS 1    ; $5E
@@ -419,7 +419,7 @@ WAVEFORM2     DS 1    ; $5F
 ;	lda #<DisplayData
 ;	sta DF1LOW
 ;	lda #>DisplayData
-;	sta DF1HI 
+;	sta DF1HI
 ;
 ; then update it
 ;	LDA #$FF
@@ -447,9 +447,9 @@ DF1HI         DS 1    ; $69
 DF2HI         DS 1    ; $6A
 DF3HI         DS 1    ; $6B
 DF4HI         DS 1    ; $6C
-DF5HI         DS 1    ; $6D 
-DF6HI         DS 1    ; $6E 
-DF7HI         DS 1    ; $6F 
+DF5HI         DS 1    ; $6D
+DF6HI         DS 1    ; $6E
+DF7HI         DS 1    ; $6F
 
 ;----------------------------------------
 ; Random Number Initialization
@@ -509,7 +509,7 @@ NOTE2         DS 1    ; $77
 ;	lda #<SpriteData
 ;	sta DF1LOW
 ;	lda #>SpriteData
-;	sta DF1HI 
+;	sta DF1HI
 ;
 ; then update it
 ;	LDA #$FF

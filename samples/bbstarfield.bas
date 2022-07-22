@@ -66,8 +66,8 @@ mainloop
   rem ** Adjusting missile0x moves the stars
   if direction=0 then missile0x=missile0x+1:score=1
   if direction=1 then missile0x=missile0x+18:score=18
-  if direction=2 && temp2=1 then missile0x=missile0x+18:score=18 
-  if direction=2 && temp2=0 then missile0x=missile0x+16:score=16 
+  if direction=2 && temp2=1 then missile0x=missile0x+18:score=18
+  if direction=2 && temp2=0 then missile0x=missile0x+16:score=16
   if direction=3 then missile0x=missile0x+16:score=16
   if direction=4 then missile0x=missile0x-1:score=1
   if direction=5 then missile0x=missile0x-18:score=18
@@ -75,15 +75,15 @@ mainloop
   if direction=6 && temp2=0 then missile0x=missile0x-16:score=16
   if direction=7 then missile0x=missile0x-16:score=16
 
-  rem ** You need to ensure the missile0x position ranges from 0-159. 
-  rem ** If missile0x is 0 and decreases, then set it to 159. 
+  rem ** You need to ensure the missile0x position ranges from 0-159.
+  rem ** If missile0x is 0 and decreases, then set it to 159.
   rem ** If missile0x is 159 and increases, set it to 0.
   if missile0x>200 then missile0x=missile0x+160
   if missile0x>159 then missile0x=missile0x-160
 
   drawscreen
   goto mainloop
-   
+
   vblank
   rem ** Enable the TIA bug that causes missile0 to be repeated
   asm

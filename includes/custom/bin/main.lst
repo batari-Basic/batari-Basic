@@ -34,8 +34,8 @@ ARM GAS  main.s 			page 1
    7:main.c        **** // flashdata[] - points to the 24K that comprises the six 4K banks.
    8:main.c        **** //             - treat as ROM
    9:main.c        **** #include "src/custom.h"
-  10:main.c        **** 
-  11:main.c        **** 
+  10:main.c        ****
+  11:main.c        ****
   12:main.c        **** // types of variables, storage used and range
   13:main.c        **** // const              = constant, which is compiled into the ROM section and cannot be changed duri
   14:main.c        **** // char               =  8 bit, 1 byte  per value.  Range is           -128 to           127
@@ -55,7 +55,7 @@ ARM GAS  main.s 			page 1
   28:main.c        **** //     integer math based routines.
   29:main.c        **** //
   30:main.c        **** // NOTE : Only 448 bytes are allocated for use by variables (the rest of the 512 byte section is us
-  31:main.c        **** //        as the stack).  If you use too many variables, you'll get a compile time error:  "region 
+  31:main.c        **** //        as the stack).  If you use too many variables, you'll get a compile time error:  "region
   32:main.c        **** //        You can use RAM in the Display Data to store values, see defines.h for queue[xxx] defines
   33:main.c        **** //
 ARM GAS  main.s 			page 2
@@ -63,7 +63,7 @@ ARM GAS  main.s 			page 1
 
   34:main.c        **** // NOTE : Compiled code can be significantly smaller if you use INTs for your variables instead of
   35:main.c        **** //        SHORTs or CHARs.
-  36:main.c        **** 
+  36:main.c        ****
   37:main.c        **** volatile unsigned char *queue=(unsigned char *)0x40000C00;
   38:main.c        **** volatile unsigned char *flashdata=(unsigned char *)0x0C00;
   39:main.c        **** volatile int *queue_int=(int *)0x40000C00;
@@ -155,12 +155,12 @@ ARM GAS  main.s 			page 1
  122:main.c        **** player8color, junk13,
  123:main.c        **** player9color, junk14
  124:main.c        **** };
- 125:main.c        **** 
+ 125:main.c        ****
  126:main.c        ****  enum {SKIP,OVERLAP,NOOVERLAP};
- 127:main.c        **** 
+ 127:main.c        ****
  128:main.c        **** // global variables are those found outside of any function.  They can be used by any function.
  129:main.c        **** // The Harmony Cartridge preserves these values for you between ARM code calls.
- 130:main.c        **** 
+ 130:main.c        ****
  131:main.c        **** unsigned char *C_function=(unsigned int *)(0x40000C00 + 0x1A4);
  132:main.c        **** unsigned short *fetcher_address_table=(unsigned short *)(0xC00 + 0x61A0);
  133:main.c        **** unsigned char *RIOT=(unsigned char *)(0x40000C00 + 0x1A8);
@@ -170,12 +170,12 @@ ARM GAS  main.s 			page 1
  137:main.c        **** int count;
  138:main.c        **** //int Gfxindex;
  139:main.c        **** //signed int temp1;
- 140:main.c        **** //int temp2; 
+ 140:main.c        **** //int temp2;
  141:main.c        **** //int temp3;
  142:main.c        **** int temp4;
  143:main.c        **** int temp5;
  144:main.c        **** unsigned int mask;
- 145:main.c        **** 
+ 145:main.c        ****
  146:main.c        ****  // masking: NUSIZ bit 7=off/on, NUSIZ 6=L/R
  147:main.c        ****  // REVENG - no-mask entries replaced by later if...then which is a bit smaller.
 ARM GAS  main.s 			page 4
@@ -189,13 +189,13 @@ ARM GAS  main.s 			page 1
  153:main.c        ****          0,0x80,0xC0,0xE0,0xF0,0xF8,0xFC,0xFE,
  154:main.c        ****          0x7F,0x3F,0x1F,0x0F,0x07,0x03,0x01,0
  155:main.c        ****           };
- 156:main.c        **** 
+ 156:main.c        ****
  157:main.c        **** char spritesort[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0};
  158:main.c        **** char myGfxIndex[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0};
- 159:main.c        **** 
+ 159:main.c        ****
  160:main.c        **** // REVENG - changed maxsprites to a variable value, so unused sprite memory can be claimed
  161:main.c        **** char maxsprites;
- 162:main.c        **** 
+ 162:main.c        ****
  163:main.c        **** #define    kernello(a) fetcheraddr[(a)]
  164:main.c        **** #define    kernelhi(a) fetcheraddr[(a)+11]
  165:main.c        **** #define    dflow(a) fetcheraddr[(a)+22]
@@ -206,9 +206,9 @@ ARM GAS  main.s 			page 1
  170:main.c        **** #define    scorepointer(a)  fetcheraddr[(a)+56]
  171:main.c        **** #define    Hmval(a)  fetcheraddr[(a)+58]
  172:main.c        **** #define    Hmval74(a)  fetcheraddr[(a)+66]
- 173:main.c        **** 
+ 173:main.c        ****
  174:main.c        **** void my_memcpy(unsigned char* destination, unsigned char* source, int offset, int count)
- 175:main.c        **** { 
+ 175:main.c        **** {
   26              		.loc 1 175 0
   27              		.cfi_startproc
   28              	.LVL0:
@@ -252,7 +252,7 @@ ARM GAS  main.s 			page 1
   58 001a 0134     		add	r4, r4, #1
   59 001c F2E7     		b	.L2
   60              	.L5:
- 179:main.c        **** } 
+ 179:main.c        **** }
   61              		.loc 1 179 0
   62              		@ sp needed for prologue
   63 001e F0BC     		pop	{r4, r5, r6, r7}
@@ -271,7 +271,7 @@ ARM GAS  main.s 			page 1
   77              		.thumb_func
   79              	my_memset:
   80              	.LFB1:
- 180:main.c        **** 
+ 180:main.c        ****
  181:main.c        **** void my_memset(unsigned char* destination, int fill_value, int count)
  182:main.c        **** {
   81              		.loc 1 182 0
@@ -319,9 +319,9 @@ ARM GAS  main.s 			page 1
  116              		.thumb_func
  118              	reverse:
  119              	.LFB2:
- 187:main.c        **** 
+ 187:main.c        ****
  188:main.c        **** void reverse(int i, int j, unsigned char* x)
- 189:main.c        **** { 
+ 189:main.c        **** {
  120              		.loc 1 189 0
  121              		.cfi_startproc
  122              	.LVL4:
@@ -332,7 +332,7 @@ ARM GAS  main.s 			page 1
  127              		.cfi_offset 14, -4
  128              	.L13:
  190:main.c        ****         int t;
- 191:main.c        ****         while (i < j) 
+ 191:main.c        ****         while (i < j)
  129              		.loc 1 191 0 discriminator 1
  130 0002 8842     		cmp	r0, r1
  131 0004 06DA     		bge	.L15
@@ -375,7 +375,7 @@ ARM GAS  main.s 			page 1
  160              		.thumb_func
  162              	memscroll:
  163              	.LFB3:
- 198:main.c        **** 
+ 198:main.c        ****
  199:main.c        **** void memscroll(unsigned char* qmemory, unsigned char offset)
  200:main.c        **** {
  164              		.loc 1 200 0
@@ -434,7 +434,7 @@ ARM GAS  main.s 			page 1
  210              		.thumb_func
  212              	get32bitdff:
  213              	.LFB4:
- 206:main.c        **** 
+ 206:main.c        ****
  207:main.c        **** unsigned int get32bitdff(int offset)
  208:main.c        **** {
  214              		.loc 1 208 0
@@ -470,7 +470,7 @@ ARM GAS  main.s 			page 1
  243              		.thumb_func
  245              	get32bitdf:
  246              	.LFB5:
- 211:main.c        **** 
+ 211:main.c        ****
  212:main.c        **** unsigned int get32bitdf(int offset)
  213:main.c        **** {
  247              		.loc 1 213 0
@@ -506,7 +506,7 @@ ARM GAS  main.s 			page 1
  273              		.thumb_func
  275              	shiftnumbers:
  276              	.LFB6:
- 216:main.c        **** 
+ 216:main.c        ****
  217:main.c        **** void shiftnumbers(int xreg)
  218:main.c        **** {
  277              		.loc 1 218 0
@@ -543,7 +543,7 @@ ARM GAS  main.s 			page 1
 
  222:main.c        ****     xreg++;
  223:main.c        ****   }
- 224:main.c        ****   
+ 224:main.c        ****
  225:main.c        **** }
  302              		.loc 1 225 0
  303              		@ sp needed for prologue
@@ -562,7 +562,7 @@ ARM GAS  main.s 			page 1
  317              		.thumb_func
  319              	checkwrap:
  320              	.LFB7:
- 226:main.c        **** 
+ 226:main.c        ****
  227:main.c        **** char checkwrap(char a, char b)
  228:main.c        **** {
  321              		.loc 1 228 0
@@ -607,7 +607,7 @@ ARM GAS  main.s 			page 1
  354              		.thumb_func
  356              	checkswap:
  357              	.LFB8:
- 232:main.c        **** 
+ 232:main.c        ****
  233:main.c        **** int checkswap(int a, int b)
  234:main.c        **** {
  358              		.loc 1 234 0
@@ -754,7 +754,7 @@ ARM GAS  main.s 			page 1
  463              		.thumb_func
  465              	copynybble:
  466              	.LFB9:
- 263:main.c        **** 
+ 263:main.c        ****
  264:main.c        **** void copynybble(unsigned char num)
  265:main.c        **** {
  467              		.loc 1 265 0
@@ -863,7 +863,7 @@ ARM GAS  main.s 			page 1
  545              	.LVL41:
  546 004c 082B     		cmp	r3, #8
  547 004e F9D1     		bne	.L40
- 273:main.c        **** 
+ 273:main.c        ****
  274:main.c        **** }
  548              		.loc 1 274 0
  549              		@ sp needed for prologue
@@ -887,7 +887,7 @@ ARM GAS  main.s 			page 1
  568              		.thumb_func
  570              	on_off_flip:
  571              	.LFB10:
- 275:main.c        **** 
+ 275:main.c        ****
  276:main.c        **** void on_off_flip(unsigned int loc, unsigned int fnmask)
  277:main.c        **** {
  572              		.loc 1 277 0
@@ -985,7 +985,7 @@ ARM GAS  main.s 			page 1
  642              		.thumb_func
  644              	main:
  645              	.LFB11:
- 293:main.c        **** 
+ 293:main.c        ****
  294:main.c        **** // main() is what gets called when you store 0xFF into DPC+ register CALLFUNCTION in your 6507 code
  295:main.c        **** int main()
  296:main.c        **** {
@@ -1003,10 +1003,10 @@ ARM GAS  main.s 			page 1
  657 0002 91B0     		sub	sp, sp, #68
  658              	.LCFI8:
  659              		.cfi_def_cfa_offset 88
- 297:main.c        **** 
+ 297:main.c        ****
  298:main.c        ****   int i;
- 299:main.c        **** 
- 300:main.c        ****   // REVENG - moving the the scope of these variables saved a *lot* of space. 
+ 299:main.c        ****
+ 300:main.c        ****   // REVENG - moving the the scope of these variables saved a *lot* of space.
  301:main.c        ****   int temp2;
  302:main.c        ****   int temp3;
  303:main.c        ****   int Gfxindex;
@@ -1025,7 +1025,7 @@ ARM GAS  main.s 			page 1
  307:main.c        **** 	 0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80,
  308:main.c        **** 	 0x80,0x40,0x20,0x10,0x08,0x04,0x02,0x01,
  309:main.c        **** 	 0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80};
- 310:main.c        **** 
+ 310:main.c        ****
  311:main.c        ****   fetcheraddr=flashdata+fetcher_address_table[0];
  666              		.loc 1 311 0
  667 000e 8F4B     		ldr	r3, .L107+4
@@ -1034,7 +1034,7 @@ ARM GAS  main.s 			page 1
  670 0014 0188     		ldrh	r1, [r0]
  671 0016 5118     		add	r1, r2, r1
  672 0018 8D4A     		ldr	r2, .L107+8
- 312:main.c        **** 
+ 312:main.c        ****
  313:main.c        ****   // REVENG - preindex these to save some space...
  314:main.c        ****   unsigned char C_function1=C_function[1];
  673              		.loc 1 314 0
@@ -1046,7 +1046,7 @@ ARM GAS  main.s 			page 1
  678 001e 7478     		ldrb	r4, [r6, #1]
  315:main.c        ****   unsigned char C_function2=C_function[2];
  316:main.c        ****   unsigned char C_function3=C_function[3];
- 317:main.c        **** 
+ 317:main.c        ****
  318:main.c        ****   switch (C_function[0]&0xFC)
  679              		.loc 1 318 0
  680 0020 3278     		ldrb	r2, [r6]
@@ -1154,7 +1154,7 @@ ARM GAS  main.s 			page 1
  357:main.c        ****       {
  358:main.c        ****         if ((i>=RIOT[player0y+C_function1]) && (i<RIOT[player0y+C_function1]+RIOT[player0height+C_f
  359:main.c        **** 	{
- 360:main.c        **** 
+ 360:main.c        ****
  361:main.c        ****           temp3=RIOT[player0x+C_function2]-RIOT[player0x+C_function1]+7; //-7 to +7 -> 0 to 14
  362:main.c        ****           if (temp3<15)
  363:main.c        **** 	  {
@@ -1231,7 +1231,7 @@ ARM GAS  main.s 			page 1
  790 00aa 91E0     		b	.L52	@long jump
  791              	.LCB701:
  366:main.c        **** 	  }
- 367:main.c        **** 	  if (temp2) 
+ 367:main.c        **** 	  if (temp2)
  368:main.c        **** 	  {
  369:main.c        **** 	    C_function[3]=255;
  370:main.c        **** 	    return;
@@ -1240,7 +1240,7 @@ ARM GAS  main.s 			page 1
  373:main.c        ****       }
  374:main.c        ****       return;
  375:main.c        ****     }
- 376:main.c        ****     case 24: // REVENG - pfread 
+ 376:main.c        ****     case 24: // REVENG - pfread
  377:main.c        ****     {
  378:main.c        ****       pfpixel=queue+get32bitdff(C_function1>>3); // physical addy of xpos (pf)
  379:main.c        ****       C_function[3]=(!(pfpixel[C_function2]&setbyte[C_function1]));
@@ -1427,7 +1427,7 @@ ARM GAS  main.s 			page 1
  934              		.loc 1 364 0
  935 016e 0099     		ldr	r1, [sp]
  936 0170 CC01     		lsl	r4, r1, #7
- 367:main.c        **** 	  if (temp2) 
+ 367:main.c        **** 	  if (temp2)
  937              		.loc 1 367 0
  938 0172 0442     		tst	r4, r0
  939 0174 D0D0     		beq	.L70
@@ -1511,11 +1511,11 @@ ARM GAS  main.s 			page 1
  1005              	.L52:
  391:main.c        ****       return;
  392:main.c        ****     }
- 393:main.c        **** 
+ 393:main.c        ****
  394:main.c        ****   default: // everything else
  395:main.c        ****    break;
  396:main.c        ****   }
- 397:main.c        **** 
+ 397:main.c        ****
  398:main.c        ****   //REVENG - passed the sprite max as a parameter instead
  399:main.c        ****   maxsprites=C_function1;
  1006              		.loc 1 399 0
@@ -1524,7 +1524,7 @@ ARM GAS  main.s 			page 1
  1009 01d4 0979     		ldrb	r1, [r1, #4]
  1010 01d6 1170     		strb	r1, [r2]
  1011              	.LVL96:
- 400:main.c        **** 
+ 400:main.c        ****
  401:main.c        ****   for (i=0;i<maxsprites;i++)
  1012              		.loc 1 401 0
  1013 01d8 0023     		mov	r3, #0
@@ -1703,7 +1703,7 @@ ARM GAS  main.s 			page 1
  1138 0276 C022     		mov	r2, #192
  1139 0278 FFF7FEFF 		bl	my_memset
  1140              	.LVL115:
- 435:main.c        **** 
+ 435:main.c        ****
  436:main.c        ****   //my_memset(queue+(dfhigh(1)<<8)+dflow(1),RIOT[COLUM1],192); // clear multiplexed sprites and fil
  437:main.c        ****   my_memset(queue+get32bitdf(1),RIOT[COLUM1],192); // clear multiplexed sprites and fill colors
  1141              		.loc 1 437 0
@@ -1733,7 +1733,7 @@ ARM GAS  main.s 			page 1
  1163 02a4 C122     		mov	r2, #193
  1164 02a6 FFF7FEFF 		bl	my_memset
  1165              	.LVL119:
- 440:main.c        **** 
+ 440:main.c        ****
  441:main.c        ****   // REVENG - fill color from player0, wrapping if necessary...
  442:main.c        ****   //my_memcpy(queue+(dfhigh(0)<<8)+dflow(0),
  443:main.c        ****   my_memcpy(queue+get32bitdf(0),
@@ -1769,7 +1769,7 @@ ARM GAS  main.s 			page 1
  1187 02c6 DB7F     		ldrb	r3, [r3, #31]
  1188 02c8 FFF7FEFF 		bl	my_memcpy
  1189              	.LVL121:
- 446:main.c        **** 
+ 446:main.c        ****
  447:main.c        ****   //my_memcpy(queue+(dfhigh(2)<<8)+dflow(2),
  448:main.c        ****   my_memcpy(queue+get32bitdf(2),
  1190              		.loc 1 448 0
@@ -1807,7 +1807,7 @@ ARM GAS  main.s 			page 1
  1214 02ee 2818     		add	r0, r5, r0
  1215 02f0 FFF7FEFF 		bl	my_memcpy
  1216              	.LVL123:
- 451:main.c        **** 
+ 451:main.c        ****
  452:main.c        ****   count=0;
  1217              		.loc 1 452 0
  1218 02f4 874A     		ldr	r2, .L109
@@ -1839,7 +1839,7 @@ ARM GAS  main.s 			page 1
  457:main.c        **** //check if on screen, copy only if it is
  458:main.c        **** //    if (RIOT[player1y+Gfxindex]<175)
  459:main.c        ****   //  {
- 460:main.c        **** 
+ 460:main.c        ****
  461:main.c        ****  // masking: NUSIZ bit 7=on/off, NUSIZ 6=L/R
  462:main.c        ****  // appears to happen @ 0x99-0x9F
  463:main.c        ****       mask = 0xFF;
@@ -2080,8 +2080,8 @@ ARM GAS  main.s 			page 1
  1412 03f8 2B60     		str	r3, [r5]
  1413              	.L87:
  491:main.c        ****     }
- 492:main.c        **** 
- 493:main.c        ****     // REVENG - it looks like if vertical positioning is tight, cumulative round-off 
+ 492:main.c        ****
+ 493:main.c        ****     // REVENG - it looks like if vertical positioning is tight, cumulative round-off
  494:main.c        ****     // can occur and eventually coarse positioning will happen during sprite display...
  495:main.c        ****      //queue[(dfhigh(4)<<8)+dflow(4)+count]=(temp4-temp5-(count>>1))>>1;
  496:main.c        ****      queue[get32bitdf(4)+count]=(temp4-temp5-(count>>1))>>1;
@@ -2108,7 +2108,7 @@ ARM GAS  main.s 			page 1
  1431 041a 0818     		add	r0, r1, r0
  1432 041c 2D0E     		lsr	r5, r5, #24
  1433 041e 0570     		strb	r5, [r0]
- 497:main.c        **** 
+ 497:main.c        ****
  498:main.c        ****     if (RIOT[player1x+Gfxindex]>159)
  1434              		.loc 1 498 0
  1435 0420 029D     		ldr	r5, [sp, #8]
@@ -2270,7 +2270,7 @@ ARM GAS  main.s 			page 1
  1568 0502 0009     		lsr	r0, r0, #4
  1569 0504 FFF7FEFF 		bl	copynybble
  1570              	.LVL144:
- 515:main.c        **** 
+ 515:main.c        ****
  516:main.c        ****   return 0;
  1571              		.loc 1 516 0
  1572 0508 0020     		mov	r0, #0
