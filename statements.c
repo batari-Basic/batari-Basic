@@ -1,4 +1,25 @@
-// Provided under the GPL v2 license. See the included LICENSE.txt for details.
+/**
+ * bAtari-Basic
+ * Copyright (c) 2021
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ */
+
+/**
+ * statements.c
+ */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -284,7 +305,7 @@ void playfieldcolorandheight(char **statement)
 	    prerror("PFheights kernel option not set");
 	    exit(1);
 	}
-	else			//pf color and heights enabled 
+	else			//pf color and heights enabled
 	{
 	    sprintf(sprite_data[sprite_index++], " ifconst pfres\n");
 	    sprintf(sprite_data[sprite_index++], " if (<*) > (254-pfres)\n");
@@ -562,7 +583,7 @@ void playfield(char **statement)
 	one = statement[3][0];
 
 // read data until we get an end
-// stored in global var and output at end of code  
+// stored in global var and output at end of code
 
     while (1)
     {
@@ -1674,7 +1695,7 @@ void function(char **statement)
 {
     // declares a function - only needed if function is in bB.  For asm functions, see
     // the help.html file.
-    // determine number of args, then run until we get an end. 
+    // determine number of args, then run until we get an end.
     doingfunction = 1;
     printf("%s\n", statement[2]);
     printf("	STA temp1\n");
@@ -2128,9 +2149,9 @@ void next(char **statement)
     {
 	// normally, the generated code adds to or subtracts from the for variable, and checks
 	// to see if it's less than the ending value.
-	// however, if the step would make the variable less than zero or more than 255 
+	// however, if the step would make the variable less than zero or more than 255
 	// then this check will not work.  The compiler will attempt to detect this situation
-	// if the step and end are known.  If the step and end are not known (that is, 
+	// if the step and end are known.  If the step and end are not known (that is,
 	// either is a variable) then much more complex code must be generated.
 
 	printf("	LDA %s\n", forvar[numfors]);
@@ -2912,7 +2933,7 @@ void lives(char **statement)
     if (!lifekernel)
     {
 	lifekernel = 1;
-	//strcpy(redefined_variables[numredefvars++],"lifekernel = 1"); 
+	//strcpy(redefined_variables[numredefvars++],"lifekernel = 1");
     }
 
     sprintf(label, "lives__%s\n", statement[0]);
@@ -3152,7 +3173,7 @@ void doif(char **statement)
     int Aregmatch = 0;
     char Aregcopy[200];
     char **cstatement;		//conditional statement
-    char **dealloccstatement;	//for deallocation  
+    char **dealloccstatement;	//for deallocation
 
     strcpy(Aregcopy, "index-invalid");
 
@@ -4076,7 +4097,7 @@ void displayoperation(char *opcode, char *operand, int index)
     {
 	if (opcode[0] == '-')
 	{
-	    // operands swapped 
+	    // operands swapped
 	    printf("	TAY\n");
 	    printf("	PLA\n");
 	    printf("	TSX\n");
@@ -4234,7 +4255,7 @@ void dolet(char **cstatement)
 
 //for(i=0;i<20;++i)fprintf(stderr,"%s ",rpn_statement[i]);i=0;
 
-	// now parse rpn statement 
+	// now parse rpn statement
 
 //    strcpy(atomic_statement[2],"Areg");
 //    strcpy(atomic_statement[3],"=");
@@ -4630,7 +4651,7 @@ void dolet(char **cstatement)
 	    if (index & 2)
 		loadindex(&getindex1[0]);
 
-// if 8.8=8.8+8.8: this LDA will be superfluous - fix this at some point   
+// if 8.8=8.8+8.8: this LDA will be superfluous - fix this at some point
 
 //      if (!fixpoint1 && !fixpoint2 && statement[5][0]!='(')
 	    if (((!fixpoint1 && !fixpoint2) || (!fixpoint1 && fixpoint2 == 8)) && statement[5][0] != '(')

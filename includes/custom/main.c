@@ -1,40 +1,46 @@
-// Provided under the GPL v2 license. See the included LICENSE.txt for details.
+/**
+ * includes/custom/main.c
+ * Provided under the GPL v2 license. See the included LICENSE.txt for details.
+ */
 
-// src/custom.h defines the following:
-//
-// queue[]     - points to the 4K Display Data Bank
-//             - treat as RAM
-//             - Any data passed to/from the ARM and 6507 must be done via queue[]
-//
-// flashdata[] - points to the 24K that comprises the six 4K banks.
-//             - treat as ROM
+/**
+ * src/custom.h defines the following:
+ *
+ * queue[]     - points to the 4K Display Data Bank
+ *             - treat as RAM
+ *             - Any data passed to/from the ARM and 6507 must be done via queue[]
+ *
+ * flashdata[] - points to the 24K that comprises the six 4K banks.
+ *             - treat as ROM
+ */
 #include "src/custom.h"
 
-
-// types of variables, storage used and range
-// const              = constant, which is compiled into the ROM section and cannot be changed during run time.
-// char               =  8 bit, 1 byte  per value.  Range is           -128 to           127
-// unsigned char      =  8 bit, 1 byte  per value.  Range is              0 to           255
-// short int          = 16 bit, 2 bytes per value.  Range is        -32,768 to        32,767
-// unsigned short int = 16 bit, 2 bytes per value.  Range is              0 to        65,535
-// int                = 32 bit, 4 bytes per value.  Range is -2,147,483,648 to 2,147,483,647
-// unsigned int       = 32 bit, 4 bytes per value.  Range is              0 to 4,294,967,295
-// long int           = same as int
-// float              = 32 bit, 4 bytes.  Not Supported#
-// double             = 64 bit, 8 bytes.  Not Supported#
-// *                  = 32 bit, 4 bytes, pointer (ie: char*, int*)
-//
-// # - at least not supported with the compiler under OS X.  It might be supported by the Linux/Windows ARM
-//     compiler - but support would be implemented via software as the ARM in the Harmony Cartridge does not
-//     have an FPU (floating point unit).  As such, performance will most likely be as good as using
-//     integer math based routines.
-//
-// NOTE : Only 448 bytes are allocated for use by variables (the rest of the 512 byte section is used 
-//        as the stack).  If you use too many variables, you'll get a compile time error:  "region ram is full"
-//        You can use RAM in the Display Data to store values, see defines.h for queue[xxx] defines
-//
-// NOTE : Compiled code can be significantly smaller if you use INTs for your variables instead of
-//        SHORTs or CHARs.
+/**
+ * types of variables, storage used and range
+ * const              = constant, which is compiled into the ROM section and cannot be changed during run time.
+ * char               =  8 bit, 1 byte  per value.  Range is           -128 to           127
+ * unsigned char      =  8 bit, 1 byte  per value.  Range is              0 to           255
+ * short int          = 16 bit, 2 bytes per value.  Range is        -32,768 to        32,767
+ * unsigned short int = 16 bit, 2 bytes per value.  Range is              0 to        65,535
+ * int                = 32 bit, 4 bytes per value.  Range is -2,147,483,648 to 2,147,483,647
+ * unsigned int       = 32 bit, 4 bytes per value.  Range is              0 to 4,294,967,295
+ * long int           = same as int
+ * float              = 32 bit, 4 bytes.  Not Supported#
+ * double             = 64 bit, 8 bytes.  Not Supported#
+ * *                  = 32 bit, 4 bytes, pointer (ie: char*, int*)
+ *
+ * # - at least not supported with the compiler under OS X.  It might be supported by the Linux/Windows ARM
+ *     compiler - but support would be implemented via software as the ARM in the Harmony Cartridge does not
+ *     have an FPU (floating point unit).  As such, performance will most likely be as good as using
+ *     integer math based routines.
+ *
+ * NOTE : Only 448 bytes are allocated for use by variables (the rest of the 512 byte section is used
+ *        as the stack).  If you use too many variables, you'll get a compile time error:  "region ram is full"
+ *        You can use RAM in the Display Data to store values, see defines.h for queue[xxx] defines
+ *
+ * NOTE : Compiled code can be significantly smaller if you use INTs for your variables instead of
+ *        SHORTs or CHARs.
+ */
 
 volatile unsigned char *queue=(unsigned char *)0x40000C00;
 volatile unsigned char *flashdata=(unsigned char *)0x0C00;

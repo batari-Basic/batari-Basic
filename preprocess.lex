@@ -1,8 +1,31 @@
+/**
+ * bAtari-Basic
+ * Copyright (c) 2021
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ */
+
+/**
+ * preprocess.lex
+ * Preprocess Batari Basic to check for lexical correctness
+ */
 %{
-#include <stdlib.h>  
+#include <stdlib.h>
 int linenumber=1;
-//void yyerror(char *);  
-%}    
+//void yyerror(char *);
+%}
 %x mcomment
 %x scomment
 %x endmcomment
@@ -21,7 +44,7 @@ int linenumber=1;
 %x pfheights
 %x includes
 %x collision
-%%    
+%%
 [ \t]+ putchar(' ');
 [ \t\r]+$
 
@@ -50,7 +73,7 @@ int linenumber=1;
 
 "_sdata"            printf("%s", yytext);
 "sdata" {printf("%s",yytext);BEGIN(sdata);}
-<sdata>"=" printf(" %s ", yytext);  
+<sdata>"=" printf(" %s ", yytext);
 <sdata>[ \t]+ putchar(' ');
 <sdata>^"\nend" printf("%s",yytext);
 <sdata>"\nend" {linenumber++;printf("\nend");BEGIN(INITIAL);}
@@ -127,35 +150,35 @@ int linenumber=1;
 ".asm" printf("%s",yytext);
 "extra"[0-9]+: printf("%s",yytext);
 "step"[ ]+"-" printf("step -");
-"#"            printf("%s", yytext);  
-"$"            printf("%s", yytext);  
-"%"            printf("%s", yytext);  
-"["            printf("%s", yytext);  
-"]"            printf("%s", yytext);  
-"!"            printf("%s", yytext);  
-"."            printf("%s", yytext);  
-"_"            printf("%s", yytext);  
-"{"          printf("%s", yytext);  
-"}"          printf("%s", yytext);  
+"#"            printf("%s", yytext);
+"$"            printf("%s", yytext);
+"%"            printf("%s", yytext);
+"["            printf("%s", yytext);
+"]"            printf("%s", yytext);
+"!"            printf("%s", yytext);
+"."            printf("%s", yytext);
+"_"            printf("%s", yytext);
+"{"          printf("%s", yytext);
+"}"          printf("%s", yytext);
 
 
-","            printf(" %s ", yytext);  
-"("            printf(" %s ", yytext);  
-")"            printf(" %s ", yytext);  
-">="            printf(" %s ", yytext);  
-"<="            printf(" %s ", yytext);  
-"="            printf(" %s ", yytext);  
-"<>"            printf(" %s ", yytext);  
-"<"            printf(" %s ", yytext);  
-"+"            printf(" %s ", yytext);  
-"-"            printf(" %s ", yytext);  
-"/"+            printf(" %s ", yytext);  
-"*"+            printf(" %s ", yytext);  
-">"            printf(" %s ", yytext);  
-":"            printf(" %s ", yytext);  
-"&"+          printf(" %s ", yytext);  
-"|"+          printf(" %s ", yytext);  
-"^"          printf(" %s ", yytext);  
+","            printf(" %s ", yytext);
+"("            printf(" %s ", yytext);
+")"            printf(" %s ", yytext);
+">="            printf(" %s ", yytext);
+"<="            printf(" %s ", yytext);
+"="            printf(" %s ", yytext);
+"<>"            printf(" %s ", yytext);
+"<"            printf(" %s ", yytext);
+"+"            printf(" %s ", yytext);
+"-"            printf(" %s ", yytext);
+"/"+            printf(" %s ", yytext);
+"*"+            printf(" %s ", yytext);
+">"            printf(" %s ", yytext);
+":"            printf(" %s ", yytext);
+"&"+          printf(" %s ", yytext);
+"|"+          printf(" %s ", yytext);
+"^"          printf(" %s ", yytext);
 
 [A-Z]+ printf("%s",yytext);
 [a-z]+       {       printf("%s", yytext);}
@@ -163,5 +186,5 @@ int linenumber=1;
 [\n] {printf("\n"); linenumber++;}
 .               {fprintf(stderr,"(%d) Parse error: unrecognized character \"%s\"\n",linenumber,yytext);  exit(1);}
 %%
-  int yywrap(void) {      return 1;  } 
+  int yywrap(void) {      return 1;  }
 int main(){yylex();}
