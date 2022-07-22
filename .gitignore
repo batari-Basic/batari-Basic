@@ -47,3 +47,6 @@ postprocess
 preprocess
 packages
 packages/*
+
+# Filesystem
+.DS_Store
