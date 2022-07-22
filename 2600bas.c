@@ -28,7 +28,6 @@ int main(int argc, char *argv[])
     char *path = 0;
     char def[500][100];
     char defr[500][100];
-    char finalcode[500];
     char *codeadd;
     char mycode[500];
     int defi = 0;
@@ -151,10 +150,8 @@ int main(int argc, char *argv[])
 		    }
 		    codeadd = strstr(mycode, def[i]);
 		    if (codeadd == NULL) break;
-		    finalcode[0] = '\0';
-		    strncat(finalcode, mycode, sizeof(finalcode)-1);
-		    strncat(finalcode, defr[i], sizeof(finalcode)-1);
-		    strncat(finalcode, codeadd + strlen(def[i]), sizeof(finalcode)-1);
+		    char finalcode[500];
+		    snprintf(finalcode, sizeof(finalcode) - 1, "%s%s%s", mycode, defr[i], codeadd + strlen(def[i]));
 		    strcpy(mycode, finalcode);
 		}
 	    }
