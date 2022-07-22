@@ -1,5 +1,5 @@
 # The bB Linux compiling makefile. The only difference between this and the
-# generic makefile is this forces 64-bit binaries and adds a .Linux.x64 
+# generic makefile is this forces 64-bit binaries and adds a .Linux.x64
 # extension to the binary filenames
 SHELL=/bin/sh
 CHMOD=chmod

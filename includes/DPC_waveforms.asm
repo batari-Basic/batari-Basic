@@ -23,20 +23,20 @@ DisplayDataDigitBlank:
         .byte 0;--
         .byte 0;--
         .byte 0;--
-        
+
 ;	align 32
 ;Zeros32:
 ;SOUND_OFF = (* & $1fff)/32
 ;	.byte 0,0,0,0,0,0,0,0
 	.byte 0,0,0,0,0,0,0,0
 	.byte 0,0,0,0,0,0,0,0
-	.byte 0,0,0,0,0,0,0,0    
-	
+	.byte 0,0,0,0,0,0,0,0
+
 SINE_WAVE = (* & $1fff)/32
 	.byte 3,3,3,4,4,5,5,5
 	.byte 5,5,5,5,4,4,3,3
 	.byte 3,2,2,1,1,0,0,0
-	.byte 0,0,0,0,1,1,2,2 
+	.byte 0,0,0,0,1,1,2,2
 
 	align 32
 TRIANGLE_WAVE = (* & $1fff)/32
@@ -44,14 +44,14 @@ TRIANGLE_WAVE = (* & $1fff)/32
 	.byte 3,3,3,4,4,4,5,5
 	.byte 5,5,4,4,4,3,3,3
 	.byte 2,2,2,1,1,1,0,0
-	
+
  	align 32
 SAWTOOTH_WAVE = (* & $1fff)/32
 	.byte 0,0,0,0,1,1,1,1
 	.byte 1,1,2,2,2,2,2,2
 	.byte 3,3,3,3,3,3,4,4
 	.byte 4,4,4,4,5,5,5,5
-	
+
 	align 32
 SQUARE_WAVE_VOL5 = (* & $1fff)/32
 	.byte 0,0,0,0,0,0,0,0
@@ -72,7 +72,7 @@ SQUARE_WAVE_VOL3 = (* & $1fff)/32
 	.byte 0,0,0,0,0,0,0,0
 	.byte 3,3,3,3,3,3,3,3
 	.byte 3,3,3,3,3,3,3,3
-	
+
 	align 32
 NOISE_WAVE = (* & $1fff)/32
 	.byte  7, 1, 9,10, 2, 8, 8,14

@@ -83,8 +83,8 @@ notright
  dec playfieldpos
 onedecup
  dec playfieldpos
- beq shiftdown 
- bpl noshiftdown2 
+ beq shiftdown
+ bpl noshiftdown2
 shiftdown
   ifconst pfrowheight
  lda #pfrowheight
@@ -135,7 +135,7 @@ up2
  bne up2
 
  lda temp4
- 
+
  ifconst superchip
  ifconst pfres
  sta playfield+pfres*4-129
@@ -196,7 +196,7 @@ oneincup
  endif
  endif
 
- bcc noshiftdown 
+ bcc noshiftdown
  lda #1
  sta playfieldpos
 

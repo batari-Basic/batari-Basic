@@ -3,7 +3,7 @@
  ; another test
  set smartbranching on;test
  /* This is a test of multiline comments
- still commenting? 
+ still commenting?
  garbage chars:@#|"'`~
  */
  dim rand1=$DA

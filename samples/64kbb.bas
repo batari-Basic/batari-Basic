@@ -1,7 +1,7 @@
  rem ** The 64k test program
  rem **
  rem ** This test runs through 64k bank changes. The score is adjusted to
- rem ** reflect that last successful bank # changed to. The background color 
+ rem ** reflect that last successful bank # changed to. The background color
  rem ** register changes according to the bank # that was tested, whether it
  rem ** was successful or not.
  rem **
@@ -114,7 +114,7 @@ bsub14
  bank 15
 bsub15
   score=15
-  return otherbank 
+  return otherbank
 
  bank 16
 bsub16

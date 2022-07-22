@@ -90,7 +90,7 @@ rm -f packages/bB/sed.exe
 
 # make the SRC packages. gotta remove the binaries
 rm packages/bB/*exe
-rm packages/bB/*.x64 packages/bB/*.x86 
+rm packages/bB/*.x64 packages/bB/*.x86
 
 (cd packages ; tar --numeric-owner -cvzf bB-$ERELEASE-SRC.tar.gz bB)
 (cd packages ; zip -r bB-$ERELEASE-SRC.zip bB)

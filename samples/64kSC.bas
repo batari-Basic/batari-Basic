@@ -1,8 +1,8 @@
  rem ** The 64kSC test program
  rem **
- rem ** This runs through bank changes and does a memory test in each bank. 
- rem ** The score is adjusted to reflect the last successful bank # changed 
- rem ** to. The background color register changes according to the bank # 
+ rem ** This runs through bank changes and does a memory test in each bank.
+ rem ** The score is adjusted to reflect the last successful bank # changed
+ rem ** to. The background color register changes according to the bank #
  rem ** that was tested, whether it was successful or not.
  rem ** If the memory test fails from any bank, the score turns dark red and
  rem ** the first score digit turns to "99"

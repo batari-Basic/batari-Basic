@@ -35,7 +35,7 @@ clearmem
  ldx #5
 initscore
  lda #<scoretable
- sta scorepointers,x 
+ sta scorepointers,x
  dex
  bpl initscore
  lda #1

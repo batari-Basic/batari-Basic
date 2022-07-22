@@ -32,7 +32,7 @@ fufu
      else
        lda #dpcspritemax
      endif
-     sta DF0WRITE 
+     sta DF0WRITE
 
      lda player0x
      sta player0xcoll ; detect p0x colls
@@ -65,7 +65,7 @@ copyfromfetcherloop
      ldy #$80
      sty HMP0
      sty HMP1
-     sty HMM0 
+     sty HMM0
      sty HMM1
      sty HMBL
 
@@ -156,12 +156,12 @@ fuu
 ;     ldy #$80
 ;     sty HMP0
 ;     sty HMP1
-;     sty HMM0 
+;     sty HMM0
 ;     sty HMM1
 ;     sty HMBL
 ; relocated code above prior to vblank, to allow for Cosmic Ark starfield
 ; and/or skewed players
- sleep 17 
+ sleep 17
 
      lda #KERNEL_LINES
      sta TIM64T
@@ -276,7 +276,7 @@ COLfound
          JMP loop+$4000 ; 72
      endif
 
-repo     
+repo
      ldy DF7FRACDATA ; 65
      lda #<DF0FRACDATA ; 67 preload PF1L for next line
      if ((>repo) > (>norepo))
@@ -286,7 +286,7 @@ repo
      endif
      lda #<DF0DATA ;73
      STA COLUP0 ; 0
-     lda #<DF1DATA 
+     lda #<DF1DATA
      STA COLUP1 ;5
      lda #<DF3DATA
      STA GRP1 ; 10
@@ -317,7 +317,7 @@ exit
      sbc temp4
      tax
      lsr
-     lsr 
+     lsr
      sta temp3 ; div4
      lsr
      lsr
@@ -627,7 +627,7 @@ set_fetchers36 ; sets just 3-6
      ;DF0DATA: COLUP0
      ;DF1DATA: COLUP1
      ;DF2DATAW: GRP0
-     ;DF3DATA: GRP1 
+     ;DF3DATA: GRP1
      ;DF4DATA: 2lk lines until repos/HMP1
      ;DF5DATA: low byte of repo kernels (xpos mod 15)
      ;DF6DATA: High byte of repo kernels (x pos div 15)
@@ -642,8 +642,8 @@ set_fetchers36 ; sets just 3-6
      ;DF7FRACDATA: HMP1
      ;DF3FLAG: kernel exit loop ?? (use flags instead?)
      ;DF0FLAG: ENAM0
-     ;DF1FLAG: ENAM1 
-     ;DF3FLAG: ENABL 
+     ;DF1FLAG: ENAM1
+     ;DF3FLAG: ENABL
 
 fetcher_address_table
 kernello
@@ -670,7 +670,7 @@ kernelhi
      .byte >kernel9
      .byte >kernel10
      .byte >kernel11
-dflow     
+dflow
      .byte <P0COLOR
      .byte <P1COLOR
      .byte <P0GFX
@@ -703,7 +703,7 @@ dffrachi
      .byte (>PF1R) & $0F
      .byte (>PF2R) & $0F
      .byte (>PFCOLS) & $0F
-     .byte (>NUSIZREFP) & $0F 
+     .byte (>NUSIZREFP) & $0F
      .byte (>BKCOLS) & $0F
      .byte (>P1HMP) & $0F
 scorepointer
@@ -726,7 +726,7 @@ Hmval74
      .byte 240, 224, 208, 192, 176, 160, 144, 128, 96, 80, 64, 48, 32, 16, 1, 240
      .byte 224, 208, 192, 176, 160, 144, 128, 96, 80, 64, 48, 32, 16, 1, 240, 224, 208, 192
      .byte 176,160,144,128,16,1,240,224
-     
+
 
 kernel_setup
      ;--position P0, top P1, M0, M1, BL
@@ -743,7 +743,7 @@ kernel_setup
      ; so minus 64
      sbc #63 ;cc
 ksadjustdown
-     ; 209-255: add 160 
+     ; 209-255: add 160
      adc #159 ; cs
      sta player1x,x
 nostorep1
@@ -766,11 +766,11 @@ DivideLoop
      lda Hmval,y ; 11
      sta HMP0 ; 14
 
-     ldy player0x+1 
+     ldy player0x+1
      lda Hmval,y
      sta HMP0+1 ; 24
 
-     ldy player0x+2 
+     ldy player0x+2
      lda Hmval,y
      sta HMP0+2 ; 34
 
@@ -778,7 +778,7 @@ DivideLoop
      lda Hmval,y
      sta HMP0+3 ; 44
 
-     ldy player0x+4 
+     ldy player0x+4
      lda Hmval,y
      sta HMP0+4 ; 54
 
@@ -789,9 +789,9 @@ myrts
      rts
 
 
-pfsetup     
-     
-     sty temp1 
+pfsetup
+
+     sty temp1
      sta temp2
      stx temp3
      ldx #3
@@ -799,13 +799,13 @@ pfsetupp
      lda dffraclow,x
      sta DF0LOW,x
      lda dffrachi,x
-     sta DF0HI,x 
+     sta DF0HI,x
      lda temp2
      sta PARAMETER
      lda temp3
      sta PARAMETER
      stx PARAMETER
-     sty PARAMETER 
+     sty PARAMETER
      LDA #1
      sta CALLFUNCTION
      clc
@@ -929,10 +929,10 @@ scoreloop
      else
          sleep 6
      endif
-     sleep 5 
+     sleep 5
      ldx DF2DATA;16
      ldy DF5DATA;20
-     lda #<DF4DATA;22 
+     lda #<DF4DATA;22
 
      stx GRP1;40
      sty GRP0;43
@@ -948,7 +948,7 @@ scoreloop
      sleep 6
      dec temp1;70
      bpl scoreloop;72/73
-     LDx #0 
+     LDx #0
      stx PF1
      STx GRP0
      STx GRP1
@@ -959,5 +959,5 @@ scoreloop
 
      rts
 
-     
+
      endif ; noscore

@@ -27,7 +27,7 @@ VERSION_VCS         = 105
 ;                          used for code assembly.
 ; 1.04  12/NOV/2003     Added TIA_BASE_WRITE_ADDRESS and TIA_BASE_READ_ADDRESS for
 ;                       convenient disassembly/reassembly compatibility for hardware
-;                       mirrored reading/writing differences.  This is more a 
+;                       mirrored reading/writing differences.  This is more a
 ;                       readability issue, and binary compatibility with disassembled
 ;                       and reassembled sources.  Per Manuel Rotschkar's suggestion.
 ; 1.03  12/MAY/2003     Added SEG segment at end of file to fix old-code compatibility
@@ -69,7 +69,7 @@ TIA_BASE_ADDRESS	= 0
 ; for the mirrored ROM hardware registers.
 
 ; Usage: As per above, define the TIA_BASE_READ_ADDRESS and/or TIA_BASE_WRITE_ADDRESS
-; using the -D command-line switch, as required.  If the addresses are not defined, 
+; using the -D command-line switch, as required.  If the addresses are not defined,
 ; they defaut to the TIA_BASE_ADDRESS.
 
      IFNCONST TIA_BASE_READ_ADDRESS
@@ -86,7 +86,7 @@ TIA_BASE_WRITE_ADDRESS = TIA_BASE_ADDRESS
 			ORG TIA_BASE_WRITE_ADDRESS
 
 	; DO NOT CHANGE THE RELATIVE ORDERING OF REGISTERS!
-    
+
 VSYNC       ds 1    ; $00   0000 00x0   Vertical Sync Set-Clear
 VBLANK		ds 1	; $01   xx00 00x0   Vertical Blank Set-Clear
 WSYNC		ds 1	; $02   ---- ----   Wait for Horizontal Blank
@@ -132,7 +132,7 @@ RESMP1      ds 1    ; $29   0000 00x0   Reset Missle 1 to Player 1
 HMOVE       ds 1    ; $2A   ---- ----   Apply Horizontal Motion
 HMCLR       ds 1    ; $2B   ---- ----   Clear Horizontal Move Registers
 CXCLR       ds 1    ; $2C   ---- ----   Clear Collision Latches
- 
+
 ;-------------------------------------------------------------------------------
 
 			SEG.U TIA_REGISTERS_READ
@@ -158,7 +158,7 @@ INPT5       ds 1	; $0D		x000 0000       Read Input (Trigger) 1
 
 			SEG.U RIOT
 			ORG $280
- 
+
 	; RIOT MEMORY MAP
 
 SWCHA       ds 1    ; $280      Port A data register for joysticks:

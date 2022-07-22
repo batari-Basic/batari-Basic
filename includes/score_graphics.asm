@@ -29,10 +29,10 @@
 
 ; font equates
 .21stcentury = 1
-alarmclock = 2     
-handwritten = 3    
-interrupted = 4    
-retroputer = 5    
+alarmclock = 2
+handwritten = 3
+interrupted = 4
+retroputer = 5
 whimsey = 6
 tiny = 7
 hex = 8
@@ -160,10 +160,10 @@ scoretable
        .byte %01100110
        .byte %01100110
        .byte %01100110
-       .byte %00111100 
+       .byte %00111100
 
        ifnconst DPC_kernel_options
- 
+
          .byte %00000000
          .byte %00000000
          .byte %00000000
@@ -171,7 +171,7 @@ scoretable
          .byte %00000000
          .byte %00000000
          .byte %00000000
-         .byte %00000000 
+         .byte %00000000
 
        endif
 

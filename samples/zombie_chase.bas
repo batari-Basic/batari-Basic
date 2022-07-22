@@ -53,7 +53,7 @@
  dim sc1=score
  dim sc2=score+1
 
- rem 
+ rem
  rem velocity doesn't change when direction changes
  rem xvelocity and yvelocity change
  rem they change instantly when velocity <= 0.5 max
@@ -63,7 +63,7 @@
  rem turndelay = 0
  player0x = 40 : player0y = 40
 startLoop
- if turndelay{1} then player1: 
+ if turndelay{1} then player1:
     %00100100
         %00010100
         %00011000
@@ -96,7 +96,7 @@ end
 end
  scorecolor=30
  if switchreset then reboot
- if switchrightb then PF0=0 else PF0=63 
+ if switchrightb then PF0=0 else PF0=63
  COLUPF=(level * 4 * 4)^244
  if gamebits{7} then gamerunning
  if !joy0fire then timer1=timer1+1
@@ -207,7 +207,7 @@ a12 rem 270
  goto skipskid
 a13 rem 292.5
  tempvel=velocity/8
- xvelocity=tempvel-velocity:yvelocity=0-tempvel   
+ xvelocity=tempvel-velocity:yvelocity=0-tempvel
  tempvel=velocity/4
  yvelocity=yvelocity-tempvel
  goto skipskid
@@ -216,7 +216,7 @@ a14 rem 315
  xvelocity=velocity/2
  xvelocity=tempvel+xvelocity:xvelocity=0-xvelocity:yvelocity=xvelocity
  goto skipskid
-a15 rem 337.5 
+a15 rem 337.5
  tempvel=velocity/8
  xvelocity=0-tempvel:yvelocity=tempvel-velocity
  tempvel=velocity/4
@@ -228,7 +228,7 @@ skipskid
  if !gamebits{0} then finalxvelocity=xvelocity:finalyvelocity=yvelocity:AUDV1=0:goto noskid else skid
  if velocity<32 then finalxvelocity=xvelocity:finalyvelocity=yvelocity:AUDV1=0:goto noskid
  if finalxvelocity = xvelocity && finalyvelocity = yvelocity then AUDV1=0:goto noskid
- 
+
 skid
  rem lost traction...skid
  gamebits{5}=0
@@ -251,7 +251,7 @@ bothxpos
  if finalxvelocity>xvelocity then subx
 addx
  if level{3} then finalxvelocity=finalxvelocity+0.0625 else finalxvelocity=finalxvelocity+0.3
- 
+
 
 checky
  if yvelocity>127 && finalyvelocity>127 then bothyneg
@@ -289,7 +289,7 @@ doneskid
 noskid
  rem gamebits=gamebits^%00000010
  rem if gamebits{1} then donotadd
- 
+
  tempvel8=finalxvelocity
  asm
  lda temp1
@@ -348,7 +348,7 @@ nodriving
 
 SameFrame
  COLUP0 = 14
- REFP0=gamebits 
+ REFP0=gamebits
  if scadd>0 then scadd=scadd-1:score=score+1
 
  if !collision(player0,player1) then nohitzombie
@@ -386,7 +386,7 @@ carFrame
 
 
 
- on carframe goto 5 10 20 30 40 50 60 70 80 
+ on carframe goto 5 10 20 30 40 50 60 70 80
 
 
 

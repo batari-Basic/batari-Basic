@@ -19,7 +19,7 @@
      lda $ffe0 ; we use wasted space to assist stella with EF format auto-detection
      ORG  $10FF8
      RORG $1FFF8
-     ifconst superchip 
+     ifconst superchip
        .byte "E","F","S","C"
      else
        .byte "E","F","E","F"

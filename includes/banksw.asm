@@ -12,7 +12,7 @@ begin_bscode
  ldx #$ff
  ifconst FASTFETCH ; using DPC+
  stx FASTFETCH
- endif 
+ endif
  txs
  if bankswitch == 64
    lda #(((>(start-1)) & $0F) | $F0)
@@ -45,10 +45,10 @@ BS_return
    ora #$10 ; change our bank nibble into a valid rom mirror
    sta 4,x
    tya
-   lsr 
-   lsr 
-   lsr 
-   lsr 
+   lsr
+   lsr
+   lsr
+   lsr
    tax
    inx
  endif

@@ -13,7 +13,7 @@ INDENTLEVEL=1
 IFS=""
 #read in and pull off existing formatting...
 cat $1 | sed 's/^;/ ;/g' | tr '\t' ' ' | tr -s ' ' | while read RASMLINE ; do
-   
+
    echo "$RASMLINE" | grep -iv '[;].* else' | grep -Ei "endif|else" >/dev/null
    if [ $? = 0 ] ; then
       #decrease indent before printing out this line
@@ -27,4 +27,4 @@ cat $1 | sed 's/^;/ ;/g' | tr '\t' ' ' | tr -s ' ' | while read RASMLINE ; do
       #increase indent after printing out this line
       INDENTLEVEL=$(($INDENTLEVEL+1))
    fi
-done 
+done

@@ -139,7 +139,7 @@ unsigned char *pfpixel;
 int count;
 //int Gfxindex;
 //signed int temp1;
-//int temp2; 
+//int temp2;
 //int temp3;
 int temp4;
 int temp5;
@@ -174,11 +174,11 @@ char maxsprites;
 #define    Hmval74(a)  fetcheraddr[(a)+66]
 
 void my_memcpy(unsigned char* destination, unsigned char* source, int offset, int count)
-{ 
+{
         int i; //saves a few bytes
         for(i=0;i<count;i++)
                 destination[(i+offset)&255] = source[i]&mask;
-} 
+}
 
 void my_memset(unsigned char* destination, int fill_value, int count)
 {
@@ -188,9 +188,9 @@ void my_memset(unsigned char* destination, int fill_value, int count)
 }
 
 void reverse(int i, int j, unsigned char* x)
-{ 
+{
         int t;
-        while (i < j) 
+        while (i < j)
         {
               t = x[i]; x[i] = x[j]; x[j] = t;
               i++;
@@ -223,7 +223,7 @@ void shiftnumbers(int xreg)
     myGfxIndex[xreg]=myGfxIndex[xreg+1];
     xreg++;
   }
-  
+
 }
 
 char checkwrap(char a, char b)
@@ -299,7 +299,7 @@ int main()
 
   int i;
 
-  // moving the the scope of these variables saved a *lot* of space. 
+  // moving the the scope of these variables saved a *lot* of space.
   int temp2;
   int temp3;
   int Gfxindex;
@@ -355,7 +355,7 @@ int main()
       // draw sprites in virtual area
       C_function[3]=0;
       temp2=0;
-      for (i=RIOT[player0y+C_function2];i<RIOT[player0y+C_function2]+RIOT[player0height+C_function2];++i) 
+      for (i=RIOT[player0y+C_function2];i<RIOT[player0y+C_function2]+RIOT[player0height+C_function2];++i)
       {
         if ((i>=RIOT[player0y+C_function1]) && (i<RIOT[player0y+C_function1]+RIOT[player0height+C_function1]))
 	{
@@ -366,7 +366,7 @@ int main()
             temp2=((flashdata[(RIOT[player0pointerhi+C_function2*2]<<8)+RIOT[player0pointerlo+C_function2*2]+i-RIOT[player0y+C_function2]])<<7)
                 & ((flashdata[(RIOT[player0pointerhi+C_function1*2]<<8)+RIOT[player0pointerlo+C_function1*2]+i-RIOT[player0y+C_function1]])<<temp3);
 	  }
-	  if (temp2) 
+	  if (temp2)
 	  {
 	    C_function[3]=255;
 	    return;
@@ -375,7 +375,7 @@ int main()
       }
       return;
     }
-    case 24: // pfread 
+    case 24: // pfread
     {
       pfpixel=queue+get32bitdff(C_function1>>3); // physical addy of xpos (pf)
       C_function[3]=(!(pfpixel[C_function2]&setbyte[C_function1]));
@@ -484,7 +484,7 @@ int main()
               RIOT[player1height+Gfxindex]);
     //}
     temp5=temp4;
-    temp4=(RIOT[player1y+Gfxindex]+RIOT[player1height+Gfxindex])&255; // &255 to allow for wrapped sprites 
+    temp4=(RIOT[player1y+Gfxindex]+RIOT[player1height+Gfxindex])&255; // &255 to allow for wrapped sprites
     Gfxindex=myGfxIndex[count+1];
     if ((count == temp3) || (RIOT[player1y+Gfxindex]>175) )
     {
@@ -492,7 +492,7 @@ int main()
       temp5=0;
     }
 
-    // it looks like if vertical positioning is tight, cumulative round-off 
+    // it looks like if vertical positioning is tight, cumulative round-off
     // can occur and eventually coarse positioning will happen during sprite display...
      //queue[(dfhigh(4)<<8)+dflow(4)+count]=(temp4-temp5-(count>>1))>>1;
      queue[get32bitdf(4)+count]=(temp4-temp5-(count>>1))>>1;

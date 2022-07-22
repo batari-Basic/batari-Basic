@@ -63,7 +63,7 @@ kernel
 
      lda playfieldpos
      sta temp1
-     
+
      ifconst pfrowheight
          lda #pfrowheight+2
      else
@@ -94,7 +94,7 @@ continuekernel
      sleep 2
 continuekernel2
      lda ballheight
-     
+
      ifconst pfres
          ldy playfield+pfres*pfwidth-132,x
          sty PF1L ;3
@@ -123,7 +123,7 @@ continuekernel2
      ; rol
      ; rol
 goback
-     sta ENABL 
+     sta ENABL
 .startkernel
      lda player1height ;3
      dcp player1y ;5
@@ -153,13 +153,13 @@ goback
      endif
 
      ifconst pfres
-         lda playfield+pfres*pfwidth-132,x 
+         lda playfield+pfres*pfwidth-132,x
          sta PF1L ;3
-         lda playfield+pfres*pfwidth-131-pfadjust,x 
+         lda playfield+pfres*pfwidth-131-pfadjust,x
          sta PF2L ;3
-         lda playfield+pfres*pfwidth-129,x 
+         lda playfield+pfres*pfwidth-129,x
          sta PF1R ; 3 too early?
-         lda playfield+pfres*pfwidth-130-pfadjust,x 
+         lda playfield+pfres*pfwidth-130-pfadjust,x
          sta PF2R ;3
      else
          lda playfield-48+pfwidth*12+44-128,x ;4
@@ -170,7 +170,7 @@ goback
          sta PF1R ; 3 too early?
          lda playfield-48+pfwidth*12+46-128-pfadjust,x;4
          sta PF2R ;3
-     endif 
+     endif
      ; sleep 3
 
      lda player0height
@@ -207,7 +207,7 @@ noreadpaddle
              sleep 2
              jmp continuekernel
          else
-             ifnconst playercolors 
+             ifnconst playercolors
                  ifconst PFcolors
                      txa
                      tay
@@ -349,7 +349,7 @@ altkernel
              endif
          endif
      endif
-     
+
 
      lda ballheight
      dcp bally
@@ -383,7 +383,7 @@ lastkernelline
 
      else
 lastkernelline
-         
+
          ifconst PFheights
              ldx #1
              ;sleep 5
@@ -410,7 +410,7 @@ lastkernelline
      jmp .continuelastP1
 
 .endkerloop     ; enter at cycle 59??
-     
+
      nop
 
 .enterfromNBL
@@ -444,7 +444,7 @@ enterlastkernel
      ; sbc stack3
      rol
      rol
-     sta ENABL 
+     sta ENABL
 
      lda player1height ;3
      dcp player1y ;5
@@ -501,7 +501,7 @@ enterlastkernel
              sta COLUP0
          endif
      endif
-     
+
      lda.w player0height
      dcp player0y
      bcc .skipDrawlastP0
@@ -657,11 +657,11 @@ noshakescreen2
 
          sta HMCLR
          tsx
-         stx stack1 
+         stx stack1
          ldx #$E0
          stx HMP0
 
-         LDA scorecolor 
+         LDA scorecolor
          STA COLUP0
          STA COLUP1
          ifconst scorefade
@@ -759,14 +759,14 @@ beginscore
          dey
          bpl loop2 ;+2 60 180
 
-         ldx stack1 
+         ldx stack1
          txs
          ; lda scorepointers+1
          ldy temp1
          ; sta temp1
          sty scorepointers+1
 
-         LDA #0 
+         LDA #0
          sta PF1
          STA GRP0
          STA GRP1

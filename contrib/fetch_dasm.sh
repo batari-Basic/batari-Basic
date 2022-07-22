@@ -14,7 +14,7 @@ for OSARCH in linux@Linux osx@Darwin win@win ; do
 			rm -fr machines
 		else
 			wget $BASEURL/dasm-$RELEASE-$OS-$BITS.tar.gz
-			tar -xvzf dasm-$RELEASE-$OS-$BITS.tar.gz dasm 
+			tar -xvzf dasm-$RELEASE-$OS-$BITS.tar.gz dasm
 			rm -f ../dasm.$ARCH.$BITS
 			mv dasm ../dasm.$ARCH.$BITS
 			rm dasm-$RELEASE-$OS-$BITS.tar.gz

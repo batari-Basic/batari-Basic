@@ -2,7 +2,7 @@
 
 ; Compute mul1*mul2+acc -> acc:mul1 [mul2 is unchanged]
 ; Routine courtesy of John Payson (AtariAge member supercat)
- 
+
  ; x and a contain multiplicands, result in a, temp1 contains any overflow
 
 mul16
@@ -25,8 +25,8 @@ noaddmul
 ; returns with quotient in A, remainder in temp1
 
 div16
- sta temp2 
- sty temp1 
+ sta temp2
+ sty temp1
  lda #0
  ldx #8
  asl temp2

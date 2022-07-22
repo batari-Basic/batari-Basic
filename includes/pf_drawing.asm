@@ -19,13 +19,13 @@ pfclear_loop
  dex
  bpl pfclear_loop
  RETURN
- 
+
 setuppointers
  stx temp2 ; store on.off.flip value
- tax ; put x-value in x 
+ tax ; put x-value in x
  lsr
  lsr
- lsr ; divide x pos by 8 
+ lsr ; divide x pos by 8
  sta temp1
  tya
  asl
@@ -110,7 +110,7 @@ pfvline
 ;x=xvalue, y=yvalue, a=0,1,2, temp3=endx
  jsr setuppointers
  sty temp1 ; store memory location offset
- inc temp3 ; increase final x by 1 
+ inc temp3 ; increase final x by 1
  lda temp3
  asl
  if pfwidth=4
