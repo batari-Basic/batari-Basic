@@ -460,7 +460,6 @@ BackFromSwitchDrawP0K1
 	sta.w GRP1		;+4	19
 BackFromSkipDrawP1
 
-;fuck	
  sty temp1
  ldy pfpixelheight
 	lax (PF1pointer),y
@@ -692,7 +691,6 @@ BackFromSwitchDrawP0KV
 
 ;	lda SpriteGfxIndex,X	;+4	31
 ;	tax				;+2	33
-;fuck2
 	lda NewSpriteY,X		;+4	46
 	sec				;+2	38
 	sbc spriteheight,X	;+4	42
