@@ -1,0 +1,50 @@
+# The bB OS X cross compiling makefile. This is meant to be run from Linux
+#
+# See COMPILE.txt for details on how to setup the supporting environment
+#
+
+#export PATH := /usr/arm64-apple-darwin10/bin:$(PATH)
+
+ARCH=.Darwin.arm64
+DEST=./build/
+CC=arm64-apple-darwin10-gcc
+CFLAGS=-arch arm64 -m64 -O2
+LEX=lex
+LEXFLAGS=-t
+MKDIR=mkdir -p
+RM=rm
+
+_2600basic=${DEST}2600basic${ARCH}
+_postprocess=${DEST}postprocess${ARCH}
+_bbfilter=${DEST}bbfilter${ARCH}
+_preprocess=${DEST}preprocess${ARCH}
+_optimize=${DEST}optimize${ARCH}
+
+all: 2600basic preprocess postprocess bbfilter optimize
+
+2600basic: 2600bas.c statements.c keywords.c statements.h keywords.h
+	@${MKDIR} ${DEST}
+	${CC} ${CFLAGS} -o ${_2600basic} 2600bas.c statements.c keywords.c
+
+postprocess: postprocess.c
+	@${MKDIR} ${DEST}
+	${CC} ${CFLAGS} -o ${_postprocess} postprocess.c
+
+bbfilter: bbfilter.c
+	@${MKDIR} ${DEST}
+	${CC} ${CFLAGS} -o ${_bbfilter} bbfilter.c
+
+preprocess: preprocess.lex
+	@${MKDIR} ${DEST}
+	${LEX} ${LEXFLAGS}<preprocess.lex>lex.yy.c
+	${CC} ${CFLAGS} -o ${_preprocess} lex.yy.c
+	${RM} -f lex.yy.c
+
+optimize: optimize.lex
+	@${MKDIR} ${DEST}
+	${LEX} ${LEXFLAGS} -i<optimize.lex>lex.yy.c
+	${CC} ${CFLAGS} -o ${_optimize} lex.yy.c
+	${RM} -f lex.yy.c
+
+clean:
+	${RM} -f a.out core ${_2600basic} ${_preprocess} ${_postprocess} ${_bbfilter} ${_optimize}
