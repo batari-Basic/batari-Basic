@@ -1,5 +1,8 @@
 // Provided under the GPL v2 license. See the included LICENSE.txt for details.
 
+#ifndef STATEMENTS_H
+#define STATEMENTS_H
+
 #define _readpaddle 1
 #define _player1colors 2
 #define _playercolors 4
@@ -104,3 +107,5 @@ int isimmed(char *);
 int number(unsigned char);
 void header_open(FILE *);
 void header_write(FILE *, char *);
+
+#endif

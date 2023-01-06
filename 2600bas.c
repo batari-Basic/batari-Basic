@@ -7,12 +7,12 @@
 #include "statements.h"
 #include "keywords.h"
 #include <math.h>
+
 #define BB_VERSION_INFO "batari Basic v1.7 (c)2022\n"
 
 int bank = 1;
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     char **statement;
     int i, j, k;
     int unnamed = 0;
@@ -33,31 +33,29 @@ int main(int argc, char *argv[])
     char mycode[500];
     int defi = 0;
     // get command line arguments
-    while ((i = getopt(argc, argv, "i:r:v")) != -1)
-    {
-	switch (i)
-	{
-	case 'i':
-	    path = (char *) malloc(500);
-	    path = optarg;
-	    break;
-	case 'r':
-	    filename = (char *) malloc(100);
-	    //strcpy(filename, optarg);
-	    filename = optarg;
-	    break;
-	case 'v':
-	    printf("%s", BB_VERSION_INFO);
-	    exit(0);
-	case '?':
-	    fprintf(stderr, "usage: %s -r <variable redefs file> -i <includes path>\n", argv[0]);
-	    exit(1);
-	}
+    while ((i = getopt(argc, argv, "i:r:v")) != -1) {
+        switch (i) {
+            case 'i':
+                path = (char *) malloc(500);
+                path = optarg;
+                break;
+            case 'r':
+                filename = (char *) malloc(100);
+                //strcpy(filename, optarg);
+                filename = optarg;
+                break;
+            case 'v':
+                printf("%s", BB_VERSION_INFO);
+                exit(0);
+            case '?':
+                fprintf(stderr, "usage: %s -r <variable redefs file> -i <includes path>\n", argv[0]);
+                exit(1);
+        }
     }
     condpart = 0;
-    last_bank = 0;		// last bank when bs is enabled (0 for 2k/4k)
-    bank = 1;			// current bank: 1 or 2 for 8k
-    bs = 0;			// bankswtiching type; 0=none
+    last_bank = 0;        // last bank when bs is enabled (0 for 2k/4k)
+    bank = 1;            // current bank: 1 or 2 for 8k
+    bs = 0;            // bankswtiching type; 0=none
     ongosub = 0;
     superchip = 0;
     optimization = 0;
@@ -87,140 +85,118 @@ int main(int argc, char *argv[])
 
     fprintf(stderr, BB_VERSION_INFO);
 
-    printf("game\n");		// label for start of game
+    printf("game\n");        // label for start of game
     header_open(header);
     init_includes(path);
 
     statement = (char **) malloc(sizeof(char *) * 200);
-    for (i = 0; i < 200; ++i)
-    {
-	statement[i] = (char *) malloc(sizeof(char) * 200);
+    for (i = 0; i < 200; ++i) {
+        statement[i] = (char *) malloc(sizeof(char) * 200);
     }
 
-    while (1)
-    {				// clear out statement cache
-	for (i = 0; i < 200; ++i)
-	{
-	    for (j = 0; j < 200; ++j)
-	    {
-		statement[i][j] = '\0';
-	    }
-	}
-	c = fgets(code, 500, stdin);	// get next line from input
-	incline();
-	strcpy(displaycode, code);
+    while (1) {                // clear out statement cache
+        for (i = 0; i < 200; ++i) {
+            for (j = 0; j < 200; ++j) {
+                statement[i][j] = '\0';
+            }
+        }
+        c = fgets(code, 500, stdin);    // get next line from input
+        incline();
+        strcpy(displaycode, code);
 
-	// look for defines and remember them
-	strcpy(mycode, code);
-	for (i = 0; i < 500; ++i)
-	    if (code[i] == ' ')
-		break;
-	if (code[i + 1] == 'd' && code[i + 2] == 'e' && code[i + 3] == 'f' && code[i + 4] == ' ')
-	{			// found a define
-	    i += 5;
-	    for (j = 0; code[i] != ' '; i++)
-	    {
-		def[defi][j++] = code[i];	// get the define
-	    }
-	    def[defi][j] = '\0';
+        // look for defines and remember them
+        strcpy(mycode, code);
+        for (i = 0; i < 500; ++i)
+            if (code[i] == ' ')
+                break;
+        if (code[i + 1] == 'd' && code[i + 2] == 'e' && code[i + 3] == 'f' &&
+            code[i + 4] == ' ') {            // found a define
+            i += 5;
+            for (j = 0; code[i] != ' '; i++) {
+                def[defi][j++] = code[i];    // get the define
+            }
+            def[defi][j] = '\0';
 
-	    i += 3;
+            i += 3;
 
-	    for (j = 0; code[i] != '\0'; i++)
-	    {
-		defr[defi][j++] = code[i];	// get the definition
-	    }
-	    defr[defi][j] = '\0';
-	    removeCR(defr[defi]);
-	    printf(";.%s.%s.\n", def[defi], defr[defi]);
-	    defi++;
-	}
-	else if (defi)
-	{
-	    for (i = 0; i < defi; ++i)
-	    {
-		codeadd = NULL;
-		finalcode[0] = '\0';
-		defcount = 0;
-		while (1)
-		{
-		    if (defcount++ > 500)
-		    {
-			fprintf(stderr, "(%d) Infinitely repeating definition or too many instances of a definition\n",
-				bbgetline());
-			exit(1);
-		    }
-		    codeadd = strstr(mycode, def[i]);
-		    if (codeadd == NULL)
-			break;
-		    for (j = 0; j < 500; ++j)
-			finalcode[j] = '\0';
-		    strncpy(finalcode, mycode, strlen(mycode) - strlen(codeadd));
-		    strcat(finalcode, defr[i]);
-		    strcat(finalcode, codeadd + strlen(def[i]));
-		    strcpy(mycode, finalcode);
-		}
-	    }
-	}
-	if (strcmp(mycode, code))
-	    strcpy(code, mycode);
-	if (!c)
-	    break;		//end of file
+            for (j = 0; code[i] != '\0'; i++) {
+                defr[defi][j++] = code[i];    // get the definition
+            }
+            defr[defi][j] = '\0';
+            removeCR(defr[defi]);
+            printf(";.%s.%s.\n", def[defi], defr[defi]);
+            defi++;
+        } else if (defi) {
+            for (i = 0; i < defi; ++i) {
+                codeadd = NULL;
+                finalcode[0] = '\0';
+                defcount = 0;
+                while (1) {
+                    if (defcount++ > 500) {
+                        fprintf(stderr, "(%d) Infinitely repeating definition or too many instances of a definition\n",
+                                bbgetline());
+                        exit(1);
+                    }
+                    codeadd = strstr(mycode, def[i]);
+                    if (codeadd == NULL)
+                        break;
+                    for (j = 0; j < 500; ++j)
+                        finalcode[j] = '\0';
+                    strncpy(finalcode, mycode, strlen(mycode) - strlen(codeadd));
+                    strcat(finalcode, defr[i]);
+                    strcat(finalcode, codeadd + strlen(def[i]));
+                    strcpy(mycode, finalcode);
+                }
+            }
+        }
+        if (strcmp(mycode, code))
+            strcpy(code, mycode);
+        if (!c)
+            break;        //end of file
 
 // preprocessing removed in favor of a simplistic lex-based preprocessor
 
-	i = 0;
-	j = 0;
-	k = 0;
+        i = 0;
+        j = 0;
+        k = 0;
 
 // look for spaces, reject multiples
-	while (code[i] != '\0')
-	{
-	    single = code[i++];
-	    if (single == ' ')
-	    {
-		if (!multiplespace)
-		{
-		    j++;
-		    k = 0;
-		}
-		multiplespace++;
-	    }
-	    else
-	    {
-		multiplespace = 0;
-		if (k < 199)	// avoid overrun with long horizontal separators
-		    statement[j][k++] = single;
-	    }
+        while (code[i] != '\0') {
+            single = code[i++];
+            if (single == ' ') {
+                if (!multiplespace) {
+                    j++;
+                    k = 0;
+                }
+                multiplespace++;
+            } else {
+                multiplespace = 0;
+                if (k < 199)    // avoid overrun with long horizontal separators
+                    statement[j][k++] = single;
+            }
 
-	}
-	if (j > 190)
-	{
-	    fprintf(stderr, "(%d) Warning: long line\n", bbgetline());
-	}
-	if (statement[0][0] == '\0')
-	{
-	    sprintf(statement[0], "L0%d", unnamed++);
-	}
-	else
-	{
-	    if (strchr(statement[0], '.') != NULL)
-	    {
-		fprintf(stderr, "(%d) Invalid character in label.\n", bbgetline());
-		exit(1);
-	    }
+        }
+        if (j > 190) {
+            fprintf(stderr, "(%d) Warning: long line\n", bbgetline());
+        }
+        if (statement[0][0] == '\0') {
+            sprintf(statement[0], "L0%d", unnamed++);
+        } else {
+            if (strchr(statement[0], '.') != NULL) {
+                fprintf(stderr, "(%d) Invalid character in label.\n", bbgetline());
+                exit(1);
+            }
 
-	}
-	if (strncmp(statement[0], "end\0", 3))
-	    printf(".%s ; %s\n", statement[0], displaycode);	//    printf(".%s ; %s\n",statement[0],code);
-	else
-	    doend();
+        }
+        if (strncmp(statement[0], "end\0", 3))
+            printf(".%s ; %s\n", statement[0], displaycode);    //    printf(".%s ; %s\n",statement[0],code);
+        else
+            doend();
 
-	keywords(statement);
-        if(numconstants==(MAXCONSTANTS-1))
-        { 
-		fprintf(stderr, "(%d) Maximum number of constants exceeded.\n", bbgetline());
-		exit(1);
+        keywords(statement);
+        if (numconstants == (MAXCONSTANTS - 1)) {
+            fprintf(stderr, "(%d) Maximum number of constants exceeded.\n", bbgetline());
+            exit(1);
         }
 
     }
@@ -230,19 +206,19 @@ int main(int argc, char *argv[])
 
     printf(" if ECHOFIRST\n");
     if (bs == 28)
-	printf("       echo \"    \",[(DPC_graphics_end - *)]d , \"bytes of ROM space left");
+        printf("       echo \"    \",[(DPC_graphics_end - *)]d , \"bytes of ROM space left");
     else
-	printf("       echo \"    \",[(scoretable - *)]d , \"bytes of ROM space left");
+        printf("       echo \"    \",[(scoretable - *)]d , \"bytes of ROM space left");
     if (bs == 8)
-	printf(" in bank 2");
+        printf(" in bank 2");
     if (bs == 16)
-	printf(" in bank 4");
+        printf(" in bank 4");
     if (bs == 28)
-	printf(" in graphics bank");
+        printf(" in graphics bank");
     if (bs == 32)
-	printf(" in bank 8");
+        printf(" in bank 8");
     if (bs == 64)
-	printf(" in bank 16");
+        printf(" in bank 16");
     printf("\")\n");
     printf(" endif \n");
     printf("ECHOFIRST = 1\n");
