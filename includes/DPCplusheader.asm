@@ -8,10 +8,10 @@
  include "2600basic_variable_redefs.h"
  ORG $400
  RORG $0
- incbin DPCplus.arm
+ incbin "DPCplus.arm"
      ORG $1000
      RORG $1000
- incbin custom/bin/custom2.bin
+ incbin "custom/bin/custom2.bin"
 ; assume custom2.bin > 128 bytes
 ; repeat $80
 ; .byte 0

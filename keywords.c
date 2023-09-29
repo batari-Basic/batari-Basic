@@ -7,6 +7,10 @@
 #include <unistd.h>
 #include <string.h>
 
+extern int ors;
+extern int numelses;
+extern int numthens;
+
 int swaptest(char *value)	// check for then, && or ||
 {
     if (!strncmp(value, "then\0", 4) || !strncmp(value, "&&\0", 2) || !strncmp(value, "||\0", 2))

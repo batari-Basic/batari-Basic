@@ -9,7 +9,11 @@
 #include <math.h>
 #define BB_VERSION_INFO "batari Basic v1.7 (c)2022\n"
 
-int bank = 1;
+extern int bank;
+
+extern int bs;
+extern int numconstants;
+extern int playfield_index[];
 
 int main(int argc, char *argv[])
 {
@@ -54,42 +58,14 @@ int main(int argc, char *argv[])
 	    exit(1);
 	}
     }
-    condpart = 0;
-    last_bank = 0;		// last bank when bs is enabled (0 for 2k/4k)
-    bank = 1;			// current bank: 1 or 2 for 8k
-    bs = 0;			// bankswtiching type; 0=none
-    ongosub = 0;
-    superchip = 0;
-    optimization = 0;
-    smartbranching = 0;
-    line = 0;
-    numfixpoint44 = 0;
-    numfixpoint88 = 0;
-    ROMpf = 0;
-    ors = 0;
-    numjsrs = 0;
-    numfors = 0;
-    numthens = 0;
-    numelses = 0;
-    numredefvars = 0;
-    numconstants = 0;
-    branchtargetnumber = 0;
-    doingfunction = 0;
-    sprite_index = 0;
-    multisprite = 0;
-    lifekernel = 0;
-    playfield_number = 0;
-    playfield_index[0] = 0;
-    extra = 0;
-    extralabel = 0;
-    extraactive = 0;
-    macroactive = 0;
 
     fprintf(stderr, BB_VERSION_INFO);
 
     printf("game\n");		// label for start of game
     header_open(header);
     init_includes(path);
+
+    playfield_index[0]=0;
 
     statement = (char **) malloc(sizeof(char *) * 200);
     for (i = 0; i < 200; ++i)
