@@ -1,22 +1,6 @@
 ; Provided under the CC0 license. See the included LICENSE.txt for details.
 
-FineAdjustTableBegin
-	.byte %01100000		;left 6
-	.byte %01010000
-	.byte %01000000
-	.byte %00110000
-	.byte %00100000
-	.byte %00010000
-	.byte %00000000		;left 0
-	.byte %11110000
-	.byte %11100000
-	.byte %11010000
-	.byte %11000000
-	.byte %10110000
-	.byte %10100000
-	.byte %10010000
-	.byte %10000000		;right 8
-FineAdjustTableEnd	=	FineAdjustTableBegin - 241
+    ;echo "Multi-sprite kernel starts at ", *
 
 PFStart
  .byte 87,43,0,21,0,0,0,10
@@ -202,14 +186,6 @@ PrePositionAllObjects
 	rts
 
 
-;-------------------------------------------------------------------------
-
-
-
-
-
-
-
 
 ;-------------------------------------------------------------------------
 
@@ -369,7 +345,34 @@ sixdigscore
 
  rts
 
+;------------------------------------------------------------------------
+;-- FineAdjustTable - HMove table
+;--
+;-- NOTE:  This table needs to be here to prevent interference with
+;--        the superchip due to the forced page-crossing used when
+;--        accessing this table.
 
+FineAdjustTableBegin
+	.byte %01100000		;left 6
+	.byte %01010000
+	.byte %01000000
+	.byte %00110000
+	.byte %00100000
+	.byte %00010000
+	.byte %00000000		;left 0
+	.byte %11110000
+	.byte %11100000
+	.byte %11010000
+	.byte %11000000
+	.byte %10110000
+	.byte %10100000
+	.byte %10010000
+	.byte %10000000		;right 8
+FineAdjustTableEnd	=	FineAdjustTableBegin - 241
+
+    ;--- DEBUG: use the following echo statements to make sure page-crossing occurs
+    ;echo "FineAdjustTable at      ", FineAdjustTableBegin
+    ;echo " but is referenced from ", FineAdjustTableEnd
 
 ;-------------------------------------------------------------------------
 ;----------------------Kernel Routine-------------------------------------
@@ -1086,3 +1089,7 @@ scorebcd1
  .byte $14, $14, $15, $16, $16, $17, $17, $18, $19, $19, $20
  .byte $21, $21, $22, $23, $23, $24, $24, $25, $26, $26
  endif
+
+    ;echo "Multi-sprite kernel ends at ", *
+
+    
