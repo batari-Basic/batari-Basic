@@ -1982,7 +1982,7 @@ void sdata(char **statement)
 
 void data(char **statement)
 {
-    char data[200];
+    char data[201];
     char **data_length;
     char **deallocdata_length;
     int i, j;
@@ -2010,6 +2010,12 @@ void data(char **statement)
 	    exit(1);
 	}
 	line++;
+	data[200]=0;
+	if (strlen(data)>=199)
+	{
+	    prerror("Error: Maximum line length exceeded in data statement\n");
+	    exit(1);
+	}
 	if (!strncmp(data, "end\0", 3))
 	    break;
 	remove_trailing_commas(data);
