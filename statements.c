@@ -2102,6 +2102,8 @@ void ongoto(char **statement)
 
 void dofor(char **statement)
 {
+    removeCR(statement[6]);
+
     if (strcmp(statement[4], Areg))
     {
 	printf("	LDA ");
