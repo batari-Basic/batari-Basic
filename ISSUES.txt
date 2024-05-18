@@ -41,3 +41,13 @@ _Known_Issues_
   details:    In higher resolutions in the DPC+ kernel, the top PF line is
               duplicated.
   workaround: None
+
+  overview:   64K formats doesn't work with plain "return" statement.
+  details:    64K formats are limited to explicit "return thisbank" or
+              "return otherbank" calls, and don't support the regular
+              implicit "return" statement. This is due to batari Basic
+              storing the return address bank in the unused address space
+              of the 6507, and this unused address space only allowing for
+              3 bits of storage (8 banks)
+  workaround: None
+
