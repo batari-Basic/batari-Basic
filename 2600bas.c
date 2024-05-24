@@ -32,7 +32,6 @@ int main(int argc, char *argv[])
     char *path = 0;
     char def[500][100];
     char defr[500][100];
-    char finalcode[500];
     char *codeadd;
     char mycode[500];
     int defi = 0;
@@ -116,24 +115,19 @@ int main(int argc, char *argv[])
 	    for (i = 0; i < defi; ++i)
 	    {
 		codeadd = NULL;
-		finalcode[0] = '\0';
 		defcount = 0;
 		while (1)
 		{
 		    if (defcount++ > 500)
 		    {
-			fprintf(stderr, "(%d) Infinitely repeating definition or too many instances of a definition\n",
+				fprintf(stderr, "(%d) Infinitely repeating definition or too many instances of a definition\n",
 				bbgetline());
-			exit(1);
+				exit(1);
 		    }
 		    codeadd = strstr(mycode, def[i]);
-		    if (codeadd == NULL)
-			break;
-		    for (j = 0; j < 500; ++j)
-			finalcode[j] = '\0';
-		    strncpy(finalcode, mycode, strlen(mycode) - strlen(codeadd));
-		    strcat(finalcode, defr[i]);
-		    strcat(finalcode, codeadd + strlen(def[i]));
+		    if (codeadd == NULL) break;
+		    char finalcode[500];
+		    snprintf(finalcode, sizeof(finalcode) - 1, "%s%s%s", mycode, defr[i], codeadd + strlen(def[i]));
 		    strcpy(mycode, finalcode);
 		}
 	    }
