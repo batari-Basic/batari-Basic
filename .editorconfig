@@ -1,9 +1,21 @@
 # editorconfig.org
 root = true
 
-[{*.c,*.cpp,*.h,makefile}]
+[{*.c,*.cpp,*.h,*.asm,makefile}]
 trim_trailing_whitespace = true
 insert_final_newline = true
+
+[{*.c,*.cpp,*.h}]
 end_of_line = crlf
+indent_style = space
+indent_size = 2
+
+[{*.asm}]
+end_of_line = crlf
+indent_style = tab
+indent_size = 8
+
+[{makefile}]
+end_of_line = lf
 indent_style = tab
 indent_size = 4
