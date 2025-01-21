@@ -5548,7 +5548,7 @@ int isimmed(char *value)
 {
     // search queue of constants
     int i;
-    // removeCR(value);
+    removeCR(value);
     for (i = 0; i < numconstants; ++i)
     {
 	if (!strcmp(value, constants[i]))
