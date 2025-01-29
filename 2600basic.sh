@@ -3,7 +3,7 @@
 # do some quick sanity checking...
 
 if [ ! "$bB" ] ; then
-  echo "### WARNING: the bB envionronment variable isn't set."
+  echo "### WARNING: the 'bB' environment variable isn't set."
 fi
 
 OSTYPE=$(uname -s)
