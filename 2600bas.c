@@ -88,32 +88,60 @@ int main(int argc, char *argv[])
 
 	// look for defines and remember them
 	strcpy(mycode, code);
-	for (i = 0; i < 500; ++i)
-	    if (code[i] == ' ')
+        int k_def_search; // Use a different loop variable to avoid conflict with outer 'i'
+        for (k_def_search = 0; k_def_search < 495; ++k_def_search)
+	    if (code[k_def_search] == ' ')
 		break;
-	if (code[i + 1] == 'd' && code[i + 2] == 'e' && code[i + 3] == 'f' && code[i + 4] == ' ')
+        if (k_def_search < 495 && code[k_def_search] == ' ' && /* Ensure space was found */
+            (k_def_search + 4 < 499) && /* Bounds check for code access */
+        code[k_def_search + 1] == 'd' && code[k_def_search + 2] == 'e' && 
+        code[k_def_search + 3] == 'f' && code[k_def_search + 4] == ' ')
 	{			// found a define
-	    i += 5;
-	    for (j = 0; code[i] != ' '; i++)
+	    int current_pos = k_def_search + 5; // current_pos now points to start of define name.
+
+	    if (defi >= 249) { // Max 250 defines (0-249)
+	        fprintf(stderr, "(%d) ERROR: Maximum number of defines (250) reached.\n", bbgetline());
+	        exit(1);
+	    }
+
+	    for (j = 0; current_pos < 499 && code[current_pos] != ' ' && code[current_pos] != '\0' && code[current_pos] != '\n' && code[current_pos] != '\r'; current_pos++)
 	    {
-		def[defi][j++] = code[i];	// get the define
+	        if (j >= 99) {
+	            fprintf(stderr, "(%d) ERROR: Define name too long (max 99 chars).\n", bbgetline());
+		    exit(1);
+		}
+		def[defi][j++] = code[current_pos];
 	    }
 	    def[defi][j] = '\0';
 
-	    i += 3;
+	    if (j == 0) { // Empty define name
+	        fprintf(stderr, "(%d) ERROR: Malformed define statement. Empty define name.\n", bbgetline());
+	         exit(1);
+	    }
 
-	    for (j = 0; code[i] != '\0'; i++)
+	    // Expect " = " sequence after define name
+	    if (!(current_pos < 497 && code[current_pos] == ' ' && code[current_pos+1] == '=' && code[current_pos+2] == ' ')) {
+	        fprintf(stderr, "(%d) ERROR: Malformed define statement. Expected \" = \" after define name '%s'.\n", bbgetline(), def[defi]);
+		exit(1);
+	    }
+	    current_pos += 3; // Skip " = "
+
+	    for (j = 0; current_pos < 499 && code[current_pos] != '\0' && code[current_pos] != '\n' && code[current_pos] != '\r'; current_pos++)
 	    {
-		defr[defi][j++] = code[i];	// get the definition
+	        if (j >= 99) {
+	            fprintf(stderr, "(%d) ERROR: Define replacement string too long (max 99 chars) for define '%s'.\n", bbgetline(), def[defi]);
+	            exit(1);
+	        }
+	        defr[defi][j++] = code[current_pos];
 	    }
 	    defr[defi][j] = '\0';
 	    removeCR(defr[defi]);
-	    printf(";.%s.%s.\n", def[defi], defr[defi]);
+	    printf (";PARSED_DEFINE: .%s. = .%s.\n", def[defi], defr[defi]); // Clarified debug print
 	    defi++;
 	}
-	else if (defi)
+	else if (defi) // This 'i' refers to the outer loop variable for iterating through existing defines
 	{
-	    for (i = 0; i < defi; ++i)
+	    for (int def_idx = 0; def_idx < defi; ++def_idx) // Use new loop var def_idx
 	    {
 		codeadd = NULL;
 		finalcode[0] = '\0';
@@ -126,14 +154,14 @@ int main(int argc, char *argv[])
 				bbgetline());
 			exit(1);
 		    }
-		    codeadd = strstr(mycode, def[i]);
+		    codeadd = strstr (mycode, def[def_idx]);
 		    if (codeadd == NULL)
 			break;
 		    for (j = 0; j < 500; ++j)
 			finalcode[j] = '\0';
 		    strncpy(finalcode, mycode, strlen(mycode) - strlen(codeadd));
-		    strcat(finalcode, defr[i]);
-		    strcat(finalcode, codeadd + strlen(def[i]));
+		    strcat (finalcode, defr[def_idx]);
+		    strcat (finalcode, codeadd + strlen (def[def_idx]));
 		    strcpy(mycode, finalcode);
 		}
 	    }

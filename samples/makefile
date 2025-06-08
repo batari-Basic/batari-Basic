@@ -1,7 +1,7 @@
 # The bB generic-Unix makefile. Should work with most unixy OSes.
 
 
-all: 64kbb  64kbranchbug  64kSC  dpcpfread  msdpc  zombie_chase bbstarfield
+all: 64kbb  64kbranchbug  64kSC  dpcpfread  msdpc  zombie_chase bbstarfield languagetest
 
 test:
 	./make_test.sh
@@ -20,6 +20,8 @@ zombie_chase: zombie_chase.bas
 	2600basic.sh zombie_chase.bas
 bbstarfield: bbstarfield.bas
 	2600basic.sh bbstarfield.bas
+languagetest: languagetest.bas
+	2600basic.sh languagetest.bas
 
 clean:
 	rm -f *.bin *.sym *.lst *.asm 2600basic_variable_redefs.h includes.bB

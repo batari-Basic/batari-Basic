@@ -139,23 +139,23 @@ int linenumber=1;
 "}"          printf("%s", yytext);  
 
 
-","            printf(" %s ", yytext);  
-"("            printf(" %s ", yytext);  
-")"            printf(" %s ", yytext);  
-">="            printf(" %s ", yytext);  
-"<="            printf(" %s ", yytext);  
-"="            printf(" %s ", yytext);  
-"<>"            printf(" %s ", yytext);  
-"<"            printf(" %s ", yytext);  
-"+"            printf(" %s ", yytext);  
-"-"            printf(" %s ", yytext);  
-"/"+            printf(" %s ", yytext);  
-"*"+            printf(" %s ", yytext);  
-">"            printf(" %s ", yytext);  
-":"            printf(" %s ", yytext);  
-"&"+          printf(" %s ", yytext);  
-"|"+          printf(" %s ", yytext);  
-"^"          printf(" %s ", yytext);  
+","              printf(" %s ", yytext);  
+"("              printf(" %s ", yytext);  
+")"              printf(" %s ", yytext);  
+">="             printf(" %s ", yytext);  
+"<="             printf(" %s ", yytext);  
+[ \t]*"="[ \t]*  printf(" = "); 
+"<>"             printf(" %s ", yytext);  
+"<"              printf(" %s ", yytext);  
+"+"              printf(" %s ", yytext);  
+"-"              printf(" %s ", yytext);  
+"/"+             printf(" %s ", yytext);  
+"*"+             printf(" %s ", yytext);  
+">"              printf(" %s ", yytext);  
+":"              printf(" %s ", yytext);  
+"&"+             printf(" %s ", yytext);  
+"|"+             printf(" %s ", yytext);  
+"^"              printf(" %s ", yytext);  
 
 [A-Z]+ printf("%s",yytext);
 [a-z]+       {       printf("%s", yytext);}
