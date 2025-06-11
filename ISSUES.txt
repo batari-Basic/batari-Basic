@@ -34,8 +34,8 @@ _Known_Issues_
   overview:   PAL pfres linecount bug.
   details:    Using "set tv pal" with standard kernel and pfres
               causes incorrect scanline counts for certian pfres values.
-              workaround: use a value that provides a correct linecount, or
-              use pal60 instead.
+  workaround: use a value that provides a correct linecount, or use pal60
+              instead.
 
   overview:   DPC+ double-line bug
   details:    In higher resolutions in the DPC+ kernel, the top PF line is
