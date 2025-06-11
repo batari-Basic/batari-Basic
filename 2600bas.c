@@ -99,8 +99,8 @@ int main(int argc, char *argv[])
 	{			// found a define
 	    int current_pos = k_def_search + 5; // current_pos now points to start of define name.
 
-	    if (defi >= 249) { // Max 250 defines (0-249)
-	        fprintf(stderr, "(%d) ERROR: Maximum number of defines (250) reached.\n", bbgetline());
+	    if (defi >= 499) { // Max 500 defines (0-499)
+	        fprintf(stderr, "(%d) ERROR: Maximum number of defines (500) reached.\n", bbgetline());
 	        exit(1);
 	    }
 
