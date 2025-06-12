@@ -7,13 +7,14 @@
 #include "statements.h"
 #include "keywords.h"
 #include <math.h>
-#define BB_VERSION_INFO "batari Basic v1.7 (c)2022\n"
+#define BB_VERSION_INFO "batari Basic v1.7 (c)2025\n"
 
 extern int bank;
 
 extern int bs;
 extern int numconstants;
 extern int playfield_index[];
+extern int line;
 
 int main(int argc, char *argv[])
 {
@@ -141,7 +142,8 @@ int main(int argc, char *argv[])
 	}
 	else if (defi) // This 'i' refers to the outer loop variable for iterating through existing defines
 	{
-	    for (int def_idx = 0; def_idx < defi; ++def_idx) // Use new loop var def_idx
+            int def_idx;
+	    for (def_idx = 0; def_idx < defi; ++def_idx) // Use new loop var def_idx
 	    {
 		codeadd = NULL;
 		finalcode[0] = '\0';
@@ -216,7 +218,7 @@ int main(int argc, char *argv[])
 
 	}
 	if (strncmp(statement[0], "end\0", 3))
-	    printf(".%s ; %s\n", statement[0], displaycode);	//    printf(".%s ; %s\n",statement[0],code);
+            printf (".%s ;;line %d;; %s\n", statement[0], line, displaycode);
 	else
 	    doend();
 
