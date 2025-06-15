@@ -10,13 +10,21 @@ postprocess -i "%bB%" | optimize >"%~f1.asm"
 :nooptimize
 
 dasm "%~f1.asm" -I"%bB%"/includes -f3 -l"%~f1.lst" -s"%~f1.sym" -o"%~f1.bin" | bbfilter
+if errorlevel 1 goto dasmerror
+
+relocateBB.exe "%~f1.bin" 2>NUL
 
 goto end
 
 :nobb
 echo bB environment variable not set.
+goto end
 
 :bBerror
 echo Compilation failed.
+goto end
+
+:dasmerror
+echo Assembly failed.
 
 :end

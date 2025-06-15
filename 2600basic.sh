@@ -29,6 +29,17 @@ if [ ! $? = 1 ] ; then
   exit 1
 fi
 
+#do relocateBB separately, because it's distributed separately
+for RELOCATEBBEXT in "" .$OSTYPE.x86 .$OSTYPE.x64 .$OSTYPE.$ARCH .$OSTYPE ; do
+  relocateBB$RELOCATEBBEXT 2>/dev/null >&2 
+  [ $? = 0 ] && break
+done
+relocateBB$RELOCATEBBEXT 2>/dev/null >&2 
+if [ $? = 0 ] ; then
+   echo "got here!!!"
+   RELOCATEBB=relocateBB$RELOCATEBBEXT
+fi
+
 if [ "$1" = "-v" ] ; then
   #this is just a version check. pass it along to the 2600basic binary
   2600basic$EXT -v
@@ -46,17 +57,19 @@ if [ "$?" -ne "0" ]
   echo "Compilation failed."
   exit
 fi
-if [ "$2" = "-O" ]
-  then
-   postprocess$EXT -i "$bB" | optimize$EXT>$1.asm
+if [ "$2" = "-O" ] ; then
+    postprocess$EXT -i "$bB" | optimize$EXT>$1.asm
   else
-   postprocess$EXT -i "$bB" >$1.asm
+    postprocess$EXT -i "$bB" >$1.asm
 fi
 dasm$DASMEXT $1.asm -I"$bB/includes" -f3 -l$1.lst -s$1.sym -o$1.bin | bbfilter$EXT
-if [ "$?" -ne "0" ]
- then
-  echo "Assembly failed."
-  exit
+if [ "$?" -ne "0" ] ; then
+   echo "Assembly failed."
+   exit
+ else
+   if [ "$RELOCATEBB" ] ; then
+     $RELOCATEBB $1.bin
+   fi
 fi
 echo "Build complete."
 exit

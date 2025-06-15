@@ -1,4 +1,4 @@
-Batari BASIC v1.7 - a Basic Compiler for the Atari 2600
+Batari BASIC v1.8 - a Basic Compiler for the Atari 2600
 
 	Copyright 2005-2013 by Fred Quimby
 

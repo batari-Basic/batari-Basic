@@ -7,7 +7,7 @@
 #include "statements.h"
 #include "keywords.h"
 #include <math.h>
-#define BB_VERSION_INFO "batari Basic v1.7 (c)2025\n"
+#define BB_VERSION_INFO "batari Basic v1.8 (c)2025\n"
 
 extern int bank;
 
