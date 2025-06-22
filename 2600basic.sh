@@ -55,7 +55,7 @@ preprocess$EXT<$1 | 2600basic$EXT -i "$bB" >bB.asm
 if [ "$?" -ne "0" ]
  then
   echo "Compilation failed."
-  exit
+  exit 1
 fi
 if [ "$2" = "-O" ] ; then
     postprocess$EXT -i "$bB" | optimize$EXT>$1.asm
@@ -65,7 +65,7 @@ fi
 dasm$DASMEXT $1.asm -I"$bB/includes" -f3 -l$1.lst -s$1.sym -o$1.bin | bbfilter$EXT
 if [ "$?" -ne "0" ] ; then
    echo "Assembly failed."
-   exit
+   exit 1
  else
    if [ "$RELOCATEBB" ] ; then
      $RELOCATEBB $1.bin
