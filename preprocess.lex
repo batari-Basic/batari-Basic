@@ -59,7 +59,6 @@ int linenumber=1;
 <asm>";".* ;
 <asm>"/*" {BEGIN(asm_mcomment);}
 <asm>"\nend" {linenumber++;printf("\nend");BEGIN(INITIAL);}
-<asm>"\n" {linenumber++;printf("\n");}
 <asm_mcomment>"*/" {BEGIN(asm);}
 <asm_mcomment>. ;
 
@@ -70,7 +69,6 @@ int linenumber=1;
 <sdata>";".* ;
 <sdata>"/*" {BEGIN(sdata_mcomment);}
 <sdata>"\nend" {linenumber++;printf("\nend");BEGIN(INITIAL);}
-<sdata>"\n" {linenumber++;printf("\n");}
 <sdata_mcomment>"*/" {BEGIN(sdata);}
 <sdata_mcomment>. ;
 
@@ -79,7 +77,6 @@ int linenumber=1;
 <data>";".* ;
 <data>"/*" {BEGIN(data_mcomment);}
 <data>"\nend" {linenumber++;printf("\nend");BEGIN(INITIAL);}
-<data>"\n" {linenumber++;printf("\n");}
 <data_mcomment>"*/" {BEGIN(data);}
 <data_mcomment>. ;
 
@@ -92,7 +89,6 @@ int linenumber=1;
 <player>";".* ;
 <player>"/*" {BEGIN(player_mcomment);}
 <player>"\nend" {linenumber++;printf("\nend");BEGIN(INITIAL);}
-<player>"\n" {linenumber++;printf("\n");}
 <player_mcomment>"*/" {BEGIN(player);}
 <player_mcomment>. ;
 
@@ -100,7 +96,6 @@ int linenumber=1;
 <lives>";".* ;
 <lives>"/*" {BEGIN(lives_mcomment);}
 <lives>"\nend" {linenumber++;printf("\nend");BEGIN(INITIAL);}
-<lives>"\n" {linenumber++;printf("\n");}
 <lives_mcomment>"*/" {BEGIN(lives);}
 <lives_mcomment>. ;
 
@@ -109,7 +104,6 @@ int linenumber=1;
 <scorecolors>";".* ;
 <scorecolors>"/*" {BEGIN(scorecolors_mcomment);}
 <scorecolors>"\nend" {linenumber++;printf("\nend");BEGIN(INITIAL);}
-<scorecolors>"\n" {linenumber++;printf("\n");}
 <scorecolors_mcomment>"*/" {BEGIN(scorecolors);}
 <scorecolors_mcomment>. ;
 
@@ -117,7 +111,6 @@ int linenumber=1;
 <playercolor>";".* ;
 <playercolor>"/*" {BEGIN(playercolor_mcomment);}
 <playercolor>"\nend" {linenumber++;printf("\nend");BEGIN(INITIAL);}
-<playercolor>"\n" {linenumber++;printf("\n");}
 <playercolor_mcomment>"*/" {BEGIN(playercolor);}
 <playercolor_mcomment>. ;
 
@@ -131,7 +124,6 @@ int linenumber=1;
 <playfield>";".* ;
 <playfield>"/*" {BEGIN(playfield_mcomment);}
 <playfield>"\nend" {linenumber++;printf("\nend");BEGIN(INITIAL);}
-<playfield>"\n" {linenumber++;printf("\n");}
 <playfield_mcomment>"*/" {BEGIN(playfield);}
 <playfield_mcomment>. ;
 
@@ -140,7 +132,6 @@ int linenumber=1;
 <pfcolors>";".* ;
 <pfcolors>"/*" {BEGIN(pfcolors_mcomment);}
 <pfcolors>"\nend" {linenumber++;printf("\nend");BEGIN(INITIAL);}
-<pfcolors>"\n" {linenumber++;printf("\n");}
 <pfcolors_mcomment>"*/" {BEGIN(pfcolors);}
 <pfcolors_mcomment>. ;
 
@@ -149,7 +140,6 @@ int linenumber=1;
 <bkcolors>";".* ;
 <bkcolors>"/*" {BEGIN(bkcolors_mcomment);}
 <bkcolors>"\nend" {linenumber++;printf("\nend");BEGIN(INITIAL);}
-<bkcolors>"\n" {linenumber++;printf("\n");}
 <bkcolors_mcomment>"*/" {BEGIN(bkcolors);}
 <bkcolors_mcomment>. ;
 
@@ -158,7 +148,6 @@ int linenumber=1;
 <pfheights>";".* ;
 <pfheights>"/*" {BEGIN(pfheights_mcomment);}
 <pfheights>"\nend" {linenumber++;printf("\nend");BEGIN(INITIAL);}
-<pfheights>"\n" {linenumber++;printf("\n");}
 <pfheights_mcomment>"*/" {BEGIN(pfheights);}
 <pfheights_mcomment>. ;
 
