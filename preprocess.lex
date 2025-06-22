@@ -1,8 +1,8 @@
 %{
-#include <stdlib.h>  
+#include <stdlib.h>
 int linenumber=1;
-//void yyerror(char *);  
-%}    
+//void yyerror(char *);
+%}
 %x mcomment
 %x scomment
 %x endmcomment
@@ -21,7 +21,7 @@ int linenumber=1;
 %x pfheights
 %x includes
 %x collision
-%%    
+%%
 [ \t]+ putchar(' ');
 [ \t\r]+$
 
@@ -50,7 +50,7 @@ int linenumber=1;
 
 "_sdata"            printf("%s", yytext);
 "sdata" {printf("%s",yytext);BEGIN(sdata);}
-<sdata>"=" printf(" %s ", yytext);  
+<sdata>"=" printf(" %s ", yytext);
 <sdata>[ \t]+ putchar(' ');
 <sdata>^"\nend" printf("%s",yytext);
 <sdata>"\nend" {linenumber++;printf("\nend");BEGIN(INITIAL);}
@@ -127,35 +127,35 @@ int linenumber=1;
 ".asm" printf("%s",yytext);
 "extra"[0-9]+: printf("%s",yytext);
 "step"[ ]+"-" printf("step -");
-"#"            printf("%s", yytext);  
-"$"            printf("%s", yytext);  
-"%"            printf("%s", yytext);  
-"["            printf("%s", yytext);  
-"]"            printf("%s", yytext);  
-"!"            printf("%s", yytext);  
-"."            printf("%s", yytext);  
-"_"            printf("%s", yytext);  
-"{"          printf("%s", yytext);  
-"}"          printf("%s", yytext);  
+"#"            printf("%s", yytext);
+"$"            printf("%s", yytext);
+"%"            printf("%s", yytext);
+"["            printf("%s", yytext);
+"]"            printf("%s", yytext);
+"!"            printf("%s", yytext);
+"."            printf("%s", yytext);
+"_"            printf("%s", yytext);
+"{"          printf("%s", yytext);
+"}"          printf("%s", yytext);
 
 
-","              printf(" %s ", yytext);  
-"("              printf(" %s ", yytext);  
-")"              printf(" %s ", yytext);  
-">="             printf(" %s ", yytext);  
-"<="             printf(" %s ", yytext);  
-[ \t]*"="[ \t]*  printf(" = "); 
-"<>"             printf(" %s ", yytext);  
-"<"              printf(" %s ", yytext);  
-"+"              printf(" %s ", yytext);  
-"-"              printf(" %s ", yytext);  
-"/"+             printf(" %s ", yytext);  
-"*"+             printf(" %s ", yytext);  
-">"              printf(" %s ", yytext);  
-":"              printf(" %s ", yytext);  
-"&"+             printf(" %s ", yytext);  
-"|"+             printf(" %s ", yytext);  
-"^"              printf(" %s ", yytext);  
+","              printf(" %s ", yytext);
+"("              printf(" %s ", yytext);
+")"              printf(" %s ", yytext);
+">="             printf(" %s ", yytext);
+"<="             printf(" %s ", yytext);
+[ \t]*"="[ \t]*  printf(" = ");
+"<>"             printf(" %s ", yytext);
+"<"              printf(" %s ", yytext);
+"+"              printf(" %s ", yytext);
+"-"              printf(" %s ", yytext);
+"/"+             printf(" %s ", yytext);
+"*"+             printf(" %s ", yytext);
+">"              printf(" %s ", yytext);
+":"              printf(" %s ", yytext);
+"&"+             printf(" %s ", yytext);
+"|"+             printf(" %s ", yytext);
+"^"              printf(" %s ", yytext);
 
 [A-Z]+ printf("%s",yytext);
 [a-z]+       {       printf("%s", yytext);}
@@ -163,5 +163,5 @@ int linenumber=1;
 [\n] {printf("\n"); linenumber++;}
 .               {fprintf(stderr,"(%d) Parse error: unrecognized character \"%s\"\n",linenumber,yytext);  exit(1);}
 %%
-  int yywrap(void) {      return 1;  } 
+  int yywrap(void) {      return 1;  }
 int main(){yylex();}
