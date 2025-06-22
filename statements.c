@@ -3278,7 +3278,7 @@ void doif(char **statement)
 	}
     }
 
-    if ((!strncmp(statement[2], "joy\0", 3)) || (!strncmp(statement[2], "switch\0", 6)))
+    if ((!strncmp(statement[2], "joy0\0", 4)) || (!strncmp (statement[2], "joy1\0", 4)) || (!strncmp(statement[2], "switch\0", 6)))
     {
 	i = switchjoy(statement[2]);
 	if (!islabel(statement))
