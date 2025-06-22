@@ -36,7 +36,6 @@ for RELOCATEBBEXT in "" .$OSTYPE.x86 .$OSTYPE.x64 .$OSTYPE.$ARCH .$OSTYPE ; do
 done
 relocateBB$RELOCATEBBEXT 2>/dev/null >&2 
 if [ $? = 0 ] ; then
-   echo "got here!!!"
    RELOCATEBB=relocateBB$RELOCATEBBEXT
 fi
 
