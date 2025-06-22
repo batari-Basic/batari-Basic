@@ -5115,6 +5115,11 @@ void gosub(char **statement)
     printf("ret_point%d\n", numjsrs);
 }
 
+void rerand()
+{
+    jsr("randomize");
+}
+
 void set(char **statement)
 {
     int i;

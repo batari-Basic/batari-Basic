@@ -32,6 +32,7 @@ void sdata(char **);
 void newbank(int);
 void dogoto(char **);
 void doif(char **);
+void rerand();
 void function(char **);
 void add_inline(char *);
 void add_includes(char *);

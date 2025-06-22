@@ -343,6 +343,8 @@ void keywords(char **cstatement)
 	    pfscroll(statement);
 	else if (!strncmp(statement[1], "drawscreen\0", 10))
 	    drawscreen();
+	else if (!strncmp(statement[1], "rerand\0", 6))
+	    rerand();
 	else if (!strncmp(statement[1], "asm\0", 4))
 	    doasm();
 	else if (!strncmp(statement[1], "pop\0", 4))
