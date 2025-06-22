@@ -4681,6 +4681,16 @@ void dolet(char **cstatement)
     else
     {				// This is generic x=num or var
 
+	// before emitting the initial LDA, we need to check if it's a multiply by
+	// constant with the constant in the inconvenient position, and swap if so.
+	if ((statement[5][0] == '*') && (isimmed(statement[4]) && !isimmed(statement[6]) && checkmul(atoi(statement[4])) ))
+	{
+		// swap operands to avoid mul routine
+		strcpy(operandcopy, statement[4]); // temp save
+		strcpy(statement[4], statement[6]);
+		strcpy(statement[6], operandcopy);
+	}
+
 	if (!Aregmatch)		// do we already have the correct value in A?
 	{
 	    if (index & 2)
@@ -4876,13 +4886,6 @@ void dolet(char **cstatement)
 	}
 	else if (statement[5][0] == '*')
 	{
-	    if (isimmed(statement[4]) && !isimmed(statement[6]) && checkmul(atoi(statement[4])))
-	    {
-		// swap operands to avoid mul routine
-		strcpy(operandcopy, statement[4]);	// place here temporarily
-		strcpy(statement[4], statement[6]);
-		strcpy(statement[6], operandcopy);
-	    }
 	    if (fixpoint2 == 4)
 		printf("	LDA %s\n", statement[4]);
 	    if ((!isimmed(statement[6])) || (!checkmul(atoi(statement[6]))))
