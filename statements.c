@@ -5541,7 +5541,7 @@ void drawscreen()
 
 void prerror(char *myerror)
 {
-    fprintf(stderr, "(%d): %s\n", line, myerror);
+    fprintf(stderr, "line %d: %s\n", line, myerror);
 }
 
 int printimmed(char *value)
