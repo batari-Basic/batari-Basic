@@ -1,4 +1,8 @@
 #!/bin/sh
+
+# On macOS, use curl instead of wget.
+[ "$(uname -s)" = "Darwin" ] && FETCH="curl -s -O -L" || FETCH="wget"
+
 RELEASE=2.20.14.1
 BASEURL=https://github.com/dasm-assembler/dasm/releases/download/$RELEASE
 for OSARCH in linux@Linux osx@Darwin win@win ; do
@@ -6,15 +10,15 @@ for OSARCH in linux@Linux osx@Darwin win@win ; do
 		OS=$(echo $OSARCH | cut -d@ -f1)
 		ARCH=$(echo $OSARCH| cut -d@ -f2)
 		if [ $OS = win ] ; then
-			wget $BASEURL/dasm-$RELEASE-$OS-$BITS.zip
+			$FETCH $BASEURL/dasm-$RELEASE-$OS-$BITS.zip
 			unzip dasm-$RELEASE-win-$BITS.zip
 			cp dasm.exe ../dasm.Windows.$BITS.exe
 			mv dasm.exe ../dasm.exe
 			rm dasm-$RELEASE-win-$BITS.zip
 			rm -fr machines
 		else
-			wget $BASEURL/dasm-$RELEASE-$OS-$BITS.tar.gz
-			tar -xvzf dasm-$RELEASE-$OS-$BITS.tar.gz dasm 
+			$FETCH $BASEURL/dasm-$RELEASE-$OS-$BITS.tar.gz
+			tar -xvzf dasm-$RELEASE-$OS-$BITS.tar.gz dasm
 			rm -f ../dasm.$ARCH.$BITS
 			mv dasm ../dasm.$ARCH.$BITS
 			rm dasm-$RELEASE-$OS-$BITS.tar.gz
