@@ -9,7 +9,7 @@ end_of_address_space
  incbin "PXE-post.arm"
 
     SEG.U
-    rorg $000e
+    rorg $000a
 Paddle0 ds 1
 Paddle1 ds 1
 
