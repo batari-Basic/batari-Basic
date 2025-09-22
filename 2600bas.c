@@ -12,6 +12,7 @@
 extern int bank;
 
 extern int bs;
+extern int isPXE;
 extern int numconstants;
 extern int playfield_index[];
 extern int line;
@@ -235,15 +236,18 @@ int main(int argc, char *argv[])
     barf_sprite_data();
 
     printf(" if ECHOFIRST\n");
-    if (bs == 28)
-	printf("       echo \"    \",[(DPC_graphics_end - *)]d , \"bytes of ROM space left");
-    else
+    if (bs == 28){
+        if(isPXE)
+            printf("       echo \"    \",[(end_of_address_space - *)]d , \"bytes of ROM space left");
+        else
+            printf("       echo \"    \",[(DPC_graphics_end - *)]d , \"bytes of ROM space left");
+    } else
 	printf("       echo \"    \",[(scoretable - *)]d , \"bytes of ROM space left");
     if (bs == 8)
 	printf(" in bank 2");
     if (bs == 16)
 	printf(" in bank 4");
-    if (bs == 28)
+    if (bs == 28 & !isPXE)
 	printf(" in graphics bank");
     if (bs == 32)
 	printf(" in bank 8");

@@ -154,6 +154,10 @@ INPT3       ds 1    ; $0B       x000 0000       Read Pot Port 3
 INPT4       ds 1    ; $0C		x000 0000       Read Input (Trigger) 0
 INPT5       ds 1	; $0D		x000 0000       Read Input (Trigger) 1
 
+					;Used by PXE for Quadtari support
+INPT6       ds 1    ; $0E		x000 0000       Read Input (Trigger) 2
+INPT7       ds 1	; $0F		x000 0000       Read Input (Trigger) 3
+
 ;-------------------------------------------------------------------------------
 
 			SEG.U RIOT
@@ -171,9 +175,9 @@ INTIM       ds 1    ; $284		Timer output
 
 TIMINT  	ds 1	; $285
 
-		; Unused/undefined registers ($285-$294)
+SWCHA2		ds 1	; $286		Used by PXE for Quadtari support
 
-			ds 1	; $286
+; Unused/undefined registers ($287-$294)
 			ds 1	; $287
 			ds 1	; $288
 			ds 1	; $289
