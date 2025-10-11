@@ -247,7 +247,7 @@ int main(int argc, char *argv[])
 	printf(" in bank 2");
     if (bs == 16)
 	printf(" in bank 4");
-    if (bs == 28 & !isPXE)
+    if ((bs == 28) && !isPXE)
 	printf(" in graphics bank");
     if (bs == 32)
 	printf(" in bank 8");
