@@ -236,7 +236,7 @@ void bkcolors(char **statement)
 	printf("	LDA #<%s\n", label);
 	printf("	STA PARAMETER\n");
 	if(isPXE) {
-		printf("	LDA #>%s\n", label, label);	// DPC+
+		printf("	LDA #>%s\n", label);	// DPC+
 	} else {
 		printf("	LDA #((>%s) & $0f) | (((>%s) / 2) & $70)\n", label, label);	// DPC+
 	}
@@ -407,7 +407,7 @@ void playfieldcolorandheight(char **statement)
 	    printf("	LDA #<%s\n", label);
 	    printf("	STA PARAMETER\n");
 		if(isPXE) {
-		    printf("	LDA #>%s\n", label, label);	// DPC+
+		    printf("	LDA #>%s\n", label);	// DPC+
 		} else {
 			printf("	LDA #((>%s) & $0f) | (((>%s) / 2) & $70)\n", label, label);	// DPC+
 		}
@@ -771,7 +771,7 @@ void playfield(char **statement)
 	printf(" ldy #%d\n", l & 0xff); // truncate 256 to 0 to avoid needing to pfscroll to set the last byte in the buffer
 	printf("	LDA #<PF_data%d\n", playfield_number);
 	if(isPXE) {
-	    printf("	LDX #>PF_data%d\n", playfield_number, playfield_number);
+	    printf("	LDX #>PF_data%d\n", playfield_number);
 		printf(" jsr pfsetup%d\n", bytesPerLine);
 	} else {
 		printf("	LDX #((>PF_data%d) & $0f) | (((>PF_data%d) / 2) & $70)\n", playfield_number, playfield_number);
@@ -2834,7 +2834,7 @@ void pfscroll(char **statement)
 			}
 			else
 			{
-				printf(" LDA #1\n", statement[2]);
+				printf(" LDA #1\n");
 			}
 			jsr("pfscroll_right");
 			return;
@@ -2847,7 +2847,7 @@ void pfscroll(char **statement)
 			}
 			else
 			{
-				printf(" LDA #1\n", statement[2]);
+				printf(" LDA #1\n");
 			}
 			jsr("pfscroll_left");
 			return;
@@ -2860,7 +2860,7 @@ void pfscroll(char **statement)
 			}
 			else
 			{
-				printf(" LDA #1\n", statement[2]);
+				printf(" LDA #1\n");
 			}
 			jsr("pfscroll_down");
 			return;
@@ -2873,7 +2873,7 @@ void pfscroll(char **statement)
 			}
 			else
 			{
-				printf(" LDA #1\n", statement[2]);
+				printf(" LDA #1\n");
 			}
 			jsr("pfscroll_up");
 			return;
@@ -3106,7 +3106,7 @@ void player(char **statement)
     }
     if (multisprite == 2)
 	if(isPXE) {
-		printf("	LDA #>%s\n", label, label);	// PXE
+		printf("	LDA #>%s\n", label);	// PXE
 	} else {
 		printf("	LDA #((>%s) & $0f) | (((>%s) / 2) & $70)\n", label, label);	// DPC+
 	}
