@@ -24,5 +24,5 @@ languagetest: languagetest.bas
 	2600basic.sh languagetest.bas
 
 clean:
-	rm -f *.bin *.sym *.lst *.asm 2600basic_variable_redefs.h includes.bB
+	rm -f *.bin *.sym *.lst *.asm *.ace 2600basic_variable_redefs.h includes.bB
 

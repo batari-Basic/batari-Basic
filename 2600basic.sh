@@ -1,75 +1,56 @@
 #!/bin/sh
+# 2600basic compilation script (wasm)
 
 # do some quick sanity checking...
-
 if [ ! "$bB" ] ; then
-  echo "### WARNING: the 'bB' environment variable isn't set."
+  echo "### WARNING: the bB envionronment variable isn't set."
 fi
 
-OSTYPE=$(uname -s)
-ARCH=$(uname -m)
-for EXT in "" .$OSTYPE.x86 .$OSTYPE.x64 .$OSTYPE.$ARCH .$OSTYPE ; do
-  echo | preprocess$EXT 2>/dev/null >&2 && break
-done
-
-echo | preprocess$EXT 2>/dev/null >&2 && break
+wasmtime --version 2>&1 > /dev/null
 if [ ! $? = 0 ] ; then
-  echo "### ERROR: couldn't find bB binaries for $OSTYPE($ARCH). Exiting."
-  exit 1
+    echo "### WARNING: wasmtime isn't in your PATH."
+    echo "    You can install it as follows:"
+    echo "      macOS/Linux: curl https://wasmtime.dev/install.sh -sSf | bash"
+    echo "    See https://wasmtime.dev for other installation options."
+    exit 1
 fi
 
-#do dasm separately, because it's distributed separately
-for DASMEXT in .$OSTYPE.x86 .$OSTYPE.x64 .$OSTYPE.$ARCH .$OSTYPE "" ; do
-  dasm$DASMEXT 2>/dev/null >&2 
-  [ $? = 1 ] && break
-done
-dasm$DASMEXT 2>/dev/null >&2 
-if [ ! $? = 1 ] ; then
-  echo "### ERROR: couldn't find dasm binary for $OSTYPE($ARCH). Exiting."
-  exit 1
-fi
+echo "  basic version:  "$(wasmtime $bB/2600basic.wasm -v 2>/dev/null)
 
-#do relocateBB separately, because it's distributed separately
-for RELOCATEBBEXT in "" .$OSTYPE.x86 .$OSTYPE.x64 .$OSTYPE.$ARCH .$OSTYPE ; do
-  relocateBB$RELOCATEBBEXT 2>/dev/null >&2 
-  [ $? = 0 ] && break
-done
-relocateBB$RELOCATEBBEXT 2>/dev/null >&2 
-if [ $? = 0 ] ; then
-   RELOCATEBB=relocateBB$RELOCATEBBEXT
-fi
+echo "  "dasm version:"  " $(wasmtime $bB/dasm.wasm 2>/dev/null| head -n1)
 
 if [ "$1" = "-v" ] ; then
-  #this is just a version check. pass it along to the 2600basic binary
-  2600basic$EXT -v
+  #this is just a version check. we already displayed the version earlier,
+  #so just exit.
   exit
 fi
-  
-DV=$(dasm$DASMEXT 2>/dev/null | grep ^DASM | head -n1)
-echo "Found dasm version: $DV"
+
+if [ ! -f "$1" ]; then
+    echo "### ERROR: Source file \"$1\" not found."
+    exit 2
+fi
+
+echo
 
 echo "Starting build of $1"
-preprocess$EXT<$1 | 2600basic$EXT -i "$bB" >bB.asm
-#preprocess$EXT<$1 | valgrind --leak-check=yes 2600basic$EXT -i "$bB" >bB.asm
+ wasmtime run --dir=. --dir="$bB" "$bB/preprocess.wasm" <"$1" | \
+ wasmtime run --dir=. --dir="$bB"  "$bB/2600basic.wasm" -i "$bB" > bB.asm
+
 if [ "$?" -ne "0" ]
  then
   echo "Compilation failed."
-  exit 1
+  exit
 fi
-if [ "$2" = "-O" ] ; then
-    postprocess$EXT -i "$bB" | optimize$EXT>$1.asm
-  else
-    postprocess$EXT -i "$bB" >$1.asm
-fi
-dasm$DASMEXT $1.asm -I"$bB/includes" -f3 -l$1.lst -s$1.sym -o$1.bin | bbfilter$EXT
-if [ "$?" -ne "0" ] ; then
-   echo "Assembly failed."
-   exit 1
- else
-   if [ "$RELOCATEBB" ] ; then
-     $RELOCATEBB $1.bin
-   fi
-fi
-echo "Build complete."
-exit
 
+if [ "$2" = "-O" ]
+  then
+   wasmtime run --dir=. --dir="$bB" "$bB/postprocess.wasm" -i "$bB" | wasmtime run --dir=. --dir="$bB"  "$bB/optimize.wasm" > "$1.asm"
+  else
+   wasmtime run --dir=. --dir="$bB" "$bB/postprocess.wasm" -i "$bB" > "$1.asm"
+fi
+
+wasmtime run --dir=. --dir="$bB" "$bB/dasm.wasm" "$1.asm" -I"$bB/includes" -f3 -l"$1.list.txt" -p20 -s"$1.symbol.txt" -o"$1.bin" | wasmtime "$bB/bbfilter.wasm"
+
+wasmtime run --dir=$PWD --dir=. --dir="$bB" "$bB"/relocateBB.wasm "$1.bin" 
+
+exit 0
