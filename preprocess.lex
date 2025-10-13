@@ -82,6 +82,7 @@ int linenumber=1;
 
 "_include"            printf("%s", yytext);
 "include" {printf("%s",yytext);BEGIN(includes);}
+"inline" {printf("%s",yytext);BEGIN(includes);}
 <includes>^\n* printf("%s",yytext);
 <includes>\n {linenumber++;printf("\n");BEGIN(INITIAL);}
 
