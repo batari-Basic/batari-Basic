@@ -280,196 +280,169 @@ void keywords(char **cstatement)
     {
 
 	i = 0;
+        removeCR (statement[0]);
+        removeCR (statement[1]);
+        if (!strncmp (statement[0], "return", 7))
+            prerror ("return used as label");
+
 	if (statement[1][0] == '\0')
 	{
 	    return;
 	}
-	else if (!strncmp(statement[1], "def\0", 4))
+	else if (!strncmp(statement[1], "def", 4))
 	{
 	    return;
 	}
-	else if (!strncmp(statement[0], "end\0", 4))
+	else if (!strncmp(statement[0], "end", 4))
 	    endfunction();
-	else if (!strncmp(statement[1], "includesfile\0", 13))
+	else if (!strncmp(statement[1], "includesfile", 13))
 	    create_includes(statement[2]);
-	else if (!strncmp(statement[1], "include\0", 7))
+	else if (!strncmp(statement[1], "include", 7))
 	    add_includes(statement[2]);
-	else if (!strncmp(statement[1], "inline\0", 7))
+	else if (!strncmp(statement[1], "inline", 7))
 	    add_inline(statement[2]);
-	else if (!strncmp(statement[1], "function\0", 9))
+	else if (!strncmp(statement[1], "function", 9))
 	    function(statement);
 	else if (statement[1][0] == ' ')
 	{
 	    return;
 	}
-	else if (!strncmp(statement[1], "if\0", 3))
+	else if (!strncmp(statement[1], "if", 3))
 	{
 	    doif(statement);
 	    break;
 	}
-	else if (!strncmp(statement[1], "goto\0", 5))
+	else if (!strncmp(statement[1], "goto", 5))
 	    dogoto(statement);
-	else if (!strncmp(statement[1], "bank\0", 5))
+	else if (!strncmp(statement[1], "bank", 5))
 	    newbank(atoi(statement[2]));
-	else if (!strncmp(statement[1], "sdata\0", 6))
+	else if (!strncmp(statement[1], "sdata", 6))
 	    sdata(statement);
-	else if (!strncmp(statement[1], "data\0", 5))
+	else if (!strncmp(statement[1], "data", 5))
 	    data(statement);
-	else if ((!strncmp(statement[1], "on\0", 3)) && (!strncmp(statement[3], "go\0", 2)))
+	else if ((!strncmp(statement[1], "on", 3)) && (!strncmp(statement[3], "go\0", 2)))
 	    ongoto(statement);	// on ... goto or on ... gosub
-	else if (!strncmp(statement[1], "const\0", 6))
+	else if (!strncmp(statement[1], "const", 6))
 	    doconst(statement);
-	else if (!strncmp(statement[1], "dim\0", 4))
+        else if (!strncmp (statement[1], "autodim", 8))
+            autodim (statement);
+	else if (!strncmp(statement[1], "dim", 4))
 	    dim(statement);
-	else if (!strncmp(statement[1], "for\0", 4))
+	else if (!strncmp(statement[1], "for", 4))
 	    dofor(statement);
-	else if (!strncmp(statement[1], "next\0", 5))
+	else if (!strncmp(statement[1], "next", 5))
 	    next(statement);
-	else if (!strncmp(statement[1], "next\n", 5))
-	    next(statement);
-	else if (!strncmp(statement[1], "next\r", 5))
-	    next(statement);
-	else if (!strncmp(statement[1], "gosub\0", 6))
+	else if (!strncmp(statement[1], "gosub", 6))
 	    gosub(statement);
-	else if (!strncmp(statement[1], "pfpixel\0", 8))
+	else if (!strncmp(statement[1], "pfpixel", 8))
 	    pfpixel(statement);
-	else if (!strncmp(statement[1], "pfhline\0", 8))
+	else if (!strncmp(statement[1], "pfhline", 8))
 	    pfhline(statement);
-	else if (!strncmp(statement[1], "pfclear\0", 7))
+	else if (!strncmp(statement[1], "pfclear", 7))
 	    pfclear(statement);
-	else if (!strncmp(statement[1], "pfvline\0", 8))
+	else if (!strncmp(statement[1], "pfvline", 8))
 	    pfvline(statement);
-	else if (!strncmp(statement[1], "pfscroll\0", 9))
+	else if (!strncmp(statement[1], "pfscroll", 9))
 	    pfscroll(statement);
-	else if (!strncmp(statement[1], "drawscreen\0", 10))
+	else if (!strncmp(statement[1], "drawscreen", 10))
 	    drawscreen();
-	else if (!strncmp(statement[1], "rerand\0", 6))
+	else if (!strncmp(statement[1], "rerand", 6))
 	    rerand();
-	else if (!strncmp(statement[1], "asm\0", 4))
+	else if (!strncmp(statement[1], "asm", 4))
 	    doasm();
-	else if (!strncmp(statement[1], "pop\0", 4))
+	else if (!strncmp(statement[1], "pop", 4))
 	    dopop();
-	else if (!strncmp(statement[1], "rem\0", 4))
+	else if (!strncmp(statement[1], "rem", 4))
 	{
 	    rem(statement);
 	    return;
 	}
-	else if (!strncmp(statement[1], "asm\n", 4))
-	    doasm();
-	else if (!strncmp(statement[1], "pop\n", 4))
-	    dopop();
-	else if (!strncmp(statement[1], "rem\n", 4))
-	{
-	    rem(statement);
-	    return;
-	}
-	else if (!strncmp(statement[1], "asm\r", 4))
-	    doasm();
-	else if (!strncmp(statement[1], "pop\r", 4))
-	    dopop();
-	else if (!strncmp(statement[1], "rem\r", 4))
-	{
-	    rem(statement);
-	    return;
-	}
-	else if (!strncmp(statement[1], "set\0", 4))
+	else if (!strncmp(statement[1], "set", 4))
 	    set(statement);
-	else if (!strncmp(statement[1], "return\0", 7))
+	else if (!strncmp(statement[1], "return", 7))
 	    doreturn(statement);
-	else if (!strncmp(statement[1], "reboot\0", 7))
+	else if (!strncmp(statement[1], "reboot", 7))
 	    doreboot();
-	else if (!strncmp(statement[1], "vblank\0", 7))
+	else if (!strncmp(statement[1], "vblank", 7))
 	    vblank();
-	else if (!strncmp(statement[1], "return\n", 7))
-	    doreturn(statement);
-	else if (!strncmp(statement[1], "reboot\n", 7))
-	    doreboot();
-	else if (!strncmp(statement[1], "vblank\n", 7))
-	    vblank();
-	else if (!strncmp(statement[1], "return\r", 7))
-	    doreturn(statement);
-	else if (!strncmp(statement[1], "reboot\r", 7))
-	    doreboot();
-	else if (!strncmp(statement[1], "vblank\r", 7))
-	    vblank();
-	else if ((!strncasecmp(statement[1], "pfcolors:\0", 9)) || (!strncasecmp(statement[1], "pfheights:\0", 9)))
+	else if ((!strncasecmp(statement[1], "pfcolors:", 9)) || (!strncasecmp(statement[1], "pfheights:\0", 9)))
 	    playfieldcolorandheight(statement);
-	else if (!strncasecmp(statement[1], "bkcolors:\0", 9))
+	else if (!strncasecmp(statement[1], "bkcolors:", 9))
 	    bkcolors(statement);
-	else if (!strncmp(statement[1], "playfield:\0", 10))
+	else if (!strncmp(statement[1], "playfield:", 10))
 	    playfield(statement);
-	else if (!strncmp(statement[1], "scorecolors:\0", 12))
+	else if (!strncmp(statement[1], "scorecolors:", 12))
 	    scorecolors(statement);
-	else if (!strncmp(statement[1], "lives:\0", 6))
+	else if (!strncmp(statement[1], "lives:", 6))
 	    lives(statement);
-	else if ((!strncmp(statement[1], "player0:\0", 8))
-		 || (!strncmp(statement[1], "player1:\0", 8))
-		 || (!strncmp(statement[1], "player2:\0", 8))
-		 || (!strncmp(statement[1], "player3:\0", 8))
-		 || (!strncmp(statement[1], "player4:\0", 8))
-		 || (!strncmp(statement[1], "player5:\0", 8))
-		 || (!strncmp(statement[1], "player6:\0", 8))
-		 || (!strncmp(statement[1], "player7:\0", 8))
-		 || (!strncmp(statement[1], "player8:\0", 8))
-		 || (!strncmp(statement[1], "player9:\0", 8))
-		 || (!strncmp(statement[1], "player10:\0", 9))
-		 || (!strncmp(statement[1], "player11:\0", 9))
-		 || (!strncmp(statement[1], "player12:\0", 9))
-		 || (!strncmp(statement[1], "player13:\0", 9))
-		 || (!strncmp(statement[1], "player14:\0", 9))
-		 || (!strncmp(statement[1], "player15:\0", 9))
-		 || (!strncmp(statement[1], "player16:\0", 9))
-		 || (!strncmp(statement[1], "player1-\0", 8))
-		 || (!strncmp(statement[1], "player2-\0", 8))
-		 || (!strncmp(statement[1], "player3-\0", 8))
-		 || (!strncmp(statement[1], "player4-\0", 8))
-		 || (!strncmp(statement[1], "player5-\0", 8))
-		 || (!strncmp(statement[1], "player6-\0", 8))
-		 || (!strncmp(statement[1], "player7-\0", 8))
-		 || (!strncmp(statement[1], "player8-\0", 8))
-		 || (!strncmp(statement[1], "player9-\0", 8))
-		 || (!strncmp(statement[1], "player10-\0", 9))
-		 || (!strncmp(statement[1], "player11-\0", 9))
-		 || (!strncmp(statement[1], "player12-\0", 9))
-		 || (!strncmp(statement[1], "player13-\0", 9))
-		 || (!strncmp(statement[1], "player14-\0", 9))
-		 || (!strncmp(statement[1], "player15-\0", 9))
-		 || (!strncmp(statement[1], "player0color:\0", 13))
-		 || (!strncmp(statement[1], "player1color:\0", 13))
-		 || (!strncmp(statement[1], "player2color:\0", 13))
-		 || (!strncmp(statement[1], "player3color:\0", 13))
-		 || (!strncmp(statement[1], "player4color:\0", 13))
-		 || (!strncmp(statement[1], "player5color:\0", 13))
-		 || (!strncmp(statement[1], "player6color:\0", 13))
-		 || (!strncmp(statement[1], "player7color:\0", 13))
-		 || (!strncmp(statement[1], "player8color:\0", 13)) 
-		 || (!strncmp(statement[1], "player9color:\0", 13))
-		 || (!strncmp(statement[1], "player10color:\0", 14))
-		 || (!strncmp(statement[1], "player11color:\0", 14))
-		 || (!strncmp(statement[1], "player12color:\0", 14))
-		 || (!strncmp(statement[1], "player13color:\0", 14))
-		 || (!strncmp(statement[1], "player14color:\0", 14))
-		 || (!strncmp(statement[1], "player15color:\0", 14))
-		 || (!strncmp(statement[1], "player16color:\0", 14))
+	else if ((!strncmp(statement[1], "player0:", 8))
+		 || (!strncmp(statement[1], "player1:", 8))
+		 || (!strncmp(statement[1], "player2:", 8))
+		 || (!strncmp(statement[1], "player3:", 8))
+		 || (!strncmp(statement[1], "player4:", 8))
+		 || (!strncmp(statement[1], "player5:", 8))
+		 || (!strncmp(statement[1], "player6:", 8))
+		 || (!strncmp(statement[1], "player7:", 8))
+		 || (!strncmp(statement[1], "player8:", 8))
+		 || (!strncmp(statement[1], "player9:", 8))
+		 || (!strncmp(statement[1], "player10:", 9))
+		 || (!strncmp(statement[1], "player11:", 9))
+		 || (!strncmp(statement[1], "player12:", 9))
+		 || (!strncmp(statement[1], "player13:", 9))
+		 || (!strncmp(statement[1], "player14:", 9))
+		 || (!strncmp(statement[1], "player15:", 9))
+		 || (!strncmp(statement[1], "player16:", 9))
+		 || (!strncmp(statement[1], "player1-", 8))
+		 || (!strncmp(statement[1], "player2-", 8))
+		 || (!strncmp(statement[1], "player3-", 8))
+		 || (!strncmp(statement[1], "player4-", 8))
+		 || (!strncmp(statement[1], "player5-", 8))
+		 || (!strncmp(statement[1], "player6-", 8))
+		 || (!strncmp(statement[1], "player7-", 8))
+		 || (!strncmp(statement[1], "player8-", 8))
+		 || (!strncmp(statement[1], "player9-", 8))
+		 || (!strncmp(statement[1], "player10-", 9))
+		 || (!strncmp(statement[1], "player11-", 9))
+		 || (!strncmp(statement[1], "player12-", 9))
+		 || (!strncmp(statement[1], "player13-", 9))
+		 || (!strncmp(statement[1], "player14-", 9))
+		 || (!strncmp(statement[1], "player15-", 9))
+		 || (!strncmp(statement[1], "player0color:", 13))
+		 || (!strncmp(statement[1], "player1color:", 13))
+		 || (!strncmp(statement[1], "player2color:", 13))
+		 || (!strncmp(statement[1], "player3color:", 13))
+		 || (!strncmp(statement[1], "player4color:", 13))
+		 || (!strncmp(statement[1], "player5color:", 13))
+		 || (!strncmp(statement[1], "player6color:", 13))
+		 || (!strncmp(statement[1], "player7color:", 13))
+		 || (!strncmp(statement[1], "player8color:", 13)) 
+		 || (!strncmp(statement[1], "player9color:", 13))
+		 || (!strncmp(statement[1], "player10color:", 14))
+		 || (!strncmp(statement[1], "player11color:", 14))
+		 || (!strncmp(statement[1], "player12color:", 14))
+		 || (!strncmp(statement[1], "player13color:", 14))
+		 || (!strncmp(statement[1], "player14color:", 14))
+		 || (!strncmp(statement[1], "player15color:", 14))
+		 || (!strncmp(statement[1], "player16color:", 14))
 		)
 	    player(statement);
-	else if (!strncmp(statement[2], "=\0", 1))
+	else if (!strncmp(statement[2], "=", 1))
 	    dolet(statement);
-	else if (!strncmp(statement[1], "let\0", 4))
+	else if (!strncmp(statement[1], "let", 4))
 	    dolet(statement);
-	else if (!strncmp(statement[1], "dec\0", 4))
+	else if (!strncmp(statement[1], "dec", 4))
 	    dec(statement);
-	else if (!strncmp(statement[1], "macro\0", 6))
+	else if (!strncmp(statement[1], "macro", 6))
 	    domacro(statement);
-	else if (!strncmp(statement[1], "push\0", 5))
+	else if (!strncmp(statement[1], "push", 5))
 	    do_push(statement);
-	else if (!strncmp(statement[1], "pull\0", 5))
+	else if (!strncmp(statement[1], "pull", 5))
 	    do_pull(statement);
-	else if (!strncmp(statement[1], "stack\0", 6))
+	else if (!strncmp(statement[1], "stack", 6))
 	    do_stack(statement);
-	else if (!strncmp(statement[1], "callmacro\0", 10))
+	else if (!strncmp(statement[1], "callmacro", 10))
 	    callmacro(statement);
-	else if (!strncmp(statement[1], "extra\0", 5))
+	else if (!strncmp(statement[1], "extra", 5))
 	    doextra(statement[1]);
 	else
 	{

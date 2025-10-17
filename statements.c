@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <stdarg.h>
 #include "statements.h"
 #include "keywords.h"
 
@@ -62,6 +63,49 @@ char Areg[50];
 void currdir_foundmsg(char *foundfile)
 {
     fprintf(stderr, "User-defined %s found in the current directory\n", foundfile);
+}
+
+void assertminimumargs (char **statement, char *commandname, int argcount)
+{
+    // statement index: 1=command, 2=arg1, 3=arg2, ...
+
+    int t; 
+
+    for (t = 2; t < argcount + 2; t++)
+    {
+        if ((statement[t] == NULL) || (statement[t][0] == 0)
+            || (statement[t][0] == '\n') || (statement[t][0] == '\r') || (statement[t][0] == ':'))
+        {
+            t = 0;
+            break;
+        }
+
+    }
+
+    if (t < (argcount + 2))
+    {
+        prerror ("command %s doesn't contain %d arguments", commandname, argcount);
+    }
+}
+
+int strictatoi (char *numstring)
+{
+    if (numstring[0] == '\0')
+    {
+        prwarn ("bad non-variable value");
+        return (-1);
+    }
+    //check if its a plain decimal argument...
+    if (numstring[0] == '-')
+        return (256 - atoi (numstring + 1));
+    if ((numstring[0] >= '0') && (numstring[0] <= '9'))
+        return (atoi (numstring));
+    if ((numstring[0] == '$') && (numstring[1] != '\0'))
+        return ((int) strtol (numstring + 1, NULL, 16));
+    if ((numstring[0] == '%') && (numstring[1] != '\0'))
+        return ((int) strtol (numstring + 1, NULL, 2));
+    prwarn ("bad non-variable value");
+    return (-1);
 }
 
 void doreboot()
@@ -2434,6 +2478,109 @@ void next(char **statement)
     if (failsafe)
 	printf(".%s\n", failsafelabel);
 }
+
+void autodim (char **statement)
+{
+    #define AD_BYTE 0
+    #define AD_44  1
+    #define AD_88  2
+
+    static int inititialized = 0;
+    static char start_addr[80];
+    static char end_addr[80];
+    static int current_index;
+
+    int variable_type;
+    int memsize,t;
+    int objsize, objcount;
+
+    // when arg2=init...
+    //         1           2         3         4
+    //     autodim       init   start addr  end addr
+
+    // when arg2=byte, 8.8, or 4.4...
+    //         1           2         3         4
+    //     autodim       type      name      count
+
+    assertminimumargs (statement, "autodim", 2);
+    removeCR (statement[3]);
+    removeCR (statement[4]);
+
+    if (strncmp(statement[2],"init",5)==0)
+    {
+        assertminimumargs (statement, "autodim (init)", 3);
+        inititialized = 1;
+        current_index=0;
+        strncpy(start_addr,statement[3],79);
+        strncpy(end_addr,statement[4],79);
+        return;
+    }
+
+    if(!inititialized)
+        prerror ("autodim used without initializing.");
+
+    variable_type = -1;
+    if (strncmp(statement[2],"byte",5)==0)
+    {
+        variable_type = AD_BYTE;
+        objsize = 1;
+    }
+    else if (strncmp(statement[2],"4.4",5)==0)
+    {
+        variable_type = AD_44;
+        objsize = 1;
+    }
+    else if (strncmp(statement[2],"8.8",5)==0)
+    {
+        variable_type = AD_88;
+        objsize = 2;
+    }
+
+    if(variable_type == -1)
+        prerror ("autodim type not recognized.");
+
+    if ((statement[4][0] == 0) || (statement[4][0] == ':'))
+        objcount=1;
+    else
+    {
+        // retrieve and validate how many bytes/objects are needed
+        objcount = strictatoi (statement[4]);
+        if (objcount<1)
+            prerror ("autodim invalid object count used.");
+    }
+
+    // register the base variable name
+    snprintf (redefined_variables[numredefvars], 100, "%s = (%s + %d)",statement[3],start_addr,current_index);
+    numredefvars++;
+
+    if ( variable_type == AD_44 )
+    {
+        snprintf (redefined_variables[numredefvars], 100, "%sb44 = (%s + %d)",statement[3],start_addr,current_index);
+        numredefvars++;
+        snprintf (fixpoint44[0][numfixpoint44], 46, "%s",statement[3]);
+        snprintf (fixpoint44[1][numfixpoint44], 46, "%sb44",statement[3]);
+        numfixpoint44++;
+    }
+    if ( variable_type == AD_88 )
+    {
+        snprintf (redefined_variables[numredefvars], 100, "%s_hi = (%s + %d)",statement[3],start_addr,current_index);
+        numredefvars++;
+        snprintf (redefined_variables[numredefvars], 100, "%s_lo = (%s + %d)",statement[3],start_addr,current_index+objcount);
+        numredefvars++;
+        snprintf (fixpoint88[0][numfixpoint88], 46, "%s",statement[3]);
+        snprintf (fixpoint88[1][numfixpoint88], 46, "%s_lo",statement[3]);
+        numfixpoint88++;
+    }
+
+    // advance the autodim index past this recent allocation...
+    current_index = current_index + (objcount * objsize);
+
+    // Add an assembly check that the allocation didn't go past the end value
+    // This needs to be at the asm level, because we allow the program to
+    // use symbols for the start and end address.
+    printf(" if ((%s + %d) > %s)\n echo \"\"\n echo \"######## ERROR: autodim of variable '%s' exceeded range end. (%s)\"\n  ERR\n endif\n",start_addr,current_index-1, end_addr, statement[3],end_addr);
+}
+
 
 void dim(char **statement)
 {
@@ -5835,9 +5982,35 @@ void drawscreen()
 	jsr("drawscreen");
 }
 
-void prerror(char *myerror)
+void prinfo (char *format, ...)
 {
-    fprintf(stderr, "line %d: %s\n", line, myerror);
+    char buffer[1024];
+    va_list args;
+    va_start (args, format);
+    vsnprintf (buffer, 1023, format, args);
+    fprintf (stderr, "*** INFO  %s\n", buffer);
+    va_end (args);
+}
+
+void prwarn (char *format, ...)
+{
+    char buffer[1024];
+    va_list args;
+    va_start (args, format);
+    vsnprintf (buffer, 1023, format, args);
+    fprintf (stderr, "*** WARNING  line %d: %s\n", line, buffer);
+    va_end (args);
+}
+
+void prerror (char *format, ...)
+{
+    char buffer[1024];
+    va_list args;
+    va_start (args, format);
+    vsnprintf (buffer, 1023, format, args);
+    fprintf (stderr, "*** ERROR  line %d: %s\n", line, buffer);
+    va_end (args);
+    exit (1);
 }
 
 int printimmed(char *value)
