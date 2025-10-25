@@ -51,6 +51,6 @@ fi
 
 wasmtime run --dir=. --dir="$bB" "$bB/dasm.wasm" "$1.asm" -I"$bB/includes" -f3 -l"$1.list.txt" -p20 -s"$1.symbol.txt" -o"$1.bin" | wasmtime "$bB/bbfilter.wasm"
 
-wasmtime run --dir=$PWD --dir=. --dir="$bB" "$bB"/relocateBB.wasm "$1.bin" 
+wasmtime run --dir="$PWD" --dir=. --dir="$bB" "$bB"/relocateBB.wasm "$1.bin" 
 
 exit 0

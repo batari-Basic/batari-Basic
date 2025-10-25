@@ -21,5 +21,5 @@ for arg in "$@"; do
 done
 
 # Run wasmtime with all dirs and original arguments
-exec wasmtime run $DIRS "$bas7800dir/$BNAME.wasm" "$@"
+exec wasmtime run $DIRS "$bB/$BNAME.wasm" "$@"
 

@@ -25,7 +25,7 @@ for %%A in (%*) do (
 )
 
 REM Now run wasmtime
-wasmtime run %DIRS% "%bas7800dir%\%TOOL%.wasm" %*
+wasmtime run %DIRS% "%bB%\%TOOL%.wasm" %*
 
 endlocal
 
