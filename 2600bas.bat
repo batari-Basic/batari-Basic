@@ -59,7 +59,18 @@ wasmtime run --dir . --dir "%srcdir%" --dir "%bB%\includes" ^
   "%bB%\dasm.wasm" "%~1.asm" -I. -I"%bB%\includes" -f3 -p20 -l"%~1.list.txt" -s"%~1.symbol.txt" -o"%~1.bin" | wasmtime run --dir . --dir "%srcdir%" --dir "%bB%" "%bB%\bbfilter.wasm"
 
 REM --- Create an ACE file if the binary is DPC+ ---
-wasmtime run --dir "%CD%::/" --dir "%bB%::/bB" "%bB%\relocateBB.wasm" "%~nx1.bin"
+wasmtime run --dir "%CD%::/" --dir "%bB%::/bB" "/bB/relocateBB.wasm" "%~nx1.bin"
+
+REM --- Create a .elf file to flash PXE games to Chameleon Cart
+if not defined PXE_VENDOR_UUID (
+    for /F "delims=" %%A IN ('powershell -command [guid]::NewGuid(^).ToString(^)') DO (
+        SET "PXE_VENDOR_UUID=%%A"
+    )
+)
+FOR /F "delims=" %%A IN ('powershell -command [guid]::NewGuid(^).ToString(^)') DO (
+    SET "GameGuid=%%A"
+)
+wasmtime run --dir . --dir "%srcdir%" --dir "%bB%\includes::/bbincludes" "%bB%\pxebin2ccelf.wasm" "%~nx1.bin" "/bbincludes/PXE_CC_pre.arm" "/bbincludes/PXE_CC_post.arm" "%PXE_VENDOR_UUID%" "%GameGuid%"
 
 goto end
 
@@ -76,5 +87,4 @@ exit /b 1
 :end
 endlocal
 exit /b 0
-
 
