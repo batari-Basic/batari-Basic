@@ -12,7 +12,7 @@ LEX=lex
 LEXFLAGS=-t
 LDIR=contrib/${ARCH}
 
-all:    2600basic.wasm preprocess.wasm postprocess.wasm bbfilter.wasm optimize.wasm
+all:    2600basic.wasm preprocess.wasm postprocess.wasm bbfilter.wasm optimize.wasm pxebin2ccelf.wasm
 
 2600basic.wasm: 2600bas.c statements.c keywords.c statements.h keywords.h
 	${CC} ${CFLAGS} -o 2600basic.wasm 2600bas.c statements.c keywords.c
@@ -22,6 +22,9 @@ postprocess.wasm: postprocess.c
 
 bbfilter.wasm: bbfilter.c
 	${CC} ${CFLAGS} -o bbfilter.wasm bbfilter.c
+
+pxebin2ccelf.wasm: pxebin2ccelf.c
+	${CC} ${CFLAGS} -o pxebin2ccelf.wasm pxebin2ccelf.c
 
 preprocess.wasm: preprocess.lex
 	${LEX} ${LEXFLAGS}<preprocess.lex>lex.yy.c
