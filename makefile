@@ -9,7 +9,7 @@ CC=cc
 LEX=lex
 LEXFLAGS=-t
 
-all: 2600basic preprocess postprocess optimize bbfilter pxebin2ccelf
+all: 2600basic preprocess postprocess optimize bbfilter 
 
 2600basic: 2600bas.c statements.c keywords.c statements.h keywords.h
 	${CC} ${CFLAGS} -o 2600basic 2600bas.c statements.c keywords.c
@@ -29,9 +29,6 @@ optimize: optimize.lex
 
 bbfilter: bbfilter.c
 	${CC} ${CFLAGS} -o bbfilter bbfilter.c
-
-pxebin2ccelf: pxebin2ccelf.c
-	${CC} ${CFLAGS} -o pxebin2ccelf pxebin2ccelf.c
 
 distclean:
 	make -f makefile.xcmp.wasm clean
