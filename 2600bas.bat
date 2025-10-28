@@ -56,7 +56,7 @@ if /I "%2"=="-O" (
 
 REM --- Assemble final binary ---
 wasmtime run --dir . --dir "%srcdir%" --dir "%bB%\includes" ^
-  "%bB%\dasm.wasm" "%~1.asm" -I. -I"%bB%\includes" -f3 -p20 -l"%~1.list.txt" -s"%~1.symbol.txt" -o"%~1.bin" | wasmtime run --dir . --dir "%srcdir%" --dir "%bB%" "%bB%\bbfilter.wasm"
+  "%bB%\dasm.wasm" "%~1.asm" -I. -I"%bB%\includes" -f3 -p20 -l"%~1.lst" -s"%~1.sym" -o"%~1.bin" | wasmtime run --dir . --dir "%srcdir%" --dir "%bB%" "%bB%\bbfilter.wasm"
 
 REM --- Create an ACE file if the binary is DPC+ ---
 wasmtime run --dir "%CD%::/" --dir "%bB%::/bB" "%bB%\relocateBB.wasm" "%~nx1.bin"
