@@ -81,6 +81,8 @@ void gosub(char **);
 void doif(char **);
 void dolet(char **);
 void dec(char **);
+void increment(char **);
+void decrement(char **);
 void rem(char **);
 void set(char **);
 void dogoto(char **);
