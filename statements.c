@@ -1408,6 +1408,7 @@ void add_includes(char *myinclude)
     if (includesfile_already_done)
 	fprintf(stderr, "%d: Warning: include ignored (includes should typically precede other commands)\n", line);
     strcat(user_includes, myinclude);
+    strcat(user_includes, "\n");
 }
 
 void add_inline(char *myinclude)
@@ -1553,7 +1554,7 @@ void create_includes(char *includesfile)
 	}
 	if (writeline)
 	{
-	    if (!strncasecmp(dline, "bb.asm\0", 6))
+	    if (!strncasecmp(dline, "bb.asm", 6))
 		if (user_includes[0] != '\0')
 		    fprintf(includeswrite, "%s", user_includes);
 	    fprintf(includeswrite, "%s", dline);
