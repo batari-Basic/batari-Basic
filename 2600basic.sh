@@ -8,11 +8,17 @@ fi
 
 wasmtime --version 2>&1 > /dev/null
 if [ ! $? = 0 ] ; then
-    echo "### WARNING: wasmtime isn't in your PATH."
-    echo "    You can install it as follows:"
-    echo "      macOS/Linux: curl https://wasmtime.dev/install.sh -sSf | bash"
-    echo "    See https://wasmtime.dev for other installation options."
-    exit 1
+    if [ -r "$bB"/2600basic ] ; then
+        echo "### WARNING: wasmtime is missing. Compiling with native executables."
+        2600basic.native.sh $*
+        exit $?
+    else
+        echo "### WARNING: wasmtime isn't in your PATH."
+        echo "    You can install it as follows:"
+        echo "      macOS/Linux: curl https://wasmtime.dev/install.sh -sSf | bash"
+        echo "    See https://wasmtime.dev for other installation options."
+        exit 1
+    fi
 fi
 
 echo "  basic version:  "$(wasmtime $bB/2600basic.wasm -v 2>/dev/null)
@@ -51,7 +57,11 @@ fi
 
 wasmtime run --dir=. --dir="$bB" "$bB/dasm.wasm" "$1.asm" -I"$bB/includes" -f3 -l"$1.lst" -p20 -s"$1.sym" -o"$1.bin" | wasmtime "$bB/bbfilter.wasm"
 
-wasmtime run --dir="$PWD" --dir=. --dir="$bB" "$bB"/relocateBB.wasm "$1.bin" 
+if [ -f "$bB/relocateBB.wasm" ] ; then
+    wasmtime run --dir="$PWD" --dir=. --dir="$bB" "$bB"/relocateBB.wasm "$1.bin" 
+else
+    echo "relocateBB skipped. A compatible relocateBB wasn't found."
+fi
 
 # --- Create a .elf file to flash PXE games to Chameleon Cart ---
 
@@ -102,6 +112,8 @@ if [ -f "$bB/pxebin2ccelf.wasm" ]; then
 
   wasmtime run --dir=. --dir="$bB/includes::/bbincludes" \
     "$bB/pxebin2ccelf.wasm" "$1.bin" "/bbincludes/PXE_CC_pre.arm" "/bbincludes/PXE_CC_post.arm" "$PXE_VENDOR_UUID" "$GameGuid"
+else
+    echo "pxebin2ccelf skipped. A compatible relocateBB wasn't found."
 fi
 
 exit 0

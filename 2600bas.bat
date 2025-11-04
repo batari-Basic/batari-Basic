@@ -8,9 +8,15 @@ if X"%bB%"==X goto nobasic
 REM --- Check if wasmtime is available ---
 wasmtime --version >nul 2>&1
 if errorlevel 1 (
-    echo.
-    echo ### ERROR: Wasmtime is not installed or not in PATH.
-    exit /b 1
+    if exist "%bB%\2600basic.exe" (
+        REM Wasmtime not found, but native executable exists. Fallback.
+        call "%~dp0\2600bas.native.bat" %*
+        exit /b %errorlevel%
+    ) else (
+        echo.
+        echo ### ERROR: Wasmtime is not installed or not in PATH.
+        exit /b 1
+    )
 )
 
 echo Using bB=%bB%
