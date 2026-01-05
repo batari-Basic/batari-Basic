@@ -3205,8 +3205,10 @@ void doend()
 	printf(" ENDM\n");
 	macroactive = 0;
     }
+    else if (!doingfunction)
+	prerror("extraneous end keyword encountered\n");
     else
-	prerror("extraneous end statement found");
+	doingfuntion=0;
 }
 
 void player(char **statement)
