@@ -3208,7 +3208,7 @@ void doend()
     else if (!doingfunction)
 	prerror("extraneous end keyword encountered\n");
     else
-	doingfuntion=0;
+	doingfunction=0;
 }
 
 void player(char **statement)
