@@ -2,6 +2,9 @@
 # Prerequisites
 *.d
 
+# System files
+.DS_Store
+
 # Object files
 *.o
 *.ko
@@ -16,6 +19,10 @@
 # Precompiled Headers
 *.gch
 *.pch
+
+# IDE Files / Folders
+*.sublime-workspace
+.vscode
 
 # Libraries
 *.lib
